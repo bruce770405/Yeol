@@ -2,6 +2,7 @@ package tw.com.mbproject.yeol;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
 
 /**
  * 程式進入點.
@@ -11,6 +12,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @see
  */
 @SpringBootApplication
+@ComponentScan({"tw.com.mbproject.yeol.config"})
 public class YeolApplication {
 
 	/**
