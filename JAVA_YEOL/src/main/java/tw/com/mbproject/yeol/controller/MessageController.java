@@ -24,7 +24,7 @@ public class MessageController {
      * 查詢全部
      */
     @GetMapping(value="/all", produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public List<Message> getAllCustomers() {
+    public List<Message> getAllMessages() {
         return messageService.getAllMessages();
     }
     
@@ -32,7 +32,7 @@ public class MessageController {
      * 新增一筆資料
      */
     @PostMapping(value="/add", produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Message createCustomer(@RequestBody Message message) {
+    public Message createMessage(@RequestBody Message message) {
         messageService.add(message);
         return message;
     }
