@@ -3,26 +3,3 @@
   color: black;
 }
 
-
-
-.App-header {
-  background-color: #282c34;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  border-bottom: 10px solid;
-  display: grid;
-  grid-template-columns: auto 1fr;
-  justify-content: space-between;
-  align-items: stretch;
-}
-
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
