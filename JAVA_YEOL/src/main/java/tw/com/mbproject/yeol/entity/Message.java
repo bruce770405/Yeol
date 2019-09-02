@@ -9,7 +9,7 @@ public class Message {
 
     @Id
     public String id;
-
+    
     @Field("title")
     public String title;
     @Field("content")
