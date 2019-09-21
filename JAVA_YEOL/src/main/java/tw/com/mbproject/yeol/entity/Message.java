@@ -13,26 +13,26 @@ import lombok.NoArgsConstructor;
 public class Message {
 
     @Id
-    public String id;
+    private String id;
     @Field("authorId")
-    public String authorId;
+    private String authorId;
     @Field("authorName")
-    public String authorName;
+    private String authorName;
     @Field("title")
-    public String title;
+    private String title;
     @Field("content")
-    public String content;
+    private String content;
     @Field("views")
-    public Integer views;
+    private Integer views;
     @Field("up")
-    public Integer up;
+    private Integer up;
     @Field("down")
-    public Integer down;
+    private Integer down;
     @Field("createMs")
-    public Long createMs;
+    private Long createMs;
     @Field("updateMs")
-    public Long updateMs;
+    private Long updateMs;
     @Field("deleteFlag")
-    public Boolean deleteFlag;
+    private Boolean deleteFlag;
     
 }

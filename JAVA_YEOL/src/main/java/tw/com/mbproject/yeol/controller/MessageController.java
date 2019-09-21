@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import tw.com.mbproject.yeol.controller.response.GetAllMessagesResponse;
+import tw.com.mbproject.yeol.controller.response.code.ErrCode;
+import tw.com.mbproject.yeol.dto.MessageDto;
 import tw.com.mbproject.yeol.entity.Message;
 import tw.com.mbproject.yeol.service.MessageService;
 
@@ -21,8 +24,9 @@ public class MessageController {
     private MessageService messageService;
     
     @GetMapping(value="/all", produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public List<Message> getAllMessages() {
-        return messageService.getAllMessages();
+    public GetAllMessagesResponse getAllMessages() {
+        List<MessageDto> messages = messageService.getAllMessages();
+        return new GetAllMessagesResponse.Builder().messages(messages).build(ErrCode.SUCCESS);
     }
     
     @PostMapping(value="/add", produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -30,5 +34,5 @@ public class MessageController {
         messageService.add(message);
         return message;
     }
-
+    
 }
