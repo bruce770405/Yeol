@@ -36,10 +36,10 @@ public class MessageServiceImpl implements MessageService {
 
     @Override
     public List<MessageDto> getPagedMessages(int page, int size) {
-        Page<Message> pagedMessage = messageRepo.findAll(
+        Page<Message> pageResult = messageRepo.findAll(
                 PageRequest.of(page, size, Sort.by("createMs").descending()));
-
-        return pagedMessage.getContent().stream().map(MessageDto::valueOf)
+        
+        return pageResult.getContent().stream().map(MessageDto::valueOf)
                 .collect(Collectors.toList());
 
     }
