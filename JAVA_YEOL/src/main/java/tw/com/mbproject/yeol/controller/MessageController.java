@@ -20,17 +20,11 @@ public class MessageController {
     @Autowired
     private MessageService messageService;
     
-    /**
-     * 查詢全部
-     */
     @GetMapping(value="/all", produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
     public List<Message> getAllMessages() {
         return messageService.getAllMessages();
     }
     
-    /**
-     * 新增一筆資料
-     */
     @PostMapping(value="/add", produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Message createMessage(@RequestBody Message message) {
         messageService.add(message);
