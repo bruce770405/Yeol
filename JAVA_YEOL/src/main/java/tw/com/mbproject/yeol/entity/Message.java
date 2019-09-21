@@ -14,6 +14,8 @@ public class Message {
     public String title;
     @Field("content")
     public String content;
+    @Field("views")
+    public Integer views;
 
     public Message() {
     }
@@ -46,4 +48,13 @@ public class Message {
         this.content = content;
     }
 
+    public Integer getViews() {
+        return views;
+    }
+
+    public void setViews(Integer views) {
+        this.views = views;
+    }
+
+    
 }
