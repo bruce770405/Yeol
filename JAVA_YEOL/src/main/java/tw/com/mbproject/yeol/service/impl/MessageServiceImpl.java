@@ -5,6 +5,9 @@ import java.util.stream.Collectors;
 
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import tw.com.mbproject.yeol.dto.MessageDto;
@@ -29,6 +32,16 @@ public class MessageServiceImpl implements MessageService {
         message.setId(ObjectId.get().toHexString());
         messageRepo.save(message);
         return message;
+    }
+
+    @Override
+    public List<MessageDto> getPagedMessages(int page, int size) {
+        Page<Message> pagedMessage = messageRepo.findAll(
+                PageRequest.of(page, size, Sort.by("createMs").descending()));
+
+        return pagedMessage.getContent().stream().map(MessageDto::valueOf)
+                .collect(Collectors.toList());
+
     }
 
 }

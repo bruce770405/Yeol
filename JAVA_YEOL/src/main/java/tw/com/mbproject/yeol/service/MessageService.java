@@ -9,6 +9,8 @@ public interface MessageService {
     
     public List<MessageDto> getAllMessages();
     
+    public List<MessageDto> getPagedMessages(int page, int size);
+    
     public Message add(Message message);
 
 }
