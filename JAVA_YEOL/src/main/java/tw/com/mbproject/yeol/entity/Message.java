@@ -4,46 +4,35 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
 @Document(collection = "messages")
 public class Message {
 
     @Id
-    public String id;
-
+    private String id;
+    @Field("authorId")
+    private String authorId;
+    @Field("authorName")
+    private String authorName;
     @Field("title")
-    public String title;
+    private String title;
     @Field("content")
-    public String content;
-
-    public Message() {
-    }
-
-    public Message(String title) {
-        this.title = title;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
+    private String content;
+    @Field("views")
+    private Integer views;
+    @Field("up")
+    private Integer up;
+    @Field("down")
+    private Integer down;
+    @Field("createMs")
+    private Long createMs;
+    @Field("updateMs")
+    private Long updateMs;
+    @Field("deleteFlag")
+    private Boolean deleteFlag;
+    
 }
