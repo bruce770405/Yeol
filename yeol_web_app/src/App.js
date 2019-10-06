@@ -1,10 +1,11 @@
 import React from 'react';
-import Home from './pagecode/home/HomeComponent';
 import Box from '@material-ui/core/Box';
 import Container from '@material-ui/core/Container';
 import { ScrollTop } from './component/Scroll';
 import { Header } from './pagecode/Header';
 
+import { Route } from 'react-router-dom';
+import routes from './tw/com/yeol/common/routes';
 
 function App() {
 
@@ -14,13 +15,27 @@ function App() {
       <Header />
 
       <Container>
+
         <Box my={2}>
-          < Home></Home>
+          {routes.map((route, i) => {
+            const { path, exact, routes } = route;
+            return (
+              <Route
+                key={i}
+                path={path}
+                exact={exact}
+                render={(routeProps) => (
+                  <route.component routes={routes} {...routeProps} />
+                )}
+              />
+            );
+          })}
         </Box>
+
       </Container>
 
       <ScrollTop />
-      
+
     </div>
   );
 }

@@ -8,6 +8,7 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import InputBase from '@material-ui/core/InputBase';
 import SearchIcon from '@material-ui/icons/Search';
+import { NavLink } from 'react-router-dom';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -21,6 +22,7 @@ const useStyles = makeStyles(theme => ({
     display: 'none',
     [theme.breakpoints.up('sm')]: {
       display: 'block',
+      textDecorationLine: 'none',
     },
   },
   search: {
@@ -63,7 +65,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
-export function Header(props) {
+export const Header = () => {
   const classes = useStyles();
   return (
     <div>
@@ -72,9 +74,13 @@ export function Header(props) {
           <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" className={classes.title}>
-            YOEL
-      </Typography>
+
+          <Typography variant="h6" className={classes.title} gutterBottom>
+            <NavLink to="/" activeStyle={{ textDecorationLine: "none", fontWeight: "bold", color: "white" }}>
+              {/* <img src={logo} alt="react-router-breadcrumb" width="30" height="30" /> */}
+              YEOL
+            </NavLink>
+          </Typography>
 
           <div className={classes.search}>
             <div className={classes.searchIcon}>
@@ -90,13 +96,14 @@ export function Header(props) {
             />
           </div>
 
-          <Button color="inherit">Login</Button>
-          <Button color="inherit">Logout</Button>
+          <Button color="inherit">登入</Button>
+          <Button color="inherit">登出</Button>
         </Toolbar>
 
       </AppBar>
 
       <Toolbar />
+
     </div>
   );
 }
