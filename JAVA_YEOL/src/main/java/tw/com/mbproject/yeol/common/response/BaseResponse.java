@@ -1,4 +1,4 @@
-package tw.com.mbproject.yeol.controller.response;
+package tw.com.mbproject.yeol.common.response;
 
 import org.apache.commons.lang3.StringUtils;
 
