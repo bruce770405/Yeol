@@ -59,6 +59,7 @@ public class WebConfig implements WebFluxConfigurer {
 
         final MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
         converter.setObjectMapper(objectMapper);
+
         return converter;
     }
 

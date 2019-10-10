@@ -6,11 +6,11 @@ import tw.com.mbproject.yeol.dto.MessageDto;
 import tw.com.mbproject.yeol.entity.Message;
 
 public interface MessageService {
-    
-    public List<MessageDto> getAllMessages();
-    
-    public List<MessageDto> getPagedMessages(int page, int size);
-    
-    public Message add(Message message);
+
+    List<MessageDto> getAllMessages();
+
+    List<MessageDto> getPagedMessages(int page, int size);
+
+    Message add(Message message);
 
 }

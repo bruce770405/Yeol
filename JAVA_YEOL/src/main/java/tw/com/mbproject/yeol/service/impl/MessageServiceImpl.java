@@ -10,13 +10,14 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import tw.com.mbproject.yeol.common.service.BizService;
 import tw.com.mbproject.yeol.dto.MessageDto;
 import tw.com.mbproject.yeol.entity.Message;
 import tw.com.mbproject.yeol.repo.MessageRepo;
 import tw.com.mbproject.yeol.service.MessageService;
 
 @Service
-public class MessageServiceImpl implements MessageService {
+public class MessageServiceImpl extends BizService implements MessageService {
 
     @Autowired
     private MessageRepo messageRepo;
@@ -34,11 +35,12 @@ public class MessageServiceImpl implements MessageService {
         return message;
     }
 
+
     @Override
     public List<MessageDto> getPagedMessages(int page, int size) {
         Page<Message> pageResult = messageRepo.findAll(
                 PageRequest.of(page, size, Sort.by("createMs").descending()));
-        
+
         return pageResult.getContent().stream().map(MessageDto::valueOf)
                 .collect(Collectors.toList());
 
