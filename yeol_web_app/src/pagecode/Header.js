@@ -8,7 +8,8 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import InputBase from '@material-ui/core/InputBase';
 import SearchIcon from '@material-ui/icons/Search';
-import { NavLink } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
+import CommandButton from '../component/CommandButton';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -96,15 +97,20 @@ export const Header = () => {
             />
           </div>
 
-          <Button color="inherit">登入</Button>
-          <Button color="inherit">登出</Button>
+          <NavLink to="/login" style={{ textDecorationLine: "none", color: "white" }} activeStyle={{ textDecorationLine: "none", color: "white" }}>
+            <Button color="inherit">
+              登入
+          </Button>
+          </NavLink>
+
+          {/* <Button color="inherit">登出</Button> */}
         </Toolbar>
 
       </AppBar>
 
       <Toolbar />
 
-    </div>
+    </div >
   );
 }
 
