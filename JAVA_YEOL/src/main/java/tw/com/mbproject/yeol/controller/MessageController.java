@@ -29,11 +29,15 @@ import tw.com.mbproject.yeol.service.MessageService;
 @RequestMapping(value="/api/messages")
 public class MessageController {
     
-    @Value("${yeol.message.page.size}")
-    private int pageSize;
+    private static int pageSize;
     
     @Autowired
     private MessageService messageService;
+    
+    @Value("${yeol.message.page.size}")
+    public void setPageSize(int pageSize) {
+        MessageController.pageSize = pageSize;
+    }
     
     /**
      * Just for test
@@ -76,7 +80,8 @@ public class MessageController {
     @PatchMapping(value="/update", produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Mono<ModifyMessageResponse> createMessage(@RequestBody UpdateMessageRequest request) {
         Optional<MessageDto> messageDto = messageService.updateMessageContent(request);
-        return messageDto.map(e -> Mono.just(ModifyMessageResponse.builder().message(e).build(ErrCode.SUCCESS))).orElse(Mono.just(ModifyMessageResponse.builder().build(ErrCode.FAIL)));
+        return messageDto.map(e -> Mono.just(ModifyMessageResponse.builder().message(e).build(ErrCode.SUCCESS)))
+                .orElse(Mono.just(ModifyMessageResponse.builder().build(ErrCode.SUCCESS)));
     }
     
     /**
@@ -85,7 +90,8 @@ public class MessageController {
     @DeleteMapping(value="/delete", produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Mono<ModifyMessageResponse> deleteMessage(@RequestBody DeleteMessageRequest request) {
         Optional<MessageDto> messageDto = messageService.deleteMessage(request);
-        return messageDto.map(e -> Mono.just(ModifyMessageResponse.builder().message(e).build(ErrCode.SUCCESS))).orElse(Mono.just(ModifyMessageResponse.builder().build(ErrCode.FAIL)));
+        return messageDto.map(e -> Mono.just(ModifyMessageResponse.builder().message(e).build(ErrCode.SUCCESS)))
+                .orElse(Mono.just(ModifyMessageResponse.builder().build(ErrCode.SUCCESS)));
     }
     
 }
