@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import tw.com.mbproject.yeol.controller.response.GetAllMessagesResponse;
 import tw.com.mbproject.yeol.controller.response.code.ErrCode;
 import tw.com.mbproject.yeol.dto.MessageDto;
@@ -26,22 +28,28 @@ public class MessageController {
     @Autowired
     private MessageService messageService;
     
+    @GetMapping("/test") 
+    public Mono<String> test() {
+        return Mono.just(new String("hello world"));
+    }
+    
     @GetMapping(value="/all", produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public GetAllMessagesResponse getAllMessages() {
+    public Mono<GetAllMessagesResponse> getAllMessages() {
         List<MessageDto> messages = messageService.getAllMessages();
-        return new GetAllMessagesResponse.Builder().messages(messages).build(ErrCode.SUCCESS);
+        
+        return Mono.just(new GetAllMessagesResponse.Builder().messages(messages).build(ErrCode.SUCCESS));
     }
     
     @GetMapping(value="/page/{page}", produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public GetAllMessagesResponse getPagedMessages(@PathVariable("page") Integer page) {
+    public Mono<GetAllMessagesResponse> getPagedMessages(@PathVariable("page") Integer page) {
         List<MessageDto> messages = messageService.getPagedMessages(page, PAGE_SIZE);
-        return new GetAllMessagesResponse.Builder().messages(messages).build(ErrCode.SUCCESS);
+        return Mono.just(new GetAllMessagesResponse.Builder().messages(messages).build(ErrCode.SUCCESS));
     }
     
     @PostMapping(value="/add", produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Message createMessage(@RequestBody Message message) {
-        messageService.add(message);
-        return message;
+    public Mono<Message> createMessage(@RequestBody Message message) {
+        message = messageService.add(message);
+        return Mono.just(message);
     }
     
 }
