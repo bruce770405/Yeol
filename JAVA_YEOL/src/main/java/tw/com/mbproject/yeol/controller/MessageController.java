@@ -5,7 +5,9 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -69,7 +71,7 @@ public class MessageController {
     /**
      * Update message title and content
      */
-    @PostMapping(value="/update", produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PatchMapping(value="/update", produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Mono<ModifyMessageResponse> createMessage(@RequestBody UpdateMessageRequest request) {
         Optional<MessageDto> messageDto = messageService.updateMessageContent(request);
         return messageDto.map(e -> Mono.just(ModifyMessageResponse.builder().message(e).build(ErrCode.SUCCESS))).orElse(Mono.just(ModifyMessageResponse.builder().build(ErrCode.FAIL)));
@@ -78,7 +80,7 @@ public class MessageController {
     /**
      * Delete message
      */
-    @PostMapping(value="/delete")
+    @DeleteMapping(value="/delete", produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Mono<ModifyMessageResponse> deleteMessage(@RequestBody DeleteMessageRequest request) {
         Optional<MessageDto> messageDto = messageService.deleteMessage(request);
         return messageDto.map(e -> Mono.just(ModifyMessageResponse.builder().message(e).build(ErrCode.SUCCESS))).orElse(Mono.just(ModifyMessageResponse.builder().build(ErrCode.FAIL)));
