@@ -11,6 +11,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import tw.com.mbproject.yeol.common.service.BizService;
+import tw.com.mbproject.yeol.controller.request.CreateMessageRequest;
 import tw.com.mbproject.yeol.dto.MessageDto;
 import tw.com.mbproject.yeol.entity.Message;
 import tw.com.mbproject.yeol.repo.MessageRepo;
@@ -18,6 +19,8 @@ import tw.com.mbproject.yeol.service.MessageService;
 
 @Service
 public class MessageServiceImpl extends BizService implements MessageService {
+    
+    private final static int INIT_COUNT = 0;
 
     @Autowired
     private MessageRepo messageRepo;
@@ -29,10 +32,21 @@ public class MessageServiceImpl extends BizService implements MessageService {
     }
 
     @Override
-    public Message add(Message message) {
-        message.setId(ObjectId.get().toHexString());
-        messageRepo.save(message);
-        return message;
+    public MessageDto add(CreateMessageRequest request) {
+        Message message = Message.builder()
+                .id(ObjectId.get().toHexString())
+                .title(request.getTitle())
+                .content(request.getContent())
+                .views(INIT_COUNT)
+                .up(INIT_COUNT)
+                .down(INIT_COUNT)
+                .createMs(System.currentTimeMillis())
+                .updateMs(System.currentTimeMillis())
+                .deleteFlag(Boolean.FALSE).build();
+        
+        message = messageRepo.save(message);
+        
+        return MessageDto.valueOf(message);
     }
 
 

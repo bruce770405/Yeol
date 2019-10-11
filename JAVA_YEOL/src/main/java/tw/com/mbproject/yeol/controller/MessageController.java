@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import tw.com.mbproject.yeol.controller.request.CreateMessageRequest;
+import tw.com.mbproject.yeol.controller.response.CreateMessageResponse;
 import tw.com.mbproject.yeol.controller.response.GetAllMessagesResponse;
 import tw.com.mbproject.yeol.controller.response.code.ErrCode;
 import tw.com.mbproject.yeol.dto.MessageDto;
@@ -35,21 +37,20 @@ public class MessageController {
     
     @GetMapping(value="/all", produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Mono<GetAllMessagesResponse> getAllMessages() {
-        List<MessageDto> messages = messageService.getAllMessages();
-        
-        return Mono.just(new GetAllMessagesResponse.Builder().messages(messages).build(ErrCode.SUCCESS));
+        List<MessageDto> messageDto = messageService.getAllMessages();
+        return Mono.just(new GetAllMessagesResponse.Builder().messages(messageDto).build(ErrCode.SUCCESS));
     }
     
     @GetMapping(value="/page/{page}", produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Mono<GetAllMessagesResponse> getPagedMessages(@PathVariable("page") Integer page) {
-        List<MessageDto> messages = messageService.getPagedMessages(page, PAGE_SIZE);
-        return Mono.just(new GetAllMessagesResponse.Builder().messages(messages).build(ErrCode.SUCCESS));
+        List<MessageDto> messageDtoList = messageService.getPagedMessages(page, PAGE_SIZE);
+        return Mono.just(new GetAllMessagesResponse.Builder().messages(messageDtoList).build(ErrCode.SUCCESS));
     }
     
     @PostMapping(value="/add", produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Mono<Message> createMessage(@RequestBody Message message) {
-        message = messageService.add(message);
-        return Mono.just(message);
+    public Mono<CreateMessageResponse> createMessage(@RequestBody CreateMessageRequest request) {
+        MessageDto messageDto = messageService.add(request);
+        return Mono.just(new CreateMessageResponse.Builder().message(messageDto).build(ErrCode.SUCCESS));
     }
     
 }
