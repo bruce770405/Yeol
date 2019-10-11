@@ -7,14 +7,16 @@ import org.springframework.data.mongodb.core.mapping.Field;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Data
+@EqualsAndHashCode(callSuper=true)
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Document(collection = "members")
-public class Member {
+public class Member extends Base {
     
     @Id
     private String id;
@@ -26,11 +28,5 @@ public class Member {
     private String email;
     @Field("postNumber")
     private Integer postNumber;
-    @Field("createMs")
-    private Long createMs;
-    @Field("updateMs")
-    private Long updateMs;
-    @Field("deleteFlag")
-    private Boolean deleteFlag;
 
 }
