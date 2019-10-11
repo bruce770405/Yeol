@@ -16,8 +16,8 @@ import reactor.core.publisher.Mono;
 import tw.com.mbproject.yeol.controller.request.CreateMessageRequest;
 import tw.com.mbproject.yeol.controller.request.DeleteMessageRequest;
 import tw.com.mbproject.yeol.controller.request.UpdateMessageRequest;
-import tw.com.mbproject.yeol.controller.response.GetAllMessagesResponse;
-import tw.com.mbproject.yeol.controller.response.MessageResponse;
+import tw.com.mbproject.yeol.controller.response.GetMessagesResponse;
+import tw.com.mbproject.yeol.controller.response.ModifyMessageResponse;
 import tw.com.mbproject.yeol.controller.response.code.ErrCode;
 import tw.com.mbproject.yeol.dto.MessageDto;
 import tw.com.mbproject.yeol.service.MessageService;
@@ -43,45 +43,45 @@ public class MessageController {
      * Get All messages of this system, for test only.
      */
     @GetMapping(value="/all", produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Mono<GetAllMessagesResponse> getAllMessages() {
+    public Mono<GetMessagesResponse> getAllMessages() {
         List<MessageDto> messageDto = messageService.getAllMessages();
-        return Mono.just(new GetAllMessagesResponse.Builder().messages(messageDto).build(ErrCode.SUCCESS));
+        return Mono.just(new GetMessagesResponse.Builder().messages(messageDto).build(ErrCode.SUCCESS));
     }
     
     /**
      * Get paginate messages
      */
     @GetMapping(value="/page/{page}", produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Mono<GetAllMessagesResponse> getPagedMessages(@PathVariable("page") Integer page) {
+    public Mono<GetMessagesResponse> getPagedMessages(@PathVariable("page") Integer page) {
         List<MessageDto> messageDtoList = messageService.getPagedMessages(page, PAGE_SIZE);
-        return Mono.just(new GetAllMessagesResponse.Builder().messages(messageDtoList).build(ErrCode.SUCCESS));
+        return Mono.just(new GetMessagesResponse.Builder().messages(messageDtoList).build(ErrCode.SUCCESS));
     }
     
     /**
      * Add new message
      */
     @PostMapping(value="/add", produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Mono<MessageResponse> createMessage(@RequestBody CreateMessageRequest request) {
+    public Mono<ModifyMessageResponse> createMessage(@RequestBody CreateMessageRequest request) {
         Optional<MessageDto> messageDto = messageService.addMessage(request);
-        return messageDto.map(e -> Mono.just(MessageResponse.builder().message(e).build(ErrCode.SUCCESS))).orElse(Mono.just(MessageResponse.builder().build(ErrCode.FAIL)));
+        return messageDto.map(e -> Mono.just(ModifyMessageResponse.builder().message(e).build(ErrCode.SUCCESS))).orElse(Mono.just(ModifyMessageResponse.builder().build(ErrCode.FAIL)));
     }
     
     /**
      * Update message title and content
      */
     @PostMapping(value="/update", produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Mono<MessageResponse> createMessage(@RequestBody UpdateMessageRequest request) {
+    public Mono<ModifyMessageResponse> createMessage(@RequestBody UpdateMessageRequest request) {
         Optional<MessageDto> messageDto = messageService.updateMessageContent(request);
-        return messageDto.map(e -> Mono.just(MessageResponse.builder().message(e).build(ErrCode.SUCCESS))).orElse(Mono.just(MessageResponse.builder().build(ErrCode.FAIL)));
+        return messageDto.map(e -> Mono.just(ModifyMessageResponse.builder().message(e).build(ErrCode.SUCCESS))).orElse(Mono.just(ModifyMessageResponse.builder().build(ErrCode.FAIL)));
     }
     
     /**
      * Delete message
      */
     @PostMapping(value="/delete")
-    public Mono<MessageResponse> deleteMessage(@RequestBody DeleteMessageRequest request) {
+    public Mono<ModifyMessageResponse> deleteMessage(@RequestBody DeleteMessageRequest request) {
         Optional<MessageDto> messageDto = messageService.deleteMessage(request);
-        return messageDto.map(e -> Mono.just(MessageResponse.builder().message(e).build(ErrCode.SUCCESS))).orElse(Mono.just(MessageResponse.builder().build(ErrCode.FAIL)));
+        return messageDto.map(e -> Mono.just(ModifyMessageResponse.builder().message(e).build(ErrCode.SUCCESS))).orElse(Mono.just(ModifyMessageResponse.builder().build(ErrCode.FAIL)));
     }
     
 }
