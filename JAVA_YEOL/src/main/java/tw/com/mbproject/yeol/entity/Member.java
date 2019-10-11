@@ -13,30 +13,24 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Document(collection = "messages")
-public class Message {
-
+@Document(collection = "members")
+public class Member {
+    
     @Id
     private String id;
-    @Field("memberId")
-    private String memberId;
-    @Field("memberName")
-    private String memberName;
-    @Field("title")
-    private String title;
-    @Field("content")
-    private String content;
-    @Field("views")
-    private Integer view;
-    @Field("up")
-    private Integer up;
-    @Field("down")
-    private Integer down;
+    @Field("name")
+    private String name;
+    @Field("password")
+    private String password;
+    @Field("email")
+    private String email;
+    @Field("postNumber")
+    private Integer postNumber;
     @Field("createMs")
     private Long createMs;
     @Field("updateMs")
     private Long updateMs;
     @Field("deleteFlag")
     private Boolean deleteFlag;
-    
+
 }
