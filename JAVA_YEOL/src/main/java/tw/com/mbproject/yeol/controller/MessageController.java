@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,7 +29,8 @@ import tw.com.mbproject.yeol.service.MessageService;
 @RequestMapping(value="/api/messages")
 public class MessageController {
     
-    private static final int PAGE_SIZE = 20;
+    @Value("${yeol.message.page.size}")
+    private int pageSize;
     
     @Autowired
     private MessageService messageService;
@@ -55,7 +57,7 @@ public class MessageController {
      */
     @GetMapping(value="/page/{page}", produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Mono<GetMessagesResponse> getPagedMessages(@PathVariable("page") Integer page) {
-        List<MessageDto> messageDtoList = messageService.getPagedMessages(page, PAGE_SIZE);
+        List<MessageDto> messageDtoList = messageService.getPagedMessages(page, pageSize);
         return Mono.just(new GetMessagesResponse.Builder().messages(messageDtoList).build(ErrCode.SUCCESS));
     }
     

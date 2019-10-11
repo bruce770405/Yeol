@@ -1,5 +1,6 @@
 package tw.com.mbproject.yeol.service.impl;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -58,6 +59,10 @@ public class MessageServiceImpl extends BizService implements MessageService {
 
     @Override
     public List<MessageDto> getPagedMessages(int page, int size) {
+        if(page < 0 || size < 0) {
+            return Collections.emptyList();
+        }
+        
         Page<Message> pageResult = messageRepo.findAll(
                 PageRequest.of(page, size, Sort.by("createMs").descending()));
 
