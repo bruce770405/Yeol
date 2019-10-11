@@ -10,7 +10,7 @@ import tw.com.mbproject.yeol.dto.MessageDto;
 
 public class CreateMessageResponse extends BaseResponse {
 
-    @JsonProperty(value="messages")
+    @JsonProperty(value="message")
     @Getter @Setter
     private MessageDto message;
    
