@@ -37,7 +37,7 @@ public class MessageServiceImpl extends BizService implements MessageService {
                 .id(ObjectId.get().toHexString())
                 .title(request.getTitle())
                 .content(request.getContent())
-                .views(INIT_COUNT)
+                .view(INIT_COUNT)
                 .up(INIT_COUNT)
                 .down(INIT_COUNT)
                 .createMs(System.currentTimeMillis())
