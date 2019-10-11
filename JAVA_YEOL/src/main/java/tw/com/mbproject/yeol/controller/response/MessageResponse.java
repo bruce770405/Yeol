@@ -8,31 +8,34 @@ import tw.com.mbproject.yeol.common.response.BaseResponse;
 import tw.com.mbproject.yeol.controller.response.code.ErrCode;
 import tw.com.mbproject.yeol.dto.MessageDto;
 
-public class CreateMessageResponse extends BaseResponse {
+public class MessageResponse extends BaseResponse {
 
     @JsonProperty(value="message")
     @Getter @Setter
     private MessageDto message;
-   
-    private CreateMessageResponse(CreateMessageResponse.Builder builder, ErrCode errCode) {
+    
+    private MessageResponse(MessageResponse.Builder builder, ErrCode errCode) {
         super(errCode);
         this.message = builder.message;
     }
+
+    public static Builder builder() {
+        return new Builder();
+    }
     
-    public static final class Builder implements ResponseBuilder<CreateMessageResponse>{
+    public static final class Builder implements ResponseBuilder<MessageResponse>{
         
         private MessageDto message;
         
-        public CreateMessageResponse.Builder message(MessageDto message) {
+        public MessageResponse.Builder message(MessageDto message) {
             this.message = message;
             return this;
         }
         
         @Override
-        public CreateMessageResponse build(ErrCode errCode) {
-            return new CreateMessageResponse(this, errCode);
+        public MessageResponse build(ErrCode errCode) {
+            return new MessageResponse(this, errCode);
         }
         
     }
-
 }

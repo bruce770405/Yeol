@@ -1,8 +1,11 @@
 package tw.com.mbproject.yeol.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import tw.com.mbproject.yeol.controller.request.CreateMessageRequest;
+import tw.com.mbproject.yeol.controller.request.DeleteMessageRequest;
+import tw.com.mbproject.yeol.controller.request.UpdateMessageRequest;
 import tw.com.mbproject.yeol.dto.MessageDto;
 
 public interface MessageService {
@@ -11,6 +14,10 @@ public interface MessageService {
 
     List<MessageDto> getPagedMessages(int page, int size);
 
-    MessageDto add(CreateMessageRequest request);
+    Optional<MessageDto> addMessage(CreateMessageRequest request);
+    
+    Optional<MessageDto> updateMessageContent(UpdateMessageRequest request);
+    
+    Optional<MessageDto> deleteMessage(DeleteMessageRequest request);
 
 }

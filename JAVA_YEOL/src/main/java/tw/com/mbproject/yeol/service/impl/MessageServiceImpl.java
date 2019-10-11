@@ -1,6 +1,7 @@
 package tw.com.mbproject.yeol.service.impl;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.bson.types.ObjectId;
@@ -12,6 +13,8 @@ import org.springframework.stereotype.Service;
 
 import tw.com.mbproject.yeol.common.service.BizService;
 import tw.com.mbproject.yeol.controller.request.CreateMessageRequest;
+import tw.com.mbproject.yeol.controller.request.DeleteMessageRequest;
+import tw.com.mbproject.yeol.controller.request.UpdateMessageRequest;
 import tw.com.mbproject.yeol.dto.MessageDto;
 import tw.com.mbproject.yeol.entity.Message;
 import tw.com.mbproject.yeol.repo.MessageRepo;
@@ -31,8 +34,11 @@ public class MessageServiceImpl extends BizService implements MessageService {
 
     }
 
+    /**
+     * Add new message
+     */
     @Override
-    public MessageDto add(CreateMessageRequest request) {
+    public Optional<MessageDto> addMessage(CreateMessageRequest request) {
         Message message = Message.builder()
                 .id(ObjectId.get().toHexString())
                 .title(request.getTitle())
@@ -46,7 +52,7 @@ public class MessageServiceImpl extends BizService implements MessageService {
         
         message = messageRepo.save(message);
         
-        return MessageDto.valueOf(message);
+        return Optional.ofNullable(MessageDto.valueOf(message));
     }
 
 
@@ -58,6 +64,30 @@ public class MessageServiceImpl extends BizService implements MessageService {
         return pageResult.getContent().stream().map(MessageDto::valueOf)
                 .collect(Collectors.toList());
 
+    }
+    
+    /**
+     * Update message title and content
+     */
+    public Optional<MessageDto> updateMessageContent(UpdateMessageRequest request) {
+        
+        return messageRepo.findById(request.getId()).flatMap(e -> {
+            e.setTitle(request.getTitle());
+            e.setContent(request.getContent());
+            e.setUpdateMs(System.currentTimeMillis());
+            return Optional.ofNullable(messageRepo.save(e));
+        }).map(MessageDto::valueOf);
+        
+    }
+    
+    /**
+     * Delete message
+     */
+    public Optional<MessageDto> deleteMessage(DeleteMessageRequest request) {
+        return messageRepo.findById(request.getId()).map(e -> {
+            messageRepo.delete(e);
+            return MessageDto.valueOf(e);
+        });
     }
 
 }

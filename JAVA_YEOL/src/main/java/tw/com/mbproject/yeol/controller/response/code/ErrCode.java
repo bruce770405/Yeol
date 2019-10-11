@@ -3,6 +3,7 @@ package tw.com.mbproject.yeol.controller.response.code;
 public enum ErrCode {
     
     SUCCESS("S0000", "Success"),
+    FAIL("F0000", "Fail"),
     
     
     
