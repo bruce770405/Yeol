@@ -6,12 +6,15 @@ import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import tw.com.mbproject.yeol.common.service.BizService;
 import tw.com.mbproject.yeol.constant.ConstantNumber;
 import tw.com.mbproject.yeol.controller.request.CreateMemberRequest;
+import tw.com.mbproject.yeol.controller.response.code.ErrCode;
 import tw.com.mbproject.yeol.dto.MemberDto;
 import tw.com.mbproject.yeol.entity.Member;
+import tw.com.mbproject.yeol.exception.YeolException;
 import tw.com.mbproject.yeol.repo.MemberRepo;
 import tw.com.mbproject.yeol.service.MemberService;
 
@@ -25,7 +28,13 @@ public class MemberServiceImpl extends BizService implements MemberService {
     private PasswordEncoder passwordEncoder;
 
     @Override
-    public Optional<MemberDto> addMember(CreateMemberRequest request) {
+    public Optional<MemberDto> addMember(CreateMemberRequest request) throws YeolException {
+        
+        var memberList = memberRepo.findExistedMembers(request.getName(), request.getEmail());
+        if (!CollectionUtils.isEmpty(memberList)) {
+            throw new YeolException(ErrCode.MEMBER_EXISTED);
+        }
+        
         Member member = Member.builder()
                 .id(ObjectId.get().toHexString())
                 .name(request.getName())

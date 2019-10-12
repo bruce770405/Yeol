@@ -14,6 +14,7 @@ import tw.com.mbproject.yeol.controller.response.YeolResponse;
 import tw.com.mbproject.yeol.controller.response.code.ErrCode;
 import tw.com.mbproject.yeol.controller.validation.Regex;
 import tw.com.mbproject.yeol.dto.MemberDto;
+import tw.com.mbproject.yeol.exception.YeolException;
 import tw.com.mbproject.yeol.service.MemberService;
 
 @RestController
@@ -28,7 +29,7 @@ public class MemberController {
      * Add new member
      */
     @PostMapping(value="/join", produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Mono<YeolResponse<MemberDto>> createMember(@RequestBody CreateMemberRequest request) {
+    public Mono<YeolResponse<MemberDto>> createMember(@RequestBody CreateMemberRequest request) throws Exception {
         
         if (Regex.MEMBER_NAME_FORMAT.isNotValid(request.getName())) {
             return Mono.just(new YeolResponse<>(ErrCode.INCORRECT_MEMBER_NAME_FORMAT));
@@ -41,7 +42,6 @@ public class MemberController {
         if (Regex.MEMBER_PASSWORD_FORMAT.isNotValid(request.getPassword())) {
             return Mono.just(new YeolResponse<>(ErrCode.INCORRECT_MEMBER_PASSWORD_FORMAT));
         }
-        
         
         Optional<MemberDto> memberDto = memberService.addMember(request);
         return memberDto.map(e -> Mono.just(new YeolResponse<>(e, ErrCode.SUCCESS)))
