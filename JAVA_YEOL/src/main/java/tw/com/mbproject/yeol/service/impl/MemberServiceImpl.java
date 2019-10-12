@@ -8,6 +8,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import tw.com.mbproject.yeol.common.service.BizService;
+import tw.com.mbproject.yeol.constant.ConstantNumber;
 import tw.com.mbproject.yeol.controller.request.CreateMemberRequest;
 import tw.com.mbproject.yeol.dto.MemberDto;
 import tw.com.mbproject.yeol.entity.Member;
@@ -16,8 +17,6 @@ import tw.com.mbproject.yeol.service.MemberService;
 
 @Service
 public class MemberServiceImpl extends BizService implements MemberService {
-    
-    private final static int INIT_COUNT = 0;
     
     @Autowired
     private MemberRepo memberRepo;
@@ -32,7 +31,7 @@ public class MemberServiceImpl extends BizService implements MemberService {
                 .name(request.getName())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
-                .postNumber(INIT_COUNT).build();
+                .postNumber(ConstantNumber.INIT_COUNT).build();
         
         member = memberRepo.save(member);
         return Optional.ofNullable(MemberDto.valueOf(member));

@@ -8,29 +8,30 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import tw.com.mbproject.yeol.entity.name.MessagesName;
 
 @Data
 @EqualsAndHashCode(callSuper=true)
 @NoArgsConstructor
 @AllArgsConstructor
-@Document(collection = "messages")
+@Document(collection = MessagesName.COLLECTION)
 public class Message extends Base {
 
     @Id
     private String id;
-    @Field("memberId")
+    @Field(MessagesName.FIELD_MEMBER_ID)
     private String memberId;
-    @Field("memberName")
+    @Field(MessagesName.FIELD_MEMBER_NAME)
     private String memberName;
-    @Field("title")
+    @Field(MessagesName.FIELD_TITLE)
     private String title;
-    @Field("content")
+    @Field(MessagesName.FIELD_CONTENT)
     private String content;
-    @Field("view")
+    @Field(MessagesName.FIELD_VIEW)
     private Integer view;
-    @Field("up")
+    @Field(MessagesName.FIELD_UP)
     private Integer up;
-    @Field("down")
+    @Field(MessagesName.FIELD_DOWN)
     private Integer down;
     
     public static Builder builder() {

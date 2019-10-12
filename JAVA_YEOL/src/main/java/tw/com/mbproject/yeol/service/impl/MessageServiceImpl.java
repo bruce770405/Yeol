@@ -13,6 +13,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import tw.com.mbproject.yeol.common.service.BizService;
+import tw.com.mbproject.yeol.constant.ConstantNumber;
 import tw.com.mbproject.yeol.controller.request.CreateMessageRequest;
 import tw.com.mbproject.yeol.controller.request.DeleteMessageRequest;
 import tw.com.mbproject.yeol.controller.request.UpdateMessageRequest;
@@ -24,8 +25,6 @@ import tw.com.mbproject.yeol.service.MessageService;
 @Service
 public class MessageServiceImpl extends BizService implements MessageService {
     
-    private final static int INIT_COUNT = 0;
-
     @Autowired
     private MessageRepo messageRepo;
 
@@ -44,9 +43,9 @@ public class MessageServiceImpl extends BizService implements MessageService {
                 .id(ObjectId.get().toHexString())
                 .title(request.getTitle())
                 .content(request.getContent())
-                .view(INIT_COUNT)
-                .up(INIT_COUNT)
-                .down(INIT_COUNT)
+                .view(ConstantNumber.INIT_COUNT)
+                .up(ConstantNumber.INIT_COUNT)
+                .down(ConstantNumber.INIT_COUNT)
                 .createMs(System.currentTimeMillis())
                 .updateMs(System.currentTimeMillis())
                 .deleteFlag(Boolean.FALSE).build();
