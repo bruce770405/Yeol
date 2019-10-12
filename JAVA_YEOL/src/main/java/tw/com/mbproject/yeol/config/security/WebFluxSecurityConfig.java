@@ -11,20 +11,19 @@ import org.springframework.security.web.server.SecurityWebFilterChain;
 @EnableWebFluxSecurity
 public class WebFluxSecurityConfig {
     
-    @Value("${yeol.security.enable}")
+    @Value("${yeol.security.enable:true}")
     private boolean isSecurityEnabled;
     
     @Bean
     public SecurityWebFilterChain securitygWebFilterChain(ServerHttpSecurity http) {
         
         var spec = http.csrf().disable().formLogin().and()
-        .authorizeExchange();
+                .authorizeExchange();
         if (isSecurityEnabled) {
-            spec = spec.pathMatchers("/api/**").authenticated().pathMatchers("/join")
-                    .permitAll();
+            spec.pathMatchers("/api/**").authenticated()
+                .pathMatchers("/join").permitAll();
         } else {
-            spec = spec.pathMatchers("/**")
-            .permitAll();
+            spec.pathMatchers("/**").permitAll();
         }
         
         return spec.and().build();
