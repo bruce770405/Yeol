@@ -14,6 +14,10 @@ public class YeolResponse<T> extends BaseResponse {
         super(ErrCode.SUCCESS);
     }
     
+    public YeolResponse(ErrCode errCode) {
+        super(errCode);
+    }
+    
     public YeolResponse(T data, ErrCode errCode) {
         super(errCode);
         this.data = data;
