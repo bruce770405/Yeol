@@ -67,7 +67,7 @@ public class MemberServiceImpl extends BizService implements MemberService {
         
         return memberRepo.findById(request.getId()).map(e -> {
             e.setEmail(request.getEmail());
-            e.setPassword(passwordEncoder.encode(request.getPassword()));
+//            e.setPassword(passwordEncoder.encode(request.getPassword()));
             e.setUpdateMs(System.currentTimeMillis());
             return MemberDto.valueOf(memberRepo.save(e));
         });

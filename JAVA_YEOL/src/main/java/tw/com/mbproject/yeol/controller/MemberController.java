@@ -54,9 +54,9 @@ public class MemberController {
             return Mono.just(new YeolResponse<>(ErrCode.INCORRECT_MEMBER_EMAIL_FORMAT));
         }
         
-        if (Regex.MEMBER_PASSWORD_FORMAT.isNotValid(request.getPassword())) {
-            return Mono.just(new YeolResponse<>(ErrCode.INCORRECT_MEMBER_PASSWORD_FORMAT));
-        }
+//        if (Regex.MEMBER_PASSWORD_FORMAT.isNotValid(request.getPassword())) {
+//            return Mono.just(new YeolResponse<>(ErrCode.INCORRECT_MEMBER_PASSWORD_FORMAT));
+//        }
         
         var memberDto = memberService.updateMember(request);
         return memberDto.map(e -> Mono.just(new YeolResponse<>(e, ErrCode.SUCCESS)))

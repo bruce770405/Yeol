@@ -10,8 +10,8 @@ public class UpdateMemberRequest {
     @JsonProperty(value="id")
     private String id;
 
-    @JsonProperty(value="password")
-    private String password;
+//    @JsonProperty(value="password")
+//    private String password;
     
     @JsonProperty(value="email")
     private String email;

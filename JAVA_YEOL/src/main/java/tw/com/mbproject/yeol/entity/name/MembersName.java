@@ -8,4 +8,5 @@ public class MembersName {
     public static final String FIELD_PASSWORD = "password";
     public static final String FIELD_EMAIL = "email";
     public static final String FIELD_POST_NUMBER = "postNumber";
+    public static final String FIELD_ROLES = "roles";
 }
