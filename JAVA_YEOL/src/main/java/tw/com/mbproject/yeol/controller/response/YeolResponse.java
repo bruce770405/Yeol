@@ -1,27 +1,42 @@
 package tw.com.mbproject.yeol.controller.response;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import tw.com.mbproject.yeol.common.response.BaseResponse;
+import lombok.Getter;
 import tw.com.mbproject.yeol.controller.response.code.ErrCode;
+import tw.com.mbproject.yeol.exception.ResponseException;
 
-public class YeolResponse<T> extends BaseResponse {
+public class YeolResponse<T> {
+    
+    @Getter
+    private String code;
+    
+    @Getter
+    private String msg;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonProperty(value="data")
     private T data;
     
     public YeolResponse() {
-        super(ErrCode.SUCCESS);
+        this.code = ErrCode.SUCCESS.getCode();
+        this.msg = ErrCode.SUCCESS.getMsg();
     }
     
     public YeolResponse(ErrCode errCode) {
-        super(errCode);
+        if (StringUtils.isAnyBlank(errCode.getCode(), errCode.getMsg())) {
+            throw new ResponseException(ErrCode.RESPONSE_NO_ERROR_CODE);
+        }
+        this.code = errCode.getCode();
+        this.msg = errCode.getMsg();
     }
     
     public YeolResponse(T data, ErrCode errCode) {
-        super(errCode);
+        this.code = errCode.getCode();
+        this.msg = errCode.getMsg();
         this.data = data;
     }
     
