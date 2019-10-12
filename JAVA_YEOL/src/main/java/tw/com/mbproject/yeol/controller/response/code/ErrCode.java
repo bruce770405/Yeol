@@ -12,6 +12,7 @@ public enum ErrCode {
     
     DATA_EXISTED("E0000", "Data existed"),
     MEMBER_EXISTED("E0001", "Member existed"),
+    EMAIL_EXISTED("E0002", "Email existed"),
     
     
     RESPONSE_NO_ERROR_CODE("R0000", "Response code and messages is required");

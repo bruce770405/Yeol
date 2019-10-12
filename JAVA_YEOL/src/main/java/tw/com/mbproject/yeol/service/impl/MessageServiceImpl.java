@@ -61,10 +61,12 @@ public class MessageServiceImpl extends BizService implements MessageService {
             return Collections.emptyList();
         }
         
+        // TODO find paged undeleted messages
         var pageResult = messageRepo.findAll(
                 PageRequest.of(page, size, Sort.by("createMs").descending()));
 
-        return pageResult.getContent().stream().map(MessageDto::valueOf)
+        return pageResult.getContent().stream()
+                .map(MessageDto::valueOf)
                 .collect(Collectors.toList());
 
     }
@@ -74,12 +76,12 @@ public class MessageServiceImpl extends BizService implements MessageService {
      */
     public Optional<MessageDto> updateMessageContent(UpdateMessageRequest request) {
         
-        return messageRepo.findById(request.getId()).flatMap(e -> {
+        return messageRepo.findById(request.getId()).map(e -> {
             e.setTitle(request.getTitle());
             e.setContent(request.getContent());
             e.setUpdateMs(System.currentTimeMillis());
-            return Optional.ofNullable(messageRepo.save(e));
-        }).map(MessageDto::valueOf);
+            return MessageDto.valueOf(messageRepo.save(e));
+        });
         
     }
     
@@ -88,8 +90,8 @@ public class MessageServiceImpl extends BizService implements MessageService {
      */
     public Optional<MessageDto> deleteMessage(DeleteMessageRequest request) {
         return messageRepo.findById(request.getId()).map(e -> {
-            messageRepo.delete(e);
-            return MessageDto.valueOf(e);
+            e.setDeleteFlag(true);
+            return MessageDto.valueOf(messageRepo.save(e));
         });
     }
 

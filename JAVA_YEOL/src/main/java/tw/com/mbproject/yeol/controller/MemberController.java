@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import reactor.core.publisher.Mono;
 import tw.com.mbproject.yeol.controller.request.CreateMemberRequest;
+import tw.com.mbproject.yeol.controller.request.UpdateMemberRequest;
 import tw.com.mbproject.yeol.controller.response.YeolResponse;
 import tw.com.mbproject.yeol.controller.response.code.ErrCode;
 import tw.com.mbproject.yeol.controller.validation.Regex;
@@ -42,11 +43,25 @@ public class MemberController {
             return Mono.just(new YeolResponse<>(ErrCode.INCORRECT_MEMBER_PASSWORD_FORMAT));
         }
         
-        Optional<MemberDto> memberDto = memberService.addMember(request);
+        var memberDto = memberService.addMember(request);
         return memberDto.map(e -> Mono.just(new YeolResponse<>(e, ErrCode.SUCCESS)))
                 .orElse(Mono.just(new YeolResponse<>()));
     }
     
+    @PostMapping(value="api/members/update", produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Mono<YeolResponse<MemberDto>> updateMember (@RequestBody UpdateMemberRequest request) throws Exception {
+        if (Regex.MEMBER_EMAIL_FORMAT.isNotValid(request.getEmail())) {
+            return Mono.just(new YeolResponse<>(ErrCode.INCORRECT_MEMBER_EMAIL_FORMAT));
+        }
+        
+        if (Regex.MEMBER_PASSWORD_FORMAT.isNotValid(request.getPassword())) {
+            return Mono.just(new YeolResponse<>(ErrCode.INCORRECT_MEMBER_PASSWORD_FORMAT));
+        }
+        
+        var memberDto = memberService.updateMember(request);
+        return memberDto.map(e -> Mono.just(new YeolResponse<>(e, ErrCode.SUCCESS)))
+                .orElse(Mono.just(new YeolResponse<>()));
+    }
     
 
 }
