@@ -34,7 +34,7 @@ public class MemberServiceImpl extends BizService implements MemberService {
             throw new YeolException(ErrCode.MEMBER_EXISTED);
         }
         
-        Member member = Member.builder()
+        var member = Member.builder()
                 .id(ObjectId.get().toHexString())
                 .name(request.getName())
                 .email(request.getEmail())

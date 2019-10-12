@@ -7,7 +7,6 @@ import java.util.stream.Collectors;
 
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -39,7 +38,7 @@ public class MessageServiceImpl extends BizService implements MessageService {
      */
     @Override
     public Optional<MessageDto> addMessage(CreateMessageRequest request) {
-        Message message = Message.builder()
+        var message = Message.builder()
                 .id(ObjectId.get().toHexString())
                 .title(request.getTitle())
                 .content(request.getContent())
@@ -62,7 +61,7 @@ public class MessageServiceImpl extends BizService implements MessageService {
             return Collections.emptyList();
         }
         
-        Page<Message> pageResult = messageRepo.findAll(
+        var pageResult = messageRepo.findAll(
                 PageRequest.of(page, size, Sort.by("createMs").descending()));
 
         return pageResult.getContent().stream().map(MessageDto::valueOf)

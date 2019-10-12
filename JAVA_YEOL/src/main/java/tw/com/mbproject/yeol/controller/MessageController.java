@@ -1,7 +1,6 @@
 package tw.com.mbproject.yeol.controller;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -51,7 +50,7 @@ public class MessageController {
      */
     @GetMapping(value="/all", produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Mono<YeolResponse<List<MessageDto>>> getAllMessages() {
-        List<MessageDto> messageDtoList = messageService.getAllMessages();
+        var messageDtoList = messageService.getAllMessages();
         return Mono.just(new YeolResponse<>(messageDtoList,ErrCode.SUCCESS));
     }
     
@@ -60,7 +59,7 @@ public class MessageController {
      */
     @GetMapping(value="/page/{page}", produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Mono<YeolResponse<List<MessageDto>>> getPagedMessages(@PathVariable("page") Integer page) {
-        List<MessageDto> messageDtoList = messageService.getPagedMessages(page, pageSize);
+        var messageDtoList = messageService.getPagedMessages(page, pageSize);
         return Mono.just(new YeolResponse<>(messageDtoList,ErrCode.SUCCESS));
     }
     
@@ -69,7 +68,7 @@ public class MessageController {
      */
     @PostMapping(value="/add", produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Mono<YeolResponse<MessageDto>> createMessage(@RequestBody CreateMessageRequest request) {
-        Optional<MessageDto> messageDto = messageService.addMessage(request);
+        var messageDto = messageService.addMessage(request);
         return messageDto.map(e -> Mono.just(new YeolResponse<>(e, ErrCode.SUCCESS)))
                 .orElse(Mono.just(new YeolResponse<>()));
     }
@@ -79,7 +78,7 @@ public class MessageController {
      */
     @PatchMapping(value="/update", produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Mono<YeolResponse<MessageDto>> createMessage(@RequestBody UpdateMessageRequest request) {
-        Optional<MessageDto> messageDto = messageService.updateMessageContent(request);
+        var messageDto = messageService.updateMessageContent(request);
         return messageDto.map(e -> Mono.just(new YeolResponse<>(e, ErrCode.SUCCESS)))
                 .orElse(Mono.just(new YeolResponse<>()));
     }
@@ -89,7 +88,7 @@ public class MessageController {
      */
     @DeleteMapping(value="/delete", produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Mono<YeolResponse<MessageDto>> deleteMessage(@RequestBody DeleteMessageRequest request) {
-        Optional<MessageDto> messageDto = messageService.deleteMessage(request);
+        var messageDto = messageService.deleteMessage(request);
         return messageDto.map(e -> Mono.just(new YeolResponse<>(e, ErrCode.SUCCESS)))
                 .orElse(Mono.just(new YeolResponse<>()));
     }
