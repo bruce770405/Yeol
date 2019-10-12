@@ -30,8 +30,7 @@ public class MemberServiceImpl extends BizService implements MemberService {
     @Override
     public Optional<MemberDto> addMember(CreateMemberRequest request) throws YeolException {
         
-        var memberList = memberRepo.findExistedMembers(request.getName(), request.getEmail());
-        if (!CollectionUtils.isEmpty(memberList)) {
+        if (isMemberExisted(request.getName(), request.getEmail())) {
             throw new YeolException(ErrCode.MEMBER_EXISTED);
         }
         
@@ -44,6 +43,15 @@ public class MemberServiceImpl extends BizService implements MemberService {
         
         member = memberRepo.save(member);
         return Optional.ofNullable(MemberDto.valueOf(member));
+    }
+    
+    public boolean isMemberExisted(String name, String email) {
+        var memberList = memberRepo.findExistedMembers(name, email);
+        if (CollectionUtils.isEmpty(memberList)) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
 }
