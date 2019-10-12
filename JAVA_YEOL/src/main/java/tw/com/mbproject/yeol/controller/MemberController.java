@@ -14,6 +14,7 @@ import tw.com.mbproject.yeol.common.response.BaseResponse;
 import tw.com.mbproject.yeol.controller.request.CreateMemberRequest;
 import tw.com.mbproject.yeol.controller.response.YeolResponse;
 import tw.com.mbproject.yeol.controller.response.code.ErrCode;
+import tw.com.mbproject.yeol.controller.validation.Regex;
 import tw.com.mbproject.yeol.dto.MemberDto;
 import tw.com.mbproject.yeol.service.MemberService;
 
@@ -31,18 +32,15 @@ public class MemberController {
     @PostMapping(value="/join", produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Mono<YeolResponse<MemberDto>> createMember(@RequestBody CreateMemberRequest request) {
         
-        String nameRegex = "^\\w{3,12}$";
-        if (!Pattern.compile(nameRegex).matcher(request.getName()).find()) {
+        if (Regex.MEMBER_NAME_FORMAT.isNotValid(request.getName())) {
             return Mono.just(new YeolResponse<>(ErrCode.INCORRECT_MEMBER_NAME_FORMAT));
         }
         
-        String emailRegex = "^\\w{1,63}@[a-zA-Z0-9]{2,63}\\.[a-zA-Z]{2,63}(\\.[a-zA-Z]{2,63})?$";
-        if (!Pattern.compile(emailRegex).matcher(request.getEmail()).find()) {
+        if (Regex.MEMBER_EMAIL_FORMAT.isNotValid(request.getEmail())) {
             return Mono.just(new YeolResponse<>(ErrCode.INCORRECT_MEMBER_EMAIL_FORMAT));
         }
         
-        String passwordRegex = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$";
-        if (!Pattern.compile(passwordRegex).matcher(request.getPassword()).find()) {
+        if (Regex.MEMBER_PASSWORD_FORMAT.isNotValid(request.getPassword())) {
             return Mono.just(new YeolResponse<>(ErrCode.INCORRECT_MEMBER_PASSWORD_FORMAT));
         }
         
