@@ -4,6 +4,8 @@ import Grid from '@material-ui/core/Grid';
 import { CardComponent } from './CardComponent';
 import { Dropdown } from '../../component/Dropdown';
 import { DropdownItem } from '../../component/modal/DropdownItem';
+import Hidden from '@material-ui/core/Hidden';
+import Pagination from '../../component/Pagination';
 
 /**
  * 首頁 component.
@@ -19,6 +21,7 @@ class Home extends Component {
     this.state = {
       data: '',
       sortMethod: '',
+      isShowMenu: false
     }
   }
 
@@ -70,40 +73,42 @@ class Home extends Component {
 
     return (
       <div>
-        <div className="jss7">
-          <Grid container>
-            <Grid item xs={3}>
-              TODO MENU margin left
-          </Grid>
-          </Grid>
-        </div>
 
-        <Grid container spacing={1}>
+        <Grid container>
 
-          <Grid item xs={10} >
-            <Grid container
-              direction="row"
-              justify="flex-end"
-              alignItems="center"
-            >
+          <Grid container item xs={12} md={10} spacing={1}>
+            <Grid container item xs={12} direction="row" justify="flex-end" alignItems="center">
               <Dropdown eventFunction={this.handleChange} obj={sorted}></Dropdown>
             </Grid>
+
+            <Grid item xs={12}>
+              <CardComponent></CardComponent>
+            </Grid>
+
+            <Grid item xs={12}>
+              <CardComponent></CardComponent>
+            </Grid>
+
+            <Grid item xs={12}>
+              <CardComponent></CardComponent>
+            </Grid>
+            <Grid item xs={12}>
+              <CardComponent></CardComponent>
+            </Grid>
+
+            <Pagination></Pagination>
           </Grid>
 
-          <Grid item xs={10}>
-            <CardComponent></CardComponent>
+
+          <Hidden smDown implementation="css">
+            <Grid container item xd={2} spacing={1}>
+              留...
           </Grid>
-          <Grid item xs={10}>
-            <CardComponent></CardComponent>
-          </Grid>
-          <Grid item xs={10}>
-            <CardComponent></CardComponent>
-          </Grid>
-          <Grid item xs={10}>
-            <CardComponent></CardComponent>
-          </Grid>
+          </Hidden>
 
         </Grid>
+
+
       </div>
     )
   };
