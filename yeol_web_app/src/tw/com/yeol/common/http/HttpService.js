@@ -1,5 +1,4 @@
-const serverUrl = 'http://localhost:8080/';
-const isDebug = false;
+import { endpoint, isDebug } from '../../../../../config';
 
 
 /**
@@ -16,13 +15,13 @@ const commonParams = {};
 export function httpPost(params, succ, fail, methodUri) {
   let body = convertBody(params);
 
-  fetch(serverUrl + methodUri, {
-      method: 'POST',
-      headers: new Headers({
-        'Content-Type': 'application/json; charset=utf-8'
-      }),
-      body: body
-    })
+  fetch(endpoint + methodUri, {
+    method: 'POST',
+    headers: new Headers({
+      'Content-Type': 'application/json; charset=utf-8'
+    }),
+    body: body
+  })
     .then((response) => {
       //ok 代表狀態碼在範圍 200-299
       if (!response.ok) throw new Error(response.statusText)
@@ -48,12 +47,12 @@ export function httpPost(params, succ, fail, methodUri) {
  */
 export function httpGet(succ, fail, uri) {
 
-  fetch(serverUrl + uri, {
-      method: 'GET',
-      headers: new Headers({
-        'Content-Type': 'application/json; charset=utf-8'
-      }),
-    })
+  fetch(endpoint + uri, {
+    method: 'GET',
+    headers: new Headers({
+      'Content-Type': 'application/json; charset=utf-8'
+    }),
+  })
     .then((response) => {
       //ok 代表狀態碼在範圍 200-299
       if (!response.ok) throw new Error(response.statusText)
