@@ -12,13 +12,13 @@ public class MessageDto {
     @Getter @Setter
     private String id;
     
-    @JsonProperty(value="authorId")
+    @JsonProperty(value="memberId")
     @Getter @Setter
-    private String authorId;
+    private String memberId;
     
-    @JsonProperty(value="authorName")
+    @JsonProperty(value="memberName")
     @Getter @Setter
-    private String authorName;
+    private String memberName;
     
     @JsonProperty(value="title")
     @Getter @Setter
@@ -28,9 +28,9 @@ public class MessageDto {
     @Getter @Setter
     private String content;
     
-    @JsonProperty(value="views")
+    @JsonProperty(value="view")
     @Getter @Setter
-    private Integer views;
+    private Integer view;
     
     @JsonProperty(value="up")
     @Getter @Setter
@@ -55,11 +55,11 @@ public class MessageDto {
     public static MessageDto valueOf(Message e) {
         return new MessageDto.Builder()
                 .id(e.getId())
-                .authorId(e.getAuthorId())
-                .authorName(e.getAuthorName())
+                .memberId(e.getMemberId())
+                .memberName(e.getMemberName())
                 .title(e.getTitle())
                 .content(e.getContent())
-                .views(e.getViews()).up(e.getUp())
+                .view(e.getView()).up(e.getUp())
                 .down(e.getDown()).createMs(e.getCreateMs())
                 .updateMs(e.getUpdateMs()).deleteFlag(e.getDeleteFlag())
                 .build();
@@ -67,11 +67,11 @@ public class MessageDto {
 
     private MessageDto(MessageDto.Builder builder) {
         this.id = builder.id;
-        this.authorId = builder.authorId;
-        this.authorName = builder.authorName;
+        this.memberId = builder.memberId;
+        this.memberName = builder.memberName;
         this.title = builder.title;
         this.content = builder.content;
-        this.views = builder.views;
+        this.view = builder.view;
         this.up = builder.up;
         this.down = builder.down;
         this.createMs = builder.createMs;
@@ -82,11 +82,11 @@ public class MessageDto {
     public static final class Builder {
         
         private String id;
-        private String authorId;
-        private String authorName;
+        private String memberId;
+        private String memberName;
         private String title;
         private String content;
-        private Integer views;
+        private Integer view;
         private Integer up;
         private Integer down;
         private Long createMs;
@@ -98,13 +98,13 @@ public class MessageDto {
             return this;
         }
         
-        public MessageDto.Builder authorId(String authorId) {
-            this.authorId = authorId;
+        public MessageDto.Builder memberId(String memberId) {
+            this.memberId = memberId;
             return this;
         }
         
-        public MessageDto.Builder authorName(String authorName) {
-            this.authorName = authorName;
+        public MessageDto.Builder memberName(String memberName) {
+            this.memberName = memberName;
             return this;
         }
         
@@ -118,8 +118,8 @@ public class MessageDto {
             return this;
         }
         
-        public MessageDto.Builder views(Integer views) {
-            this.views = views;
+        public MessageDto.Builder view(Integer view) {
+            this.view = view;
             return this;
         }
         
