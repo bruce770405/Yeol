@@ -74,48 +74,44 @@ class Home extends Component {
     const sorted = this.genSortedItems()
 
     return (
-     
-        <Grid container spacing={4}>
 
-          <Grid container item xs={12} md={8} spacing={1}>
-            <Grid container item direction="row" justify="flex-end" alignItems="center">
-              <Dropdown eventFunction={this.handleChange} obj={sorted}></Dropdown>
-            </Grid>
-
-            <Grid item xs={12}>
-              <HomeCard />
-            </Grid>
-
-            <Grid item xs={12}>
-              <HomeCard />
-            </Grid>
-
-            <Grid item xs={12}>
-              <HomeCard />
-            </Grid>
-            <Grid item xs={12}>
-              <HomeCard />
-            </Grid>
-
-            <Grid item xs={12} >
-              <Pagination
-                limit={10}
-                offset={this.state.offset}
-                total={100}
-                onClick={(e, offset) => this.handleClick(offset)}
-              />
-            </Grid>
-
+      <Grid container spacing={4}>
+        <Grid
+          item
+          lg={8}
+          md={12}
+          xl={9}
+          xs={12}
+          spacing={2}
+        >
+          <Grid container direction="row" justify="flex-end" alignItems="center">
+            <Dropdown eventFunction={this.handleChange} obj={sorted}></Dropdown>
           </Grid>
 
+          <HomeCard />
 
-          <Hidden smDown implementation="css">
-            <Grid >
-              <SubList></SubList>
-            </Grid>
-          </Hidden>
+          <Pagination
+            limit={10}
+            offset={this.state.offset}
+            total={100}
+            onClick={(e, offset) => this.handleClick(offset)}
+          />
 
         </Grid>
+
+
+        <Grid
+          item
+          lg={4}
+          md={6}
+          xl={3}
+          xs={12}
+        >
+          {/* <Hidden smDown implementation="css"> */}
+            <SubList />
+          {/* </Hidden> */}
+        </Grid>
+      </Grid>
 
 
     )
