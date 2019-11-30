@@ -45,7 +45,7 @@ public class Member extends Base {
             roles.add("USER");
         }
         return User.withUsername(name).password(password)
-                .roles(roles.toArray(String[]::new)).build();
+                .roles(roles.toArray(new String[roles.size()])).build();
     }
 
 }
