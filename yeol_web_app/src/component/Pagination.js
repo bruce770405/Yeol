@@ -42,7 +42,6 @@ const Pagination = props => {
               role="navigation"
               className="ui pagination menu"
             >
-              {/* <PaginationStyle> */}
               {/* <Head>
                 <title>page {nowPage}</title>
               </Head> */}
@@ -82,7 +81,6 @@ const Pagination = props => {
                 </a>
               </NavLink>
 
-              {/* </PaginationStyle> */}
             </div>
           </div>
   );

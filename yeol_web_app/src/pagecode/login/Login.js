@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
-import { httpPost } from '../../tw/com/yeol/common/http/HttpService'
 import Container from '@material-ui/core/Container';
 import CommandButton from '../../component/CommandButton';
+import { HttpService } from '../../tw/com/yeol/common/http/HttpService';
+import Button  from '@material-ui/core/Button';
 
 /**
  * 首頁 component.
@@ -17,6 +18,7 @@ class Login extends Component {
     this.state = {
 
     }
+    // 將左選單隱藏
   }
 
   /**
@@ -34,21 +36,45 @@ class Login extends Component {
       // do something error handle
     }
     console.log('login componentDidMount post');
-    httpPost({}, succFunction, failFunction, 'login')
+    HttpService.httpPost({}, succFunction, failFunction, 'login')
 
   }
 
 
   render() {
 
-
+const loading = false;
     return (
       <React.Fragment>
-        <Container fixed>
-          <div>...</div>
-          <div>...login...</div>
-          <div>...</div>
-        <div><CommandButton>按我登入</CommandButton></div>
+        <Container>
+        <fieldset disabled={loading} aria-busy={loading}>
+              <h2>Sign into your account</h2>
+              {/* <Error error={error} /> */}
+              <label htmlFor="email">
+                Email
+                <input
+                  type="email"
+                  name="email"
+                  placeholder="email"
+                  value={this.state.email}
+                  onChange={this.saveToState}
+                />
+              </label>
+              <label htmlFor="password">
+                Password
+                <input
+                  type="password"
+                  name="password"
+                  placeholder="password"
+                  value={this.state.password}
+                  onChange={this.saveToState}
+                />
+              </label>
+
+              <Button variant="outlined">重設</Button>
+              <Button variant="contained" color="primary">登入</Button>
+            </fieldset>
+          
         </Container>
       </React.Fragment>
     )

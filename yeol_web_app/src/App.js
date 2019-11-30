@@ -5,7 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Route } from 'react-router-dom';
 import routes from './tw/com/yeol/common/routes';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import { Header } from './pagecode/Header';
+import { HeaderComponent } from './pagecode/Header';
 
 
 function App() {
@@ -18,7 +18,8 @@ function App() {
 
       <div className={classes.root}>
         <CssBaseline />
-        <Header />
+        
+        <HeaderComponent/>
 
         <main className={classes.content}>
           <div className={classes.toolbar} />
