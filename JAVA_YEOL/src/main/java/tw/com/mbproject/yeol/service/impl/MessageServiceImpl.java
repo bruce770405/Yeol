@@ -9,6 +9,7 @@ import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 
 import tw.com.mbproject.yeol.common.service.BizService;
@@ -16,8 +17,11 @@ import tw.com.mbproject.yeol.constant.ConstantNumber;
 import tw.com.mbproject.yeol.controller.request.CreateMessageRequest;
 import tw.com.mbproject.yeol.controller.request.DeleteMessageRequest;
 import tw.com.mbproject.yeol.controller.request.UpdateMessageRequest;
+import tw.com.mbproject.yeol.controller.response.code.ErrCode;
 import tw.com.mbproject.yeol.dto.MessageDto;
+import tw.com.mbproject.yeol.dto.PageDto;
 import tw.com.mbproject.yeol.entity.Message;
+import tw.com.mbproject.yeol.exception.YeolException;
 import tw.com.mbproject.yeol.repo.MessageRepo;
 import tw.com.mbproject.yeol.service.MessageService;
 
@@ -26,6 +30,8 @@ public class MessageServiceImpl extends BizService implements MessageService {
     
     @Autowired
     private MessageRepo messageRepo;
+    @Autowired
+    private MongoTemplate mongoTemplate;
 
     @Override
     public List<MessageDto> getAllMessages() {
@@ -56,18 +62,21 @@ public class MessageServiceImpl extends BizService implements MessageService {
 
 
     @Override
-    public List<MessageDto> getPagedMessages(int page, int size) {
-        if(page < 0 || size < 0) {
-            return Collections.emptyList();
+    public PageDto<List<MessageDto>> getPagedMessages(int page, int size) {
+        if(page < 0 || size < 1) {
+            throw new YeolException(ErrCode.INCORRECT_PAGE_FORMAT);
         }
         
-        // TODO find paged undeleted messages
-        var pageResult = messageRepo.findAll(
-                PageRequest.of(page, size, Sort.by("createMs").descending()));
+        var pageable = PageRequest.of(page, size, Sort.by("createMs").descending());
+        var pageResult = messageRepo.findByDeleteFlag(false, pageable);
 
-        return pageResult.getContent().stream()
+        List<MessageDto> messageDtoList = pageResult.getContent().stream()
                 .map(MessageDto::valueOf)
                 .collect(Collectors.toList());
+        
+        PageDto<List<MessageDto>> pageDto = new PageDto<>(pageResult);
+        pageDto.setData(messageDtoList);
+        return pageDto;
 
     }
     

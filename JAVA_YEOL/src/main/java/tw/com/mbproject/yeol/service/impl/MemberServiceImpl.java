@@ -59,7 +59,7 @@ public class MemberServiceImpl extends BizService implements MemberService {
         return isMemberExisted(null, email);
     }
     
-    public Optional<MemberDto> updateMember(UpdateMemberRequest request) throws YeolException {
+    public Optional<MemberDto> updateMember(UpdateMemberRequest request){
         
         if (isEmailExisted(request.getEmail())) {
             throw new YeolException(ErrCode.EMAIL_EXISTED);
