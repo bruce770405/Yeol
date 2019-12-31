@@ -1,0 +1,14 @@
+version: "3.7"
+services:
+  mongo:
+    image: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - /data/db
+  mongodata:
+    image: tianon/true # 最小image
+    volumes:
+      - /data/db
+
+# or docker pull mongo:lastest and docker run -itd --name mongo -p 27017:27017 -v /Users/BruceHsu/Documents/Yeol/JAVA_YEOL/data/db:/data/db mongo
