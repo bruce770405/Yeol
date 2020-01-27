@@ -11,5 +11,7 @@ import tw.com.mbproject.yeol.entity.Message;
 public interface MessageRepo extends MongoRepository<Message, String> {
     
     Page<Message> findByDeleteFlag(Boolean deleteFlag, Pageable pageable);
+    
+    Page<Message> findByDeleteFlagFalseAndCreateMsGreaterThanEqual(Long ms, Pageable pageable);
 
 }

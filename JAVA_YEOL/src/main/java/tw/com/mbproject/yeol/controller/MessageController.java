@@ -55,6 +55,22 @@ public class MessageController {
     }
     
     /**
+     * Get top view messages
+     * @param recordNumber fetch records number, max is 10;
+     * @return
+     */
+    @GetMapping(value="/top-view/{recordNumber}", produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Mono<YeolResponse<List<MessageDto>>> getTopViewMessages(
+            @PathVariable(name = "recordNumber") Integer recordNumber) {
+        if (recordNumber > 10) {
+            recordNumber = 10;
+        }
+        
+        var messageDtoList = messageService.getTopViewsMessages(recordNumber);
+        return Mono.just(new YeolResponse<>(messageDtoList,ErrCode.SUCCESS));
+    }
+    
+    /**
      * Get paginate messages
      */
     @GetMapping(value="/page/{page}", produces=MediaType.APPLICATION_JSON_UTF8_VALUE)

@@ -1,6 +1,5 @@
 package tw.com.mbproject.yeol.service.impl;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -24,6 +23,7 @@ import tw.com.mbproject.yeol.entity.Message;
 import tw.com.mbproject.yeol.exception.YeolException;
 import tw.com.mbproject.yeol.repo.MessageRepo;
 import tw.com.mbproject.yeol.service.MessageService;
+import tw.com.mbproject.yeol.util.YeolDateUtil;
 
 @Service
 public class MessageServiceImpl extends BizService implements MessageService {
@@ -37,6 +37,21 @@ public class MessageServiceImpl extends BizService implements MessageService {
     public List<MessageDto> getAllMessages() {
         return messageRepo.findAll().stream().map(MessageDto::valueOf).collect(Collectors.toList());
 
+    }
+    
+    /**
+     * Get yesterday's top view messages
+     */
+    public List<MessageDto> getTopViewsMessages(Integer recordNumber) {
+        Long yeseterdayMillis = YeolDateUtil.getYesterdayMillis();
+        
+        var pageable = PageRequest.of(0, recordNumber, Sort.by("view").descending());
+        var pageResult = messageRepo.findByDeleteFlagFalseAndCreateMsGreaterThanEqual(yeseterdayMillis, pageable);
+        
+        return pageResult.getContent().stream()
+                .map(MessageDto::valueOf)
+                .collect(Collectors.toList());
+        
     }
 
     /**
