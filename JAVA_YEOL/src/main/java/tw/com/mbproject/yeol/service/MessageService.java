@@ -12,6 +12,8 @@ import tw.com.mbproject.yeol.dto.PageDto;
 public interface MessageService {
 
     List<MessageDto> getAllMessages();
+    
+    List<MessageDto> getTopViewsMessages(Integer recordNumber);
 
     PageDto<List<MessageDto>> getPagedMessages(int page, int size);
 

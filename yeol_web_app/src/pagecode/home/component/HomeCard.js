@@ -1,12 +1,11 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-
-import Card from '@material-ui/core/Card';
 import Avatar from '@material-ui/core/Avatar';
 import { red } from '@material-ui/core/colors';
 import WhatshotOutlinedIcon from '@material-ui/icons/WhatshotOutlined';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
+import { CardComponent } from '../../../component/CardComponent';
 
 /**
  * 畫面卡片式元件
@@ -14,9 +13,12 @@ import Grid from '@material-ui/core/Grid';
  * @author BruceHsu
  * @version
  * @since
- * @see
+ * @param userName 
+ * @param title  
+ * @param createTime
+ * @param watchCount
  */
-export const CardComponent = (props) => {
+export const HomeCard = (props) => {
 
   const classes = useStyles();
   
@@ -28,7 +30,7 @@ export const CardComponent = (props) => {
 
 
   return (
-    <Card className={classes.card}>
+    <CardComponent>
 
       <Grid container direction="row" justify="flex-start" alignItems="center" >
         <Avatar className={classes.avatar}>B</Avatar>
@@ -40,18 +42,18 @@ export const CardComponent = (props) => {
         direction="row"
         justify="center"
         alignItems="stretch">
-        <Grid item xs={2}>
+        <Grid item xs={3}>
           <div className="MuiTypography-displayBlock">
-            讚讚人數:
+            讚:
            <span className="MuiTypography-root MuiCardHeader-subheader MuiTypography-body2 MuiTypography-colorTextSecondary">99999</span>
           </div>
           <div className="MuiTypography-displayBlock">
-            美送人數:
+            噓:
            <span className="MuiTypography-root MuiCardHeader-subheader MuiTypography-body2 MuiTypography-colorTextSecondary">999</span>
           </div>
         </Grid>
 
-        <Grid item xs={8}>
+        <Grid item xs={7}>
           <Typography variant="h6" component="h3">{title}</Typography>
         </Grid>
 
@@ -64,9 +66,7 @@ export const CardComponent = (props) => {
 
       </Grid>
 
-
-
-    </Card >
+    </CardComponent >
   );
 }
 
@@ -74,10 +74,6 @@ export const CardComponent = (props) => {
 
 
 const useStyles = makeStyles(theme => ({
-  card: {
-    // maxWidth: 1024,
-    padding: 5
-  },
   name: {
     paddingLeft: 3
   },

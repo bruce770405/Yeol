@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
-import { httpPost } from '../../tw/com/yeol/common/http/HttpService'
 import Grid from '@material-ui/core/Grid';
-import { CardComponent } from './CardComponent';
 import { Dropdown } from '../../component/Dropdown';
 import { DropdownItem } from '../../component/modal/DropdownItem';
 import Hidden from '@material-ui/core/Hidden';
-import Pagination from '../../component/Pagination';
+import { HomeCard } from './component/HomeCard';
+import { SubList } from './component/SubList';
+import Pagination from "material-ui-flat-pagination";
+import { HttpService } from '../../tw/com/yeol/common/http/HttpService';
 
 /**
  * 首頁 component.
@@ -21,7 +22,8 @@ class Home extends Component {
     this.state = {
       data: '',
       sortMethod: '',
-      isShowMenu: false
+      isShowMenu: false,
+      offset: 0
     }
   }
 
@@ -40,7 +42,7 @@ class Home extends Component {
       // do something error handle
     }
     console.log('componentDidMount post');
-    httpPost({}, succFunction, failFunction, '')
+    HttpService.httpPost({}, succFunction, failFunction, '')
 
   }
 
@@ -72,44 +74,46 @@ class Home extends Component {
     const sorted = this.genSortedItems()
 
     return (
-      <div>
 
-        <Grid container>
-
-          <Grid container item xs={12} md={10} spacing={1}>
-            <Grid container item xs={12} direction="row" justify="flex-end" alignItems="center">
-              <Dropdown eventFunction={this.handleChange} obj={sorted}></Dropdown>
-            </Grid>
-
-            <Grid item xs={12}>
-              <CardComponent></CardComponent>
-            </Grid>
-
-            <Grid item xs={12}>
-              <CardComponent></CardComponent>
-            </Grid>
-
-            <Grid item xs={12}>
-              <CardComponent></CardComponent>
-            </Grid>
-            <Grid item xs={12}>
-              <CardComponent></CardComponent>
-            </Grid>
-
-            <Pagination></Pagination>
+      <Grid container spacing={4}>
+        <Grid
+          item
+          lg={8}
+          md={12}
+          xl={9}
+          xs={12}
+          spacing={2}
+        >
+          <Grid container direction="row" justify="flex-end" alignItems="center">
+            <Dropdown eventFunction={this.handleChange} obj={sorted}></Dropdown>
           </Grid>
 
+          <HomeCard />
 
-          <Hidden smDown implementation="css">
-            <Grid container item xd={2} spacing={1}>
-              留...
-          </Grid>
-          </Hidden>
+          <Pagination
+            limit={10}
+            offset={this.state.offset}
+            total={100}
+            onClick={(e, offset) => this.handleClick(offset)}
+          />
 
         </Grid>
 
 
-      </div>
+        <Grid
+          item
+          lg={4}
+          md={6}
+          xl={3}
+          xs={12}
+        >
+          {/* <Hidden smDown implementation="css"> */}
+            <SubList />
+          {/* </Hidden> */}
+        </Grid>
+      </Grid>
+
+
     )
   };
 }

@@ -1,11 +1,12 @@
 import React from 'react';
 import Box from '@material-ui/core/Box';
 import { makeStyles } from '@material-ui/core/styles';
+import { ThemeProvider } from '@material-ui/styles';
 
 import { Route } from 'react-router-dom';
 import routes from './tw/com/yeol/common/routes';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import { Header } from './pagecode/Header';
+import { HeaderComponent } from './pagecode/Header';
+import theme from './theme/index';
 
 
 function App() {
@@ -14,11 +15,11 @@ function App() {
   const classes = useStyles();
 
   return (
-    <div className="App">
+    <ThemeProvider theme={theme}>
 
       <div className={classes.root}>
-        <CssBaseline />
-        <Header />
+
+        <HeaderComponent />
 
         <main className={classes.content}>
           <div className={classes.toolbar} />
@@ -39,7 +40,7 @@ function App() {
           </Box>
         </main>
       </div>
-    </div>
+    </ThemeProvider>
   );
 }
 
