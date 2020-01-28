@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import reactor.core.publisher.Mono;
 import tw.com.mbproject.yeol.controller.request.CreateMemberRequest;
+import tw.com.mbproject.yeol.controller.request.DeleteMemberRequest;
 import tw.com.mbproject.yeol.controller.request.UpdateMemberRequest;
 import tw.com.mbproject.yeol.controller.response.YeolResponse;
 import tw.com.mbproject.yeol.controller.response.code.ErrCode;
@@ -32,6 +33,17 @@ public class MemberController {
 //        }
         
         var memberDto = memberService.updateMember(request);
+        return memberDto.map(e -> Mono.just(new YeolResponse<>(e, ErrCode.SUCCESS)))
+                .orElse(Mono.just(new YeolResponse<>()));
+    }
+    
+    @PostMapping(value="/delete", produces=MediaType.APPLICATION_JSON_VALUE)
+    public Mono<YeolResponse<MemberDto>> deleteMember (@RequestBody DeleteMemberRequest request) throws Exception {
+        if (Regex.ID_FORMAT.isNotValid(request.getId())) {
+            return Mono.just(new YeolResponse<>(ErrCode.INCORRECT_FORMAT));
+        }
+        
+        var memberDto = memberService.deleteMember(request);
         return memberDto.map(e -> Mono.just(new YeolResponse<>(e, ErrCode.SUCCESS)))
                 .orElse(Mono.just(new YeolResponse<>()));
     }

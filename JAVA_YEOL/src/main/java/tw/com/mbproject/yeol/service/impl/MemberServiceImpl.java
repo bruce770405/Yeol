@@ -11,6 +11,7 @@ import org.springframework.util.CollectionUtils;
 import tw.com.mbproject.yeol.common.service.BizService;
 import tw.com.mbproject.yeol.constant.ConstantNumber;
 import tw.com.mbproject.yeol.controller.request.CreateMemberRequest;
+import tw.com.mbproject.yeol.controller.request.DeleteMemberRequest;
 import tw.com.mbproject.yeol.controller.request.UpdateMemberRequest;
 import tw.com.mbproject.yeol.controller.response.code.ErrCode;
 import tw.com.mbproject.yeol.dto.MemberDto;
@@ -69,6 +70,15 @@ public class MemberServiceImpl extends BizService implements MemberService {
             e.setEmail(request.getEmail());
 //            e.setPassword(passwordEncoder.encode(request.getPassword()));
             e.setUpdateMs(System.currentTimeMillis());
+            return MemberDto.valueOf(memberRepo.save(e));
+        });
+    }
+
+    @Override
+    public Optional<MemberDto> deleteMember(DeleteMemberRequest request) {
+        return memberRepo.findById(request.getId())
+        .map(e -> {
+            e.setDeleteFlag(false);
             return MemberDto.valueOf(memberRepo.save(e));
         });
     }

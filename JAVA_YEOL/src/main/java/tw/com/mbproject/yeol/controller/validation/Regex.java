@@ -4,6 +4,8 @@ import java.util.regex.Pattern;
 
 public enum Regex {
     
+    ID_FORMAT("^[a-fA-F0-9]{24}$"),
+    
     /**
      * Accept letter, digit, at least 3 to 12 characters
      */
@@ -32,8 +34,4 @@ public enum Regex {
         return !isValid(value);
     }
     
-    
-    
-    
-
 }
