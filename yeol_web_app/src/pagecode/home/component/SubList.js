@@ -1,6 +1,11 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { red } from '@material-ui/core/colors';
+import CardActionArea from '@material-ui/core/CardActionArea';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
+import CardMedia from '@material-ui/core/CardMedia';
+import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
 import { CardComponent } from '../../../component/CardComponent';
 
 /**
@@ -12,21 +17,31 @@ import { CardComponent } from '../../../component/CardComponent';
 export const SubList = (props) => {
 
   const classes = useStyles();
-  
+
   return (
-    <CardComponent>
-   <div>
-     ssssssssssssssssss
-     ssssssssssssssssss
-   </div>
-   <div>
-     ssssssssssssssssss
-     ssssssssssssssssss
-   </div>
-   <div>
-     ssssssssssssssssss
-     ssssssssssssssssss
-   </div>
+    <CardComponent className={classes.card}>
+      <CardActionArea>
+        <CardMedia
+          component="img"
+          alt="Contemplative Reptile"
+          height="140"
+          image="test.jpg"
+          title="Contemplative Reptile"
+        />
+        <CardContent>
+          <Typography gutterBottom variant="h5" component="h2">
+            廣告
+          </Typography>
+          <Typography variant="body2" color="textSecondary" component="p">
+            廣告內容
+          </Typography>
+        </CardContent>
+      </CardActionArea>
+      <CardActions>
+        <Button size="small" color="primary">
+          臉書推廣
+        </Button>
+      </CardActions>
     </CardComponent >
   );
 }
@@ -35,19 +50,7 @@ export const SubList = (props) => {
 
 
 const useStyles = makeStyles(theme => ({
-  name: {
-    paddingLeft: 3
-  },
-  media: {
-    height: 0,
-    paddingTop: '56.25%', // 16:9
-  },
-  avatar: {
-    backgroundColor: red[500],
-    width: 28,
-    height: 28,
-  },
-  filePic: {
-    color: red[500],
+  card: {
+    maxWidth: 100,
   },
 }));
