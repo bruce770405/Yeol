@@ -48,7 +48,7 @@ public class MessageController {
     /**
      * Get All messages of this system, for test only.
      */
-    @GetMapping(value="/all", produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @GetMapping(value="/all", produces=MediaType.APPLICATION_JSON_VALUE)
     public Mono<YeolResponse<List<MessageDto>>> getAllMessages() {
         var messageDtoList = messageService.getAllMessages();
         return Mono.just(new YeolResponse<>(messageDtoList,ErrCode.SUCCESS));
@@ -59,7 +59,7 @@ public class MessageController {
      * @param recordNumber fetch records number, max is 10;
      * @return
      */
-    @GetMapping(value="/top-view/{recordNumber}", produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @GetMapping(value="/top-view/{recordNumber}", produces=MediaType.APPLICATION_JSON_VALUE)
     public Mono<YeolResponse<List<MessageDto>>> getTopViewMessages(
             @PathVariable(name = "recordNumber") Integer recordNumber) {
         if (recordNumber > 10) {
@@ -73,7 +73,7 @@ public class MessageController {
     /**
      * Get paginate messages
      */
-    @GetMapping(value="/page/{page}", produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @GetMapping(value="/page/{page}", produces=MediaType.APPLICATION_JSON_VALUE)
     public Mono<YeolResponse<List<MessageDto>>> getPagedMessages(@PathVariable("page") Integer page) {
         var pageDto = messageService.getPagedMessages(page, pageSize);
         return Mono.just(new YeolResponse<>(pageDto,ErrCode.SUCCESS));
@@ -82,7 +82,7 @@ public class MessageController {
     /**
      * Add new message
      */
-    @PostMapping(value="/add", produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value="/add", produces=MediaType.APPLICATION_JSON_VALUE)
     public Mono<YeolResponse<MessageDto>> createMessage(@RequestBody CreateMessageRequest request) {
         var messageDto = messageService.addMessage(request);
         return messageDto.map(e -> Mono.just(new YeolResponse<>(e, ErrCode.SUCCESS)))
@@ -92,7 +92,7 @@ public class MessageController {
     /**
      * Update message title and content
      */
-    @PatchMapping(value="/update", produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PatchMapping(value="/update", produces=MediaType.APPLICATION_JSON_VALUE)
     public Mono<YeolResponse<MessageDto>> createMessage(@RequestBody UpdateMessageRequest request) {
         var messageDto = messageService.updateMessageContent(request);
         return messageDto.map(e -> Mono.just(new YeolResponse<>(e, ErrCode.SUCCESS)))
@@ -102,7 +102,7 @@ public class MessageController {
     /**
      * Delete message
      */
-    @DeleteMapping(value="/delete", produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @DeleteMapping(value="/delete", produces=MediaType.APPLICATION_JSON_VALUE)
     public Mono<YeolResponse<MessageDto>> deleteMessage(@RequestBody DeleteMessageRequest request) {
         var messageDto = messageService.deleteMessage(request);
         return messageDto.map(e -> Mono.just(new YeolResponse<>(e, ErrCode.SUCCESS)))

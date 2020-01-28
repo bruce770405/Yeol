@@ -21,7 +21,7 @@ public class WebFluxSecurityConfig {
                 .authorizeExchange();
         if (isSecurityEnabled) {
             spec.pathMatchers("/api/**").authenticated()
-                .pathMatchers("/join").permitAll();
+                .pathMatchers("/register/**").permitAll();
         } else {
             spec.pathMatchers("/**").permitAll();
         }
