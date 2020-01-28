@@ -1,11 +1,17 @@
-import React from 'react';
+import React from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
 import { red } from '@material-ui/core/colors';
-import WhatshotOutlinedIcon from '@material-ui/icons/WhatshotOutlined';
 import Typography from '@material-ui/core/Typography';
-import Grid from '@material-ui/core/Grid';
 import { CardComponent } from '../../../component/CardComponent';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import Divider from '@material-ui/core/Divider';
+import ListItemText from '@material-ui/core/ListItemText';
+import ListItemAvatar from '@material-ui/core/ListItemAvatar';
+import MailIcon from '@material-ui/icons/Mail';
+import Badge from '@material-ui/icons/Mail';
+
 
 /**
  * 畫面卡片式元件
@@ -18,55 +24,51 @@ import { CardComponent } from '../../../component/CardComponent';
  * @param createTime
  * @param watchCount
  */
-export const HomeCard = (props) => {
+export const ArticleList = (props) => {
 
   const classes = useStyles();
-  
-  // const handleLikeClick = () => {
-  //   console.log('click article...')
-  // };
-
-  const { userName = '!!!我誰!!', title = '文章標題 吃吃吃吃吃喝喝喝喝喝', createTime = '2020/01/11 10:53', watchCount = 9999 } = props;
-
 
   return (
+
     <CardComponent>
-
-      <Grid container direction="row" justify="flex-start" alignItems="center" >
-        <Avatar className={classes.avatar}>B</Avatar>
-        <span className={classes.name}>{userName}</span>&emsp;
-        <span className="MuiTypography-root MuiCardHeader-subheader MuiTypography-body2 MuiTypography-colorTextSecondary">{createTime}</span>
-      </Grid>
-
-      <Grid container
-        direction="row"
-        justify="center"
-        alignItems="stretch">
-        <Grid item xs={3}>
-          <div className="MuiTypography-displayBlock">
-            讚:
-           <span className="MuiTypography-root MuiCardHeader-subheader MuiTypography-body2 MuiTypography-colorTextSecondary">99999</span>
-          </div>
-          <div className="MuiTypography-displayBlock">
-            噓:
-           <span className="MuiTypography-root MuiCardHeader-subheader MuiTypography-body2 MuiTypography-colorTextSecondary">999</span>
-          </div>
-        </Grid>
-
-        <Grid item xs={7}>
-          <Typography variant="h6" component="h3">{title}</Typography>
-        </Grid>
-
-        <Grid item xs>
-          <Typography>觀看數:{watchCount}
-            {watchCount > 999 ? <WhatshotOutlinedIcon className={classes.filePic} /> : null}
-          </Typography>
-
-        </Grid>
-
-      </Grid>
-
+      <List className={classes.root}>
+        {
+          props.data ?
+            Object.values(props.data).map(item =>
+              <React.Fragment>
+                <ListItem alignItems="flex-start">
+                  <ListItemAvatar>
+                    <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
+                  </ListItemAvatar>
+                  <ListItemText
+                    primary="Brunch this weekend?"
+                    secondary={
+                      <React.Fragment>
+                        <Typography
+                          component="span"
+                          variant="body2"
+                          className={classes.inline}
+                          color="textPrimary"
+                        >
+                          Ali Connors
+                        </Typography>
+                        {" — I'll be in your neighborhood doing errands this…"}
+                      </React.Fragment>
+                    }
+                  />
+                  <Badge badgeContent={4} color="secondary">
+                    <MailIcon />
+                  </Badge>
+                  <Badge badgeContent={4} color="secondary">
+                    <MailIcon />
+                  </Badge>
+                </ListItem>
+                <Divider variant="inset" component="li" />
+              </React.Fragment>) : null
+        }
+      </List>
     </CardComponent >
+
   );
 }
 
