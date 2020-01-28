@@ -66,9 +66,9 @@ public class MessageServiceImpl extends BizService implements MessageService {
                 .view(ConstantNumber.INIT_COUNT)
                 .up(ConstantNumber.INIT_COUNT)
                 .down(ConstantNumber.INIT_COUNT)
-                .createMs(System.currentTimeMillis())
-                .updateMs(System.currentTimeMillis())
-                .deleteFlag(Boolean.FALSE).build();
+                .createMs(YeolDateUtil.getCurrentMillis())
+                .updateMs(YeolDateUtil.getCurrentMillis())
+                .deleteFlag(false).build();
         
         message = messageRepo.save(message);
         
@@ -103,7 +103,7 @@ public class MessageServiceImpl extends BizService implements MessageService {
         return messageRepo.findById(request.getId()).map(e -> {
             e.setTitle(request.getTitle());
             e.setContent(request.getContent());
-            e.setUpdateMs(System.currentTimeMillis());
+            e.setUpdateMs(YeolDateUtil.getCurrentMillis());
             return MessageDto.valueOf(messageRepo.save(e));
         });
         
@@ -114,6 +114,7 @@ public class MessageServiceImpl extends BizService implements MessageService {
      */
     public Optional<MessageDto> deleteMessage(DeleteMessageRequest request) {
         return messageRepo.findById(request.getId()).map(e -> {
+            e.setUpdateMs(YeolDateUtil.getCurrentMillis());
             e.setDeleteFlag(true);
             return MessageDto.valueOf(messageRepo.save(e));
         });

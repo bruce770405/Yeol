@@ -5,6 +5,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import reactor.core.publisher.Mono;
 import tw.com.mbproject.yeol.controller.request.CreateMemberRequest;
@@ -14,7 +15,8 @@ import tw.com.mbproject.yeol.controller.validation.Regex;
 import tw.com.mbproject.yeol.dto.MemberDto;
 import tw.com.mbproject.yeol.service.MemberService;
 
-@RequestMapping(value = "/register")
+@RestController
+@RequestMapping(value="/register")
 public class RegisterController {
     
     @Autowired

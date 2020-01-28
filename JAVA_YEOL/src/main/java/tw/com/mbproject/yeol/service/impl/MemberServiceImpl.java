@@ -19,6 +19,7 @@ import tw.com.mbproject.yeol.entity.Member;
 import tw.com.mbproject.yeol.exception.YeolException;
 import tw.com.mbproject.yeol.repo.MemberRepo;
 import tw.com.mbproject.yeol.service.MemberService;
+import tw.com.mbproject.yeol.util.YeolDateUtil;
 
 @Service
 public class MemberServiceImpl extends BizService implements MemberService {
@@ -32,7 +33,7 @@ public class MemberServiceImpl extends BizService implements MemberService {
     @Override
     public Optional<MemberDto> addMember(CreateMemberRequest request) throws YeolException {
         
-        if (isMemberExisted(request.getName(), request.getEmail())) {
+        if (isMemberExisted(request.getEmail())) {
             throw new YeolException(ErrCode.MEMBER_EXISTED);
         }
         
@@ -41,14 +42,18 @@ public class MemberServiceImpl extends BizService implements MemberService {
                 .name(request.getName())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
-                .postNumber(ConstantNumber.INIT_COUNT).build();
+                .postNumber(ConstantNumber.INIT_COUNT)
+                .createMs(YeolDateUtil.getCurrentMillis())
+                .updateMs(YeolDateUtil.getCurrentMillis())
+                .deleteFlag(false)
+                .build();
         
         member = memberRepo.save(member);
         return Optional.ofNullable(MemberDto.valueOf(member));
     }
     
-    public boolean isMemberExisted(String name, String email) {
-        var memberList = memberRepo.findExistedMembers(name, email);
+    public boolean isMemberExisted(String email) {
+        var memberList = memberRepo.findByEmail(email);
         if (CollectionUtils.isEmpty(memberList)) {
             return false;
         } else {
@@ -57,7 +62,7 @@ public class MemberServiceImpl extends BizService implements MemberService {
     }
     
     public boolean isEmailExisted(String email) {
-        return isMemberExisted(null, email);
+        return isMemberExisted(email);
     }
     
     public Optional<MemberDto> updateMember(UpdateMemberRequest request){
@@ -69,7 +74,7 @@ public class MemberServiceImpl extends BizService implements MemberService {
         return memberRepo.findById(request.getId()).map(e -> {
             e.setEmail(request.getEmail());
 //            e.setPassword(passwordEncoder.encode(request.getPassword()));
-            e.setUpdateMs(System.currentTimeMillis());
+            e.setUpdateMs(YeolDateUtil.getCurrentMillis());
             return MemberDto.valueOf(memberRepo.save(e));
         });
     }
@@ -78,7 +83,8 @@ public class MemberServiceImpl extends BizService implements MemberService {
     public Optional<MemberDto> deleteMember(DeleteMemberRequest request) {
         return memberRepo.findById(request.getId())
         .map(e -> {
-            e.setDeleteFlag(false);
+            e.setUpdateMs(YeolDateUtil.getCurrentMillis());
+            e.setDeleteFlag(true);
             return MemberDto.valueOf(memberRepo.save(e));
         });
     }
