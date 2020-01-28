@@ -3,7 +3,6 @@ package tw.com.mbproject.yeol.entity;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
@@ -14,7 +13,7 @@ import tw.com.mbproject.yeol.entity.name.BaseName;
 @AllArgsConstructor
 @SuperBuilder
 public class Base {
-    
+
     @Field(BaseName.FIELD_CREATE_MS)
     protected Long createMs;
     @Field(BaseName.FIELD_UPDATE_MS)

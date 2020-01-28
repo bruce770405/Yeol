@@ -15,4 +15,7 @@ public class UpdateMemberRequest {
     
     @JsonProperty(value="email")
     private String email;
+    
+    @JsonProperty(value="postNumber")
+    private Integer postNumber;
 }

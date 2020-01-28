@@ -8,6 +8,7 @@ import tw.com.mbproject.yeol.entity.Member;
 
 public interface MemberRepo extends MongoRepository<Member, String> {
     
-    List<Member> findByEmail(String email);
+    List<Member> findByNameOrEmailAndDeleteFlagFalse(String name, String email);
+    List<Member> findByEmailAndDeleteFlagFalse(String email);
 
 }
