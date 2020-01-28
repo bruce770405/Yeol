@@ -15,6 +15,7 @@ import tw.com.mbproject.yeol.controller.response.code.ErrCode;
 import tw.com.mbproject.yeol.controller.validation.Regex;
 import tw.com.mbproject.yeol.dto.MemberDto;
 import tw.com.mbproject.yeol.service.MemberService;
+import tw.com.mbproject.yeol.util.YeolNumUtil;
 
 @RestController(value = "/api/members")
 public class MemberController {
