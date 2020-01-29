@@ -13,11 +13,11 @@ public enum FormatRegex {
     /**
      * Email format, that is xxx@xxx.xxx(.xxx)
      */
-    MEMBER_EMAIL_FORMAT("^\\w{1,63}@[a-zA-Z0-9]{2,63}\\.[a-zA-Z]{2,63}(\\.[a-zA-Z]{2,63})?$"),
+    EMAIL_FORMAT("^\\w{1,63}@[a-zA-Z0-9]{2,63}\\.[a-zA-Z]{2,63}(\\.[a-zA-Z]{2,63})?$"),
     /**
      * Require at least one letter, one digit and at least 8 characters.
      */
-    MEMBER_PASSWORD_FORMAT("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$")
+    PASSWORD_FORMAT("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$")
     
     ;
     

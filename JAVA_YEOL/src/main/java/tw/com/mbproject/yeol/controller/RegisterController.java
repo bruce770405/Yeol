@@ -1,5 +1,7 @@
 package tw.com.mbproject.yeol.controller;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,18 +28,19 @@ public class RegisterController {
      * 新增會員
      */
     @PostMapping(value="/join", produces=MediaType.APPLICATION_JSON_VALUE)
-    public Mono<YeolResponse<MemberDto>> createMember(@RequestBody CreateMemberRequest request) throws Exception {
+    public Mono<YeolResponse<MemberDto>> createMember(
+            @Valid @RequestBody CreateMemberRequest request) throws Exception {
         
         if (FormatRegex.MEMBER_NAME_FORMAT.isNotValid(request.getName())) {
             return Mono.just(new YeolResponse<>(ErrCode.INCORRECT_MEMBER_NAME_FORMAT));
         }
         
-        if (FormatRegex.MEMBER_EMAIL_FORMAT.isNotValid(request.getEmail())) {
-            return Mono.just(new YeolResponse<>(ErrCode.INCORRECT_MEMBER_EMAIL_FORMAT));
+        if (FormatRegex.EMAIL_FORMAT.isNotValid(request.getEmail())) {
+            return Mono.just(new YeolResponse<>(ErrCode.INCORRECT_EMAIL_FORMAT));
         }
         
-        if (FormatRegex.MEMBER_PASSWORD_FORMAT.isNotValid(request.getPassword())) {
-            return Mono.just(new YeolResponse<>(ErrCode.INCORRECT_MEMBER_PASSWORD_FORMAT));
+        if (FormatRegex.PASSWORD_FORMAT.isNotValid(request.getPassword())) {
+            return Mono.just(new YeolResponse<>(ErrCode.INCORRECT_PASSWORD_FORMAT));
         }
         
         var memberDto = memberService.addMember(request);

@@ -2,6 +2,8 @@ package tw.com.mbproject.yeol.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -48,7 +50,7 @@ public class MemberController {
     public Mono<YeolResponse<MemberDto>> getMember(
             @RequestBody QueryMemberRequest request) {
         if (FormatRegex.ID_FORMAT.isNotValid(request.getId())
-                && FormatRegex.MEMBER_EMAIL_FORMAT.isNotValid(request.getEmail())) {
+                && FormatRegex.EMAIL_FORMAT.isNotValid(request.getEmail())) {
             return Mono.just(new YeolResponse<>(ErrCode.INCORRECT_FORMAT));
         }
         
@@ -59,9 +61,10 @@ public class MemberController {
     
     /** 修改會員 */
     @PatchMapping(value="/update", produces=MediaType.APPLICATION_JSON_VALUE)
-    public Mono<YeolResponse<MemberDto>> updateMember (@RequestBody UpdateMemberRequest request) throws Exception {
-        if (FormatRegex.MEMBER_EMAIL_FORMAT.isNotValid(request.getEmail())) {
-            return Mono.just(new YeolResponse<>(ErrCode.INCORRECT_MEMBER_EMAIL_FORMAT));
+    public Mono<YeolResponse<MemberDto>> updateMember (
+            @Valid @RequestBody UpdateMemberRequest request) throws Exception {
+        if (FormatRegex.EMAIL_FORMAT.isNotValid(request.getEmail())) {
+            return Mono.just(new YeolResponse<>(ErrCode.INCORRECT_EMAIL_FORMAT));
         }
         
 //        if (Regex.MEMBER_PASSWORD_FORMAT.isNotValid(request.getPassword())) {
