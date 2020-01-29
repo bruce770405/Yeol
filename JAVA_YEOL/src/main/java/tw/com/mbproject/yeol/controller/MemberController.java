@@ -22,6 +22,7 @@ import tw.com.mbproject.yeol.controller.response.YeolResponse;
 import tw.com.mbproject.yeol.controller.response.code.ErrCode;
 import tw.com.mbproject.yeol.controller.validation.FormatRegex;
 import tw.com.mbproject.yeol.dto.MemberDto;
+import tw.com.mbproject.yeol.exception.YeolException;
 import tw.com.mbproject.yeol.properties.GenericProperties;
 import tw.com.mbproject.yeol.service.MemberService;
 
@@ -40,7 +41,9 @@ public class MemberController {
     
     /** 取得分頁會員 */
     @GetMapping(value="/page/{page}", produces=MediaType.APPLICATION_JSON_VALUE)
-    public Mono<YeolResponse<List<MemberDto>>> getPagedMembers(@PathVariable("page") Integer page) {
+    public Mono<YeolResponse<List<MemberDto>>> getPagedMembers(
+            @PathVariable("page") Integer page) {
+        
         var memberDtoList = memberService.getPagedMembers(page, GenericProperties.PAGE_SIZE);
         return Mono.just(new YeolResponse<>(memberDtoList, ErrCode.SUCCESS));
     }
@@ -49,9 +52,10 @@ public class MemberController {
     @PostMapping(value="/one", produces=MediaType.APPLICATION_JSON_VALUE)
     public Mono<YeolResponse<MemberDto>> getMember(
             @RequestBody QueryMemberRequest request) {
+        
         if (FormatRegex.ID_FORMAT.isNotValid(request.getId())
                 && FormatRegex.EMAIL_FORMAT.isNotValid(request.getEmail())) {
-            return Mono.just(new YeolResponse<>(ErrCode.INCORRECT_FORMAT));
+            throw new YeolException(ErrCode.INCORRECT_FORMAT);
         }
         
         var memberDto = memberService.getMember(request);
@@ -63,13 +67,6 @@ public class MemberController {
     @PatchMapping(value="/update", produces=MediaType.APPLICATION_JSON_VALUE)
     public Mono<YeolResponse<MemberDto>> updateMember (
             @Valid @RequestBody UpdateMemberRequest request) throws Exception {
-        if (FormatRegex.EMAIL_FORMAT.isNotValid(request.getEmail())) {
-            return Mono.just(new YeolResponse<>(ErrCode.INCORRECT_EMAIL_FORMAT));
-        }
-        
-//        if (Regex.MEMBER_PASSWORD_FORMAT.isNotValid(request.getPassword())) {
-//            return Mono.just(new YeolResponse<>(ErrCode.INCORRECT_MEMBER_PASSWORD_FORMAT));
-//        }
         
         var memberDto = memberService.updateMember(request);
         return memberDto.map(e -> Mono.just(new YeolResponse<>(e, ErrCode.SUCCESS)))
@@ -78,10 +75,8 @@ public class MemberController {
     
     /** 刪除會員 */
     @DeleteMapping(value="/delete", produces=MediaType.APPLICATION_JSON_VALUE)
-    public Mono<YeolResponse<MemberDto>> deleteMember (@RequestBody DeleteMemberRequest request) throws Exception {
-        if (FormatRegex.ID_FORMAT.isNotValid(request.getId())) {
-            return Mono.just(new YeolResponse<>(ErrCode.INCORRECT_FORMAT));
-        }
+    public Mono<YeolResponse<MemberDto>> deleteMember (
+            @Valid @RequestBody DeleteMemberRequest request) throws Exception {
         
         var memberDto = memberService.deleteMember(request);
         return memberDto.map(e -> Mono.just(new YeolResponse<>(e, ErrCode.SUCCESS)))

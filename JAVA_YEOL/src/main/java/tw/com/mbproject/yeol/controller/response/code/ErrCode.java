@@ -10,6 +10,7 @@ public enum ErrCode {
     INCORRECT_EMAIL_FORMAT("F0003", "Incorrect email format"),
     INCORRECT_PASSWORD_FORMAT("F0004", "Incorrect password format"),
     INCORRECT_PAGE_FORMAT("F0005", "Incorrect page format"),
+    INCORRECT_ID_FORMAT("F0006", "Incorrect id format"),
     
     DATA_EXISTED("E0000", "Data existed"),
     MEMBER_EXISTED("E0001", "Member existed"),

@@ -2,6 +2,8 @@ package tw.com.mbproject.yeol.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -76,7 +78,8 @@ public class MessageController {
      * Add new message
      */
     @PostMapping(value="/add", produces=MediaType.APPLICATION_JSON_VALUE)
-    public Mono<YeolResponse<MessageDto>> createMessage(@RequestBody CreateMessageRequest request) {
+    public Mono<YeolResponse<MessageDto>> createMessage(
+            @Valid @RequestBody CreateMessageRequest request) {
         var messageDto = messageService.addMessage(request);
         return messageDto.map(e -> Mono.just(new YeolResponse<>(e, ErrCode.SUCCESS)))
                 .orElse(Mono.just(new YeolResponse<>()));
@@ -86,7 +89,8 @@ public class MessageController {
      * Update message title and content
      */
     @PatchMapping(value="/update", produces=MediaType.APPLICATION_JSON_VALUE)
-    public Mono<YeolResponse<MessageDto>> createMessage(@RequestBody UpdateMessageRequest request) {
+    public Mono<YeolResponse<MessageDto>> createMessage(
+            @Valid @RequestBody UpdateMessageRequest request) {
         var messageDto = messageService.updateMessageContent(request);
         return messageDto.map(e -> Mono.just(new YeolResponse<>(e, ErrCode.SUCCESS)))
                 .orElse(Mono.just(new YeolResponse<>()));
@@ -96,7 +100,9 @@ public class MessageController {
      * Delete message
      */
     @DeleteMapping(value="/delete", produces=MediaType.APPLICATION_JSON_VALUE)
-    public Mono<YeolResponse<MessageDto>> deleteMessage(@RequestBody DeleteMessageRequest request) {
+    public Mono<YeolResponse<MessageDto>> deleteMessage(
+            @Valid @RequestBody DeleteMessageRequest request) {
+        
         var messageDto = messageService.deleteMessage(request);
         return messageDto.map(e -> Mono.just(new YeolResponse<>(e, ErrCode.SUCCESS)))
                 .orElse(Mono.just(new YeolResponse<>()));

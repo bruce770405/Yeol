@@ -2,8 +2,12 @@ package tw.com.mbproject.yeol.controller.validation;
 
 import java.util.regex.Pattern;
 
+/** 格式正則列舉 */
 public enum FormatRegex {
     
+    /** 
+     * MongoDB ObjectId預設為英數字組成長度24個字
+     */
     ID_FORMAT("^[a-fA-F0-9]{24}$"),
     
     /**
