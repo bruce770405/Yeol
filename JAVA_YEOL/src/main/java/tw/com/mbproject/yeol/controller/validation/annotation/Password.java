@@ -9,11 +9,11 @@ import javax.validation.Constraint;
 import javax.validation.Payload;
 import javax.validation.ReportAsSingleViolation;
 
-import tw.com.mbproject.yeol.controller.validation.validator.EmailValidator;
+import tw.com.mbproject.yeol.controller.validation.validator.PasswordValidator;
 
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = { EmailValidator.class })
+@Constraint(validatedBy = { PasswordValidator.class })
 @ReportAsSingleViolation
 public @interface Password {
     
