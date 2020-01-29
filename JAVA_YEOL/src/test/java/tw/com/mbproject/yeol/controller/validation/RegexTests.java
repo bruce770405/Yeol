@@ -10,7 +10,7 @@ public class RegexTests {
     @Test
     public void idFormat() {
         
-        boolean result = Regex.ID_FORMAT.isValid("507f1f77bcf86cd799439011");
+        boolean result = FormatRegex.ID_FORMAT.isValid("507f1f77bcf86cd799439011");
         Assertions.assertTrue(result);
         
     }
