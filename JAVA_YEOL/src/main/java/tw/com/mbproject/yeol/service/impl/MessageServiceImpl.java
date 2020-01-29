@@ -35,7 +35,9 @@ public class MessageServiceImpl extends BizService implements MessageService {
 
     @Override
     public List<MessageDto> getAllMessages() {
-        return messageRepo.findAll().stream().map(MessageDto::valueOf).collect(Collectors.toList());
+        return messageRepo.findAll().stream()
+                .map(MessageDto::valueOf)
+                .collect(Collectors.toList());
 
     }
     
