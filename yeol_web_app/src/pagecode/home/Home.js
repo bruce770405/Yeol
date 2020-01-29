@@ -2,11 +2,10 @@ import React, { Component } from 'react'
 import Grid from '@material-ui/core/Grid';
 import { Dropdown } from '../../component/Dropdown';
 import { DropdownItem } from '../../component/modal/DropdownItem';
-import Hidden from '@material-ui/core/Hidden';
-import { HomeCard } from './component/HomeCard';
 import { SubList } from './component/SubList';
 import Pagination from "material-ui-flat-pagination";
 import { HttpService } from '../../tw/com/yeol/common/http/HttpService';
+import { ArticleList } from './component/HomeCard';
 
 /**
  * 首頁 component.
@@ -20,7 +19,7 @@ class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: '',
+      data: null,
       sortMethod: '',
       isShowMenu: false,
       offset: 0
@@ -35,6 +34,9 @@ class Home extends Component {
     let succFunction = data => {
       console.log('succ ' + data)
       // do something data
+      this.setState({
+        data
+      })
     }
     // fail
     let failFunction = error => {
@@ -88,7 +90,7 @@ class Home extends Component {
             <Dropdown eventFunction={this.handleChange} obj={sorted}></Dropdown>
           </Grid>
 
-          <HomeCard />
+          <ArticleList data={this.state.data} />
 
           <Pagination
             limit={10}
@@ -108,7 +110,7 @@ class Home extends Component {
           xs={12}
         >
           {/* <Hidden smDown implementation="css"> */}
-            <SubList />
+          <SubList />
           {/* </Hidden> */}
         </Grid>
       </Grid>

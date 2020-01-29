@@ -3,7 +3,6 @@ package tw.com.mbproject.yeol.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,21 +20,15 @@ import tw.com.mbproject.yeol.controller.request.UpdateMessageRequest;
 import tw.com.mbproject.yeol.controller.response.YeolResponse;
 import tw.com.mbproject.yeol.controller.response.code.ErrCode;
 import tw.com.mbproject.yeol.dto.MessageDto;
+import tw.com.mbproject.yeol.properties.GenericProperties;
 import tw.com.mbproject.yeol.service.MessageService;
 
 @RestController
 @RequestMapping(value="/api/messages")
 public class MessageController {
     
-    private static int pageSize;
-    
     @Autowired
     private MessageService messageService;
-    
-    @Value("${yeol.message.page.size}")
-    public void setPageSize(int pageSize) {
-        MessageController.pageSize = pageSize;
-    }
     
     /**
      * Just for test
@@ -75,7 +68,7 @@ public class MessageController {
      */
     @GetMapping(value="/page/{page}", produces=MediaType.APPLICATION_JSON_VALUE)
     public Mono<YeolResponse<List<MessageDto>>> getPagedMessages(@PathVariable("page") Integer page) {
-        var pageDto = messageService.getPagedMessages(page, pageSize);
+        var pageDto = messageService.getPagedMessages(page, GenericProperties.PAGE_SIZE);
         return Mono.just(new YeolResponse<>(pageDto,ErrCode.SUCCESS));
     }
     

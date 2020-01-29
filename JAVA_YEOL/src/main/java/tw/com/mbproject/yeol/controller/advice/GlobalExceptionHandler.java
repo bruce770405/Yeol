@@ -10,7 +10,7 @@ import tw.com.mbproject.yeol.controller.response.YeolResponse;
 import tw.com.mbproject.yeol.exception.YeolException;
 
 @RestControllerAdvice
-public class GlobalExceptionHandler  {
+public class GlobalExceptionHandler {
     
     @ExceptionHandler({ YeolException.class })
     @ResponseStatus(HttpStatus.BAD_REQUEST)

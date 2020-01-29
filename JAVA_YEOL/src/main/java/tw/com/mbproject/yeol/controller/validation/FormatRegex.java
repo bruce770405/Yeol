@@ -2,7 +2,7 @@ package tw.com.mbproject.yeol.controller.validation;
 
 import java.util.regex.Pattern;
 
-public enum Regex {
+public enum FormatRegex {
     
     ID_FORMAT("^[a-fA-F0-9]{24}$"),
     
@@ -23,7 +23,7 @@ public enum Regex {
     
     private String regex;
     
-    private Regex(String regex) {
+    private FormatRegex(String regex) {
         this.regex = regex;
     }
     
