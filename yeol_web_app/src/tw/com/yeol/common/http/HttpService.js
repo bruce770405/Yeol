@@ -18,7 +18,10 @@ export class HttpService {
     fetch(endpoint + methodUri, {
         method: 'POST',
         headers: new Headers({
-          'Content-Type': 'application/json; charset=utf-8'
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods':'POST',
+          'Access-Control-Allow-Credentials':'true'
         }),
         body: body
       })
@@ -46,9 +49,10 @@ export class HttpService {
 
     fetch(endpoint + uri, {
         method: 'GET',
-        headers: new Headers({
-          'Content-Type': 'application/json; charset=utf-8'
-        }),
+        // headers: new Headers({
+        //   'Content-Type': 'application/json; charset=utf-8',
+        //   'Access-Control-Allow-Origin': endpoint
+        // }),
       })
       .then((response) => {
         //ok 代表狀態碼在範圍 200-299

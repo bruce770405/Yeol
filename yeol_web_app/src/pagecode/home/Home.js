@@ -46,7 +46,7 @@ class Home extends Component {
     }
     console.log('componentDidMount post');
     //獲取第1頁內容
-    HttpService.httpPost({}, succFunction, failFunction, '/page/0')
+    HttpService.httpGet(succFunction, failFunction, '/page/0')
   }
 
   /**
