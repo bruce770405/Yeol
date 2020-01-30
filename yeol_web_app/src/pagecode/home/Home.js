@@ -22,7 +22,8 @@ class Home extends Component {
       data: null,
       sortMethod: '',
       isShowMenu: false,
-      offset: 0
+      current: 0,
+      total: 0
     }
   }
 
@@ -44,8 +45,8 @@ class Home extends Component {
       // do something error handle
     }
     console.log('componentDidMount post');
-    HttpService.httpPost({}, succFunction, failFunction, '')
-
+    //獲取第1頁內容
+    HttpService.httpPost({}, succFunction, failFunction, '/page/0')
   }
 
   /**
@@ -71,6 +72,13 @@ class Home extends Component {
     return { item1, item2 }
   }
 
+  /**
+   * page click.
+   */
+  handleClick = (e, offset) => {
+    console.log(e, offset);
+  }
+
   render() {
 
     const sorted = this.genSortedItems()
@@ -92,12 +100,14 @@ class Home extends Component {
 
           <ArticleList data={this.state.data} />
 
-          <Pagination
-            limit={10}
-            offset={this.state.offset}
-            total={100}
-            onClick={(e, offset) => this.handleClick(offset)}
-          />
+          <Grid container direction="row" justify="center" alignItems="flex-end">
+            <Pagination
+              limit={10}
+              offset={this.state.current}
+              total={100}
+              onClick={(e, offset) => this.handleClick(e, offset)}
+            />
+          </Grid>
 
         </Grid>
 
