@@ -16,7 +16,7 @@ public class ObjectIdValidator implements ConstraintValidator<ObjectId, String> 
         if (FormatRegex.ID_FORMAT.isValid(id)) {
             return true;
         }
-        throw new YeolException(ErrCode.INCORRECT_ID_FORMAT);
+        throw new YeolException(FormatRegex.ID_FORMAT.getErrCode());
     }
 
 }

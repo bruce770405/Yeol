@@ -14,10 +14,7 @@ import org.springframework.util.CollectionUtils;
 
 import tw.com.mbproject.yeol.common.service.BizService;
 import tw.com.mbproject.yeol.constant.ConstantNumber;
-import tw.com.mbproject.yeol.controller.request.CreateMemberRequest;
-import tw.com.mbproject.yeol.controller.request.DeleteMemberRequest;
-import tw.com.mbproject.yeol.controller.request.QueryMemberRequest;
-import tw.com.mbproject.yeol.controller.request.UpdateMemberRequest;
+import tw.com.mbproject.yeol.controller.request.*;
 import tw.com.mbproject.yeol.controller.response.code.ErrCode;
 import tw.com.mbproject.yeol.dto.MemberDto;
 import tw.com.mbproject.yeol.dto.PageDto;
@@ -115,7 +112,7 @@ public class MemberServiceImpl extends BizService implements MemberService {
     }
 
     @Override
-    public Optional<MemberDto> deleteMember(DeleteMemberRequest request) {
+    public Optional<MemberDto> deleteMember(DeleteRequest request) {
         return memberRepo.findById(request.getId())
         .map(e -> {
             e.setUpdateMs(YeolDateUtil.getCurrentMillis());
