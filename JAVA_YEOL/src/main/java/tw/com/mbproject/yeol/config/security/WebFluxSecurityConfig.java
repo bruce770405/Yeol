@@ -16,7 +16,9 @@ public class WebFluxSecurityConfig {
     
     @Bean
     public SecurityWebFilterChain securitygWebFilterChain(ServerHttpSecurity http) {
-        
+
+        // Please refer to "https://awesomeopensource.com/project/raphaelDL/spring-webflux-security-jwt?categoryPage=6" for JWT example
+
         var spec = http.csrf().disable().formLogin().and()
                 .authorizeExchange();
         if (isSecurityEnabled) {
