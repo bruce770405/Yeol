@@ -15,7 +15,7 @@ public class PasswordValidator implements ConstraintValidator<Password, String>{
         if (FormatRegex.PASSWORD_FORMAT.isValid(password)) {
             return true;
         }
-        throw new YeolException(ErrCode.INCORRECT_PASSWORD_FORMAT);
+        throw new YeolException(FormatRegex.PASSWORD_FORMAT.getErrCode());
     }
 
 }

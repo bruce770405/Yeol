@@ -1,13 +1,13 @@
 package tw.com.mbproject.yeol.service;
 
-import java.util.List;
-import java.util.Optional;
-
 import tw.com.mbproject.yeol.controller.request.CreateMessageRequest;
-import tw.com.mbproject.yeol.controller.request.DeleteMessageRequest;
+import tw.com.mbproject.yeol.controller.request.DeleteRequest;
 import tw.com.mbproject.yeol.controller.request.UpdateMessageRequest;
 import tw.com.mbproject.yeol.dto.MessageDto;
 import tw.com.mbproject.yeol.dto.PageDto;
+
+import java.util.List;
+import java.util.Optional;
 
 public interface MessageService {
 
@@ -21,6 +21,6 @@ public interface MessageService {
     
     Optional<MessageDto> updateMessageContent(UpdateMessageRequest request);
     
-    Optional<MessageDto> deleteMessage(DeleteMessageRequest request);
+    Optional<MessageDto> deleteMessage(DeleteRequest request);
 
 }

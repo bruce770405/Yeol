@@ -15,7 +15,7 @@ public class EmailValidator implements ConstraintValidator<Email, String>{
         if (FormatRegex.EMAIL_FORMAT.isValid(email)) {
             return true;
         }
-        throw new YeolException(ErrCode.INCORRECT_EMAIL_FORMAT);
+        throw new YeolException(FormatRegex.EMAIL_FORMAT.getErrCode());
     }
 
 }

@@ -15,7 +15,7 @@ public class MemberNameValidator  implements ConstraintValidator<MemberName, Str
         if (FormatRegex.MEMBER_NAME_FORMAT.isValid(name)) {
             return true;
         }
-        throw new YeolException(ErrCode.INCORRECT_MEMBER_NAME_FORMAT);
+        throw new YeolException(FormatRegex.MEMBER_NAME_FORMAT.getErrCode());
     }
 
 }
