@@ -1,35 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Link as RouterLink, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
-// import validate from 'validate.js';
 import { makeStyles } from '@material-ui/styles';
-import {
-  Grid,
-  Button,
-  IconButton,
-  TextField,
-  Link,
-  Typography
-} from '@material-ui/core';
+import { Grid, Button, IconButton, TextField, Link, Typography } from '@material-ui/core';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
-
 // import { Facebook as FacebookIcon, Google as GoogleIcon } from 'icons';
-
-const schema = {
-  email: {
-    presence: { allowEmpty: false, message: 'is required' },
-    email: true,
-    length: {
-      maximum: 64
-    }
-  },
-  password: {
-    presence: { allowEmpty: false, message: 'is required' },
-    length: {
-      maximum: 128
-    }
-  }
-};
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -143,8 +118,8 @@ const Login = props => {
     setFormState(formState => ({
       ...formState,
       // isValid: errors ? false : true,
-      isValid:false,
-      errors:{}
+      isValid: false,
+      errors: {}
       // errors: errors || {}
     }));
   }, [formState.values]);
@@ -197,20 +172,20 @@ const Login = props => {
                 className={classes.quoteText}
                 variant="h1"
               >
-                歡迎來到Yeol! 
+                歡迎來到Yeol!
               </Typography>
               <div className={classes.person}>
                 <Typography
                   className={classes.name}
                   variant="body1"
                 >
-                 
+
                 </Typography>
                 <Typography
                   className={classes.bio}
                   variant="body2"
                 >
-                
+
                 </Typography>
               </div>
             </div>
