@@ -1,5 +1,6 @@
 package tw.com.mbproject.yeol.entity;
 
+import lombok.Builder;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import lombok.AllArgsConstructor;
@@ -11,7 +12,6 @@ import tw.com.mbproject.yeol.entity.name.BaseName;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@SuperBuilder
 public class Base {
 
     @Field(BaseName.FIELD_CREATE_MS)

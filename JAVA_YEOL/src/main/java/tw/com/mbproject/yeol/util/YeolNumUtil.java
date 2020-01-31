@@ -12,10 +12,10 @@ public final class YeolNumUtil extends NumberUtils {
     /**
      * 取得整數位數<br>
      * e.g. if value = 1000 then return 4.
-     * @param value
-     * @return
+     * @param value 整數
+     * @return 位數
      */
-    public final static int getDigitNumber(int value) {
+    public static int getDigitNumber(int value) {
         return (int) (Math.log10(value) + 1);
     }
 

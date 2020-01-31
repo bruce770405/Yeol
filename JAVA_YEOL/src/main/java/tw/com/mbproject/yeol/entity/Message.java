@@ -1,13 +1,10 @@
 package tw.com.mbproject.yeol.entity;
 
+import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import tw.com.mbproject.yeol.entity.name.MessagesName;
 
@@ -16,7 +13,6 @@ import tw.com.mbproject.yeol.entity.name.MessagesName;
 @NoArgsConstructor
 @AllArgsConstructor
 @Document(collection = MessagesName.COLLECTION)
-@SuperBuilder
 public class Message extends Base {
 
     @Id
@@ -35,5 +31,30 @@ public class Message extends Base {
     private Integer up;
     @Field(MessagesName.FIELD_DOWN)
     private Integer down;
+
+    @Builder
+    public Message(
+            String id,
+            String memberId,
+            String memberName,
+            String title,
+            String content,
+            Integer view,
+            Integer up,
+            Integer down,
+            Long createMs,
+            Long updateMs,
+            Boolean deleteFlag)
+    {
+        super(createMs, updateMs, deleteFlag);
+        this.id = id;
+        this.memberId = memberId;
+        this.memberName = memberName;
+        this.title = title;
+        this.content = content;
+        this.view = view;
+        this.up = up;
+        this.down = down;
+    }
     
 }
