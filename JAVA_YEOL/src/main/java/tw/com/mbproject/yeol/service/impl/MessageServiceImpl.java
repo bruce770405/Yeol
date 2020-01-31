@@ -74,7 +74,7 @@ public class MessageServiceImpl extends BizService implements MessageService {
         
         message = messageRepo.save(message);
         
-        return Optional.ofNullable(MessageDto.valueOf(message));
+        return Optional.of(MessageDto.valueOf(message));
     }
 
 
