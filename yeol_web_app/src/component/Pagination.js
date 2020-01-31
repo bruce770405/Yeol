@@ -1,117 +1,96 @@
-import React, { Component } from "react";
-import { NavLink } from 'react-router-dom';
-import { makeStyles } from '@material-ui/core/styles';
+// import React, { Component } from 'react';
+// import { perPage } from '../../config';
+// import PaginationStyle from '../theme/PaginationStyles';
 
 
-const Pagination = props => {
-  /**
-   * 創建導覽頁的頁碼.
-   */
-  const createPagesItem = (pages, nowPage) => {
-    let children = [];
-    for (let i = 0; i < pages; i++) {
-      children.push(
-        <NavLink
-          prefetch
-          href={{
-            pathname: "items",
-            query: { page: nowPage - 1 }
-          }}
-        >
-          <a aria-current={nowPage === i + 1}
-            class={nowPage === i + 1 ? "active item" : "item"}
-            aria-disabled={nowPage <= 1}
-            type="pageItem"
-          >
-            {i + 1}
-          </a>
-        </NavLink>
-      );
-    }
-    return children;
-  };
+// const Pagination = props => {
+//   /**
+//    * 創建導覽頁的頁碼.
+//    */
+//   const createPagesItem = (pages, nowPage) => {
+//     let children = [];
+//     for (let i = 0; i < pages; i++) {
+//       children.push(
+//         <Link
+//           prefetch
+//           href={{
+//             pathname: "items",
+//             query: { page: nowPage - 1 }
+//           }}
+//         >
+//           <a
+//             aria-current={nowPage === i + 1}
+//             class={nowPage === i + 1 ? "active item" : "item"}
+//             aria-disabled={nowPage <= 1}
+//             type="pageItem"
+//           >
+//             {i + 1}
+//           </a>
+//         </Link>
+//       );
+//     }
+//     return children;
+//   };
 
-  const count =  202; //data.itemsConnection.aggregate.count;
-  const pages =   202/10; //Math.ceil(count / perPage);
-  const nowPage = props.page;
+//   return (
 
-  return (
-          <div className="classes.main">
-            <div
-              aria-label="Pagination Navigation"
-              role="navigation"
-              className="ui pagination menu"
-            >
-              {/* <Head>
-                <title>page {nowPage}</title>
-              </Head> */}
-              <NavLink
-                prefetch
-                href={{
-                  pathname: "items",
-                  query: { page: nowPage - 1 }
-                }}
-              >
-                <a
-                  aria-current="false"
-                  className="item"
-                  aria-disabled={nowPage <= 1}
-                >
-                  ⟨
-                </a>
-              </NavLink>
+//     // {
+//     //   if(loading) return<p>loading...</p>;
+//     // }
+//   // const count = data.itemsConnection.aggregate.count;
+//   // const pages = Math.ceil(count / perPage);
+//   // const nowPage = props.page;
 
-              {/* 頁數 */}
+//   // return (
+//     <PaginationStyle>
+//       <div
+//         aria-label="Pagination Navigation"
+//         role="navigation"
+//         className="ui pagination menu"
+//       >
+//         {/* <PaginationStyle> */}
+//         <Head>
+//           <title>page {nowPage}</title>
+//         </Head>
+//         <Link
+//           prefetch
+//           href={{
+//             pathname: "items",
+//             query: { page: nowPage - 1 }
+//           }}
+//         >
+//           <a aria-current="false" className="item" aria-disabled={nowPage <= 1} >
+//             ⟨
+//                 </a>
+//         </Link>
 
-              {createPagesItem(pages, nowPage)}
+//         {/* 頁數 */}
 
-              <NavLink
-                prefetch
-                href={{
-                  pathname: "items",
-                  query: { page: nowPage + 1 }
-                }}
-              >
-                <a
-                  aria-current="false"
-                  className="item"
-                  // aria-disabled={nowPage >= pages}
-                >
-                  ⟩
-                </a>
-              </NavLink>
+//         {createPagesItem(pages, nowPage)}
 
-            </div>
-          </div>
-  );
-};
+//         <Link
+//           prefetch
+//           href={{
+//             pathname: "items",
+//             query: { page: nowPage + 1 }
+//           }}
+//         >
+//           <a
+//             aria-current="false"
+//             className="item"
+//             aria-disabled={nowPage >= pages}
+//           >
+//             ⟩
+//                 </a>
+//         </Link>
 
-export default Pagination;
+//         {/* </PaginationStyle> */}
+//       </div>
+//     </PaginationStyle>
+//   // );
 
 
-/** css. */
-const classes = makeStyles(theme => ({
-  main: {
-  textAlign: 'center',
-  display: 'inline-grid',
-  // gridTemplateColumns: repeat(4, auto),
-  alignItems: 'stretch',
-  justifyContent: 'center',
-  alignContent: 'center',
-  margin: 10,
-  /* border: 1px solid ${props => props.theme.lightgrey}; */
-  /* border-radius: 10px; */
-  // & > * {
-  //   margin: 0;
-  //   padding: 0px;
-  //   /* border-right: 1px solid ${props => props.theme.lightgrey}; */
-  //   &:last-child {
-  //     /* border-right: 0; */
-  //   }
-  // }
-  // a[aria-disabled='true'] {
-  //   /* color: grey; */
-  //   pointer-events: none;
-  // }
-  }
-}));
+//   );
+// };
+
+// export default Pagination;

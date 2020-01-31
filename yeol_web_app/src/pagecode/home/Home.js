@@ -22,7 +22,8 @@ class Home extends Component {
       data: null,
       sortMethod: '',
       isShowMenu: false,
-      offset: 0
+      current: 0,
+      total: 0
     }
   }
 
@@ -44,8 +45,8 @@ class Home extends Component {
       // do something error handle
     }
     console.log('componentDidMount post');
-    HttpService.httpPost({}, succFunction, failFunction, '')
-
+    //獲取第1頁內容
+    HttpService.httpGet(succFunction, failFunction, '/page/0')
   }
 
   /**
@@ -71,6 +72,13 @@ class Home extends Component {
     return { item1, item2 }
   }
 
+  /**
+   * page click.
+   */
+  changePage = (e, offset) => {
+    console.log(e, offset);
+  }
+
   render() {
 
     const sorted = this.genSortedItems()
@@ -78,37 +86,25 @@ class Home extends Component {
     return (
 
       <Grid container spacing={4}>
-        <Grid
-          item
-          lg={8}
-          md={12}
-          xl={9}
-          xs={12}
-          spacing={2}
-        >
+        <Grid item lg={8} md={12} xl={9} xs={12} spacing={2}>
+
           <Grid container direction="row" justify="flex-end" alignItems="center">
             <Dropdown eventFunction={this.handleChange} obj={sorted}></Dropdown>
           </Grid>
 
           <ArticleList data={this.state.data} />
 
-          <Pagination
-            limit={10}
-            offset={this.state.offset}
-            total={100}
-            onClick={(e, offset) => this.handleClick(offset)}
-          />
-
+          <Grid container direction="row" justify="center" alignItems="center">
+            <Pagination limit={10}
+              offset={this.state.current}
+              total={100}
+              onClick={(e, offset) => this.changePage(e, offset)}
+            />
+          </Grid>
         </Grid>
 
 
-        <Grid
-          item
-          lg={4}
-          md={6}
-          xl={3}
-          xs={12}
-        >
+        <Grid item lg={4} md={6} xl={3} xs={12}>
           {/* <Hidden smDown implementation="css"> */}
           <SubList />
           {/* </Hidden> */}
@@ -121,17 +117,3 @@ class Home extends Component {
 }
 
 export default Home;
-
-
-// {({ data, error, loading }) => {
-//   if (loading) return <p>Loading...</p>;
-//   if (error) return <p>Error : {error.errorMessage} </p>;
-//   console.log(data);
-//   return (
-//     <ItemList>
-//       {data.items.map(item => (
-//         <Item item={item} />
-//       ))}
-//     </ItemList>
-//   );
-// }}

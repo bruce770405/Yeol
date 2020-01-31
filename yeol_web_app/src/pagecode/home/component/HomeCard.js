@@ -41,7 +41,7 @@ export const ArticleList = (props) => {
                     <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
                   </ListItemAvatar>
                   <ListItemText
-                    primary="Brunch this weekend?"
+                    primary={item.title}
                     secondary={
                       <React.Fragment>
                         <Typography
@@ -52,7 +52,7 @@ export const ArticleList = (props) => {
                         >
                           Ali Connors
                         </Typography>
-                        {" — I'll be in your neighborhood doing errands this…"}
+                        {item.constant}
                       </React.Fragment>
                     }
                   />

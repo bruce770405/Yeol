@@ -14,10 +14,7 @@ import org.springframework.util.CollectionUtils;
 
 import tw.com.mbproject.yeol.common.service.BizService;
 import tw.com.mbproject.yeol.constant.ConstantNumber;
-import tw.com.mbproject.yeol.controller.request.CreateMemberRequest;
-import tw.com.mbproject.yeol.controller.request.DeleteMemberRequest;
-import tw.com.mbproject.yeol.controller.request.QueryMemberRequest;
-import tw.com.mbproject.yeol.controller.request.UpdateMemberRequest;
+import tw.com.mbproject.yeol.controller.request.*;
 import tw.com.mbproject.yeol.controller.response.code.ErrCode;
 import tw.com.mbproject.yeol.dto.MemberDto;
 import tw.com.mbproject.yeol.dto.PageDto;
@@ -64,7 +61,7 @@ public class MemberServiceImpl extends BizService implements MemberService {
     public Optional<MemberDto> getMember(QueryMemberRequest request) {
         return memberRepo.findByIdOrEmailAndDeleteFlagFalse(
                 request.getId(), request.getEmail())
-                .map(e -> MemberDto.valueOf(e));
+                .map(MemberDto::valueOf);
     }
 
     @Override
@@ -73,7 +70,7 @@ public class MemberServiceImpl extends BizService implements MemberService {
         if (isMemberExisted(request.getName(), request.getEmail())) {
             throw new YeolException(ErrCode.MEMBER_EXISTED);
         }
-        
+
         var member = Member.builder()
                 .id(ObjectId.get().toHexString())
                 .name(request.getName())
@@ -84,27 +81,19 @@ public class MemberServiceImpl extends BizService implements MemberService {
                 .updateMs(YeolDateUtil.getCurrentMillis())
                 .deleteFlag(false)
                 .build();
-        
+
         member = memberRepo.save(member);
         return Optional.ofNullable(MemberDto.valueOf(member));
     }
     
-    public boolean isMemberExisted(String name, String email) {
+    private boolean isMemberExisted(String name, String email) {
         var memberList = memberRepo.findByNameOrEmailAndDeleteFlagFalse(name, email);
-        if (CollectionUtils.isEmpty(memberList)) {
-            return false;
-        } else {
-            return true;
-        }
+        return !CollectionUtils.isEmpty(memberList);
     }
     
-    public boolean isEmailExisted(String email) {
+    private boolean isEmailExisted(String email) {
         var memberList = memberRepo.findByEmailAndDeleteFlagFalse(email);
-        if (CollectionUtils.isEmpty(memberList)) {
-            return false;
-        } else {
-            return true;
-        }
+        return !CollectionUtils.isEmpty(memberList);
     }
     
     public Optional<MemberDto> updateMember(UpdateMemberRequest request){
@@ -123,7 +112,7 @@ public class MemberServiceImpl extends BizService implements MemberService {
     }
 
     @Override
-    public Optional<MemberDto> deleteMember(DeleteMemberRequest request) {
+    public Optional<MemberDto> deleteMember(DeleteRequest request) {
         return memberRepo.findById(request.getId())
         .map(e -> {
             e.setUpdateMs(YeolDateUtil.getCurrentMillis());

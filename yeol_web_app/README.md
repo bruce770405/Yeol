@@ -1,8 +1,13 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+此專案為Yeol的前端react app.
 
 ## Available Scripts
 
 In the project directory, you can run:
+
+### `npm install`
+Intall required packages and modules. reflash project using object and framework, if your yeol_web_app project donest have node_modules folder,<br>
+you can use this that generate folder and initial all dependencies by package.json.
+
 
 ### `npm start`
 

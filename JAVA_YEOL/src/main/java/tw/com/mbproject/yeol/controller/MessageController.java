@@ -1,27 +1,20 @@
 package tw.com.mbproject.yeol.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 import tw.com.mbproject.yeol.controller.request.CreateMessageRequest;
-import tw.com.mbproject.yeol.controller.request.DeleteMessageRequest;
+import tw.com.mbproject.yeol.controller.request.DeleteRequest;
 import tw.com.mbproject.yeol.controller.request.UpdateMessageRequest;
 import tw.com.mbproject.yeol.controller.response.YeolResponse;
 import tw.com.mbproject.yeol.controller.response.code.ErrCode;
 import tw.com.mbproject.yeol.dto.MessageDto;
 import tw.com.mbproject.yeol.properties.GenericProperties;
 import tw.com.mbproject.yeol.service.MessageService;
+
+import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping(value="/api/messages")
@@ -76,7 +69,8 @@ public class MessageController {
      * Add new message
      */
     @PostMapping(value="/add", produces=MediaType.APPLICATION_JSON_VALUE)
-    public Mono<YeolResponse<MessageDto>> createMessage(@RequestBody CreateMessageRequest request) {
+    public Mono<YeolResponse<MessageDto>> createMessage(
+            @Valid @RequestBody CreateMessageRequest request) {
         var messageDto = messageService.addMessage(request);
         return messageDto.map(e -> Mono.just(new YeolResponse<>(e, ErrCode.SUCCESS)))
                 .orElse(Mono.just(new YeolResponse<>()));
@@ -86,7 +80,8 @@ public class MessageController {
      * Update message title and content
      */
     @PatchMapping(value="/update", produces=MediaType.APPLICATION_JSON_VALUE)
-    public Mono<YeolResponse<MessageDto>> createMessage(@RequestBody UpdateMessageRequest request) {
+    public Mono<YeolResponse<MessageDto>> createMessage(
+            @Valid @RequestBody UpdateMessageRequest request) {
         var messageDto = messageService.updateMessageContent(request);
         return messageDto.map(e -> Mono.just(new YeolResponse<>(e, ErrCode.SUCCESS)))
                 .orElse(Mono.just(new YeolResponse<>()));
@@ -96,7 +91,9 @@ public class MessageController {
      * Delete message
      */
     @DeleteMapping(value="/delete", produces=MediaType.APPLICATION_JSON_VALUE)
-    public Mono<YeolResponse<MessageDto>> deleteMessage(@RequestBody DeleteMessageRequest request) {
+    public Mono<YeolResponse<MessageDto>> deleteMessage(
+            @Valid @RequestBody DeleteRequest request) {
+        
         var messageDto = messageService.deleteMessage(request);
         return messageDto.map(e -> Mono.just(new YeolResponse<>(e, ErrCode.SUCCESS)))
                 .orElse(Mono.just(new YeolResponse<>()));

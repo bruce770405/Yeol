@@ -1,0 +1,74 @@
+.mask {
+	position: fixed;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	height: 100%;
+	background-color: rgba(233, 233, 233, .5);
+}
+
+.m-dialog{
+	position:fixed;
+	left: 50%;
+	top:50%;
+	-webkit-transform: translate(-50%, -50%);
+	-o-transform: translate(-50%, -50%);
+	-ms-transform: translate(-50%, -50%);
+	-moz-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	width:auto;
+	border:1px solid #cacacb;
+	box-shadow: 5px 5px 5px #ccc;
+	z-index: 99;
+}
+
+
+.md-dialog{
+	background-color: #fff;
+	min-width: 370px;
+}
+
+.md-dialog-title{
+	margin:0 20px;
+	overflow: hidden;
+	height: 40px;
+	border-bottom: 1px solid #ececec;
+	line-height: 40px;
+}
+
+h4{
+	font-size:18px;
+	color:#616161;
+	float: left;
+}
+
+.md-dialog-content{
+	padding:5px 24px;
+	max-width: 540px;
+	word-wrap:break-word;
+	word-break: break-all;
+	max-height: 200px;
+	overflow-y: auto;
+}
+
+.closeBtn{
+	height: 30px;
+	line-height: 30px;
+	padding: 0px 10px;
+	margin:5px 0px 5px 5px;
+	float: right;
+	/* border-radius: 5px; */
+	/* border: 1px solid #ccc; */
+	color: #616161;
+	background-color: #fff;
+}
+
+.iconfont{
+	font-size:22px;
+	cursor: pointer;
+}
+
+.fixBtn{
+	margin:5px 0px;
+}

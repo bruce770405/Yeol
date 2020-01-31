@@ -1,20 +1,15 @@
 package tw.com.mbproject.yeol.service.impl;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
-
 import tw.com.mbproject.yeol.common.service.BizService;
 import tw.com.mbproject.yeol.constant.ConstantNumber;
 import tw.com.mbproject.yeol.controller.request.CreateMessageRequest;
-import tw.com.mbproject.yeol.controller.request.DeleteMessageRequest;
+import tw.com.mbproject.yeol.controller.request.DeleteRequest;
 import tw.com.mbproject.yeol.controller.request.UpdateMessageRequest;
 import tw.com.mbproject.yeol.controller.response.code.ErrCode;
 import tw.com.mbproject.yeol.dto.MessageDto;
@@ -24,6 +19,10 @@ import tw.com.mbproject.yeol.exception.YeolException;
 import tw.com.mbproject.yeol.repo.MessageRepo;
 import tw.com.mbproject.yeol.service.MessageService;
 import tw.com.mbproject.yeol.util.YeolDateUtil;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class MessageServiceImpl extends BizService implements MessageService {
@@ -74,7 +73,7 @@ public class MessageServiceImpl extends BizService implements MessageService {
         
         message = messageRepo.save(message);
         
-        return Optional.ofNullable(MessageDto.valueOf(message));
+        return Optional.of(MessageDto.valueOf(message));
     }
 
 
@@ -114,7 +113,7 @@ public class MessageServiceImpl extends BizService implements MessageService {
     /**
      * Delete message
      */
-    public Optional<MessageDto> deleteMessage(DeleteMessageRequest request) {
+    public Optional<MessageDto> deleteMessage(DeleteRequest request) {
         return messageRepo.findById(request.getId()).map(e -> {
             e.setUpdateMs(YeolDateUtil.getCurrentMillis());
             e.setDeleteFlag(true);
