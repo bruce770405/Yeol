@@ -75,7 +75,7 @@ class Home extends Component {
   /**
    * page click.
    */
-  handleClick = (e, offset) => {
+  changePage = (e, offset) => {
     console.log(e, offset);
   }
 
@@ -86,39 +86,25 @@ class Home extends Component {
     return (
 
       <Grid container spacing={4}>
-        <Grid
-          item
-          lg={8}
-          md={12}
-          xl={9}
-          xs={12}
-          spacing={2}
-        >
+        <Grid item lg={8} md={12} xl={9} xs={12} spacing={2}>
+
           <Grid container direction="row" justify="flex-end" alignItems="center">
             <Dropdown eventFunction={this.handleChange} obj={sorted}></Dropdown>
           </Grid>
 
           <ArticleList data={this.state.data} />
 
-          <Grid container direction="row" justify="center" alignItems="flex-end">
-            <Pagination
-              limit={10}
+          <Grid container direction="row" justify="center" alignItems="center">
+            <Pagination limit={10}
               offset={this.state.current}
               total={100}
-              onClick={(e, offset) => this.handleClick(e, offset)}
+              onClick={(e, offset) => this.changePage(e, offset)}
             />
           </Grid>
-
         </Grid>
 
 
-        <Grid
-          item
-          lg={4}
-          md={6}
-          xl={3}
-          xs={12}
-        >
+        <Grid item lg={4} md={6} xl={3} xs={12}>
           {/* <Hidden smDown implementation="css"> */}
           <SubList />
           {/* </Hidden> */}
@@ -131,17 +117,3 @@ class Home extends Component {
 }
 
 export default Home;
-
-
-// {({ data, error, loading }) => {
-//   if (loading) return <p>Loading...</p>;
-//   if (error) return <p>Error : {error.errorMessage} </p>;
-//   console.log(data);
-//   return (
-//     <ItemList>
-//       {data.items.map(item => (
-//         <Item item={item} />
-//       ))}
-//     </ItemList>
-//   );
-// }}
