@@ -20,8 +20,8 @@ export class HttpService {
         headers: new Headers({
           'Content-Type': 'application/json',
           'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Methods':'POST',
-          'Access-Control-Allow-Credentials':'true'
+          'Access-Control-Allow-Methods': 'POST',
+          'Access-Control-Allow-Credentials': 'true'
         }),
         body: body
       })
@@ -60,7 +60,11 @@ export class HttpService {
         return response.json()
       })
       .then((json) => {
-        succ(json)
+        if (json.code && json.code === 'S0000') {
+          succ(json)
+        } else {
+          throw new Error(json.msg)
+        }
       })
       .catch((error) => {
         //這裡可以顯示一些訊息

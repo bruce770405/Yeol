@@ -5,7 +5,8 @@ import { DropdownItem } from '../../component/modal/DropdownItem';
 import { SubList } from './component/SubList';
 import Pagination from "material-ui-flat-pagination";
 import { HttpService } from '../../tw/com/yeol/common/http/HttpService';
-import { ArticleList } from './component/HomeCard';
+import { ArticleList } from './component/ArticleList';
+
 
 /**
  * 首頁 component.
@@ -32,11 +33,12 @@ class Home extends Component {
    */
   componentDidMount() {
     // succ
-    let succFunction = data => {
-      console.log('succ ' + data)
+    let succFunction = response => {
+      console.log('succ ' + response)
       // do something data
       this.setState({
-        data
+        data: response.data,
+        total: response.totalPages
       })
     }
     // fail
@@ -46,7 +48,7 @@ class Home extends Component {
     }
     console.log('componentDidMount post');
     //獲取第1頁內容
-    HttpService.httpGet(succFunction, failFunction, '/page/0')
+    HttpService.httpGet(succFunction, failFunction, '/api/messages/page/0')
   }
 
   /**
@@ -92,12 +94,14 @@ class Home extends Component {
             <Dropdown eventFunction={this.handleChange} obj={sorted}></Dropdown>
           </Grid>
 
-          <ArticleList data={this.state.data} />
-
+          {/* <TabPanel value={0} index={0}> */}
+            <ArticleList data={this.state.data} />
+          {/* </TabPanel> */}
+         
           <Grid container direction="row" justify="center" alignItems="center">
             <Pagination limit={10}
               offset={this.state.current}
-              total={100}
+              total={this.state.total}
               onClick={(e, offset) => this.changePage(e, offset)}
             />
           </Grid>
