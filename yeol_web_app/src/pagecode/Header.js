@@ -12,6 +12,7 @@ import Drawer from '@material-ui/core/Drawer';
 import IconButton from '@material-ui/core/IconButton';
 import Divider from '@material-ui/core/Divider';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
+import AssignmentIcon from '@material-ui/icons/Assignment';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
@@ -43,9 +44,9 @@ const Header = (props) => {
       <div className={classes.toolbar} />
       <Divider />
       <List>
-        {['功能1', '功能2', '功能3', '功能4'].map((text, index) => (
+        {['討論區分類', '功能2', '功能3', '功能4'].map((text, index) => (
           <ListItem button key={text}>
-            <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
+            <ListItemIcon>{index % 2 === 0 ? <AssignmentIcon /> : <MailIcon />}</ListItemIcon>
             <ListItemText primary={text} />
           </ListItem>
         ))}
