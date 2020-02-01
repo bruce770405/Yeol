@@ -1,5 +1,6 @@
 package tw.com.mbproject.yeol.controller;
 
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +19,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value="/api/messages")
+@Log4j2
 public class MessageController {
     
     @Autowired
@@ -61,6 +63,7 @@ public class MessageController {
      */
     @GetMapping(value="/page/{page}", produces=MediaType.APPLICATION_JSON_VALUE)
     public Mono<YeolResponse<List<MessageDto>>> getPagedMessages(@PathVariable("page") Integer page) {
+        log.debug("getPagedMessages ...");
         var pageDto = messageService.getPagedMessages(page, GenericProperties.PAGE_SIZE);
         return Mono.just(new YeolResponse<>(pageDto,ErrCode.SUCCESS));
     }
