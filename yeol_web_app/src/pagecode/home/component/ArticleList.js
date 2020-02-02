@@ -9,9 +9,9 @@ import ListItem from '@material-ui/core/ListItem';
 import Divider from '@material-ui/core/Divider';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import MailIcon from '@material-ui/icons/Mail';
-import Badge from '@material-ui/icons/Mail';
-
+import Grid from '@material-ui/core/Grid';
+import ThumbDownOutlinedIcon from '@material-ui/icons/ThumbDownOutlined';
+import InsertEmoticonOutlinedIcon from '@material-ui/icons/InsertEmoticonOutlined';
 
 /**
  * 畫面卡片式元件
@@ -38,10 +38,9 @@ export const ArticleList = (props) => {
               <React.Fragment>
                 <ListItem alignItems="flex-start">
                   <ListItemAvatar>
-                    <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
+                    <Avatar className={classes.orange}>B</Avatar>
                   </ListItemAvatar>
-                  <ListItemText
-                    primary={item.title}
+                  <ListItemText primary={item.title}
                     secondary={
                       <React.Fragment>
                         <Typography
@@ -50,18 +49,24 @@ export const ArticleList = (props) => {
                           className={classes.inline}
                           color="textPrimary"
                         >
-                          Ali Connors
+                          Ali Connors :
                         </Typography>
-                        {item.constant}
+                        {item.content}
                       </React.Fragment>
                     }
                   />
-                  <Badge badgeContent={4} color="secondary">
-                    <MailIcon />
-                  </Badge>
-                  <Badge badgeContent={4} color="secondary">
-                    <MailIcon />
-                  </Badge>
+                  <Grid container direction="column"
+                    justify="flex-end"
+                    alignItems="flex-end" xs={2}>
+                    <Grid item>
+                      <InsertEmoticonOutlinedIcon fontSize="small" color="primary" />{item.up}
+                      &nbsp;&nbsp;
+                      <ThumbDownOutlinedIcon fontSize="small" />{item.down}
+                    </Grid>
+
+                    <Typography variant="overline" display="block" gutterBottom>2020/01/02</Typography>
+                  </Grid>
+
                 </ListItem>
                 <Divider variant="inset" component="li" />
               </React.Fragment>) : null
@@ -71,9 +76,6 @@ export const ArticleList = (props) => {
 
   );
 }
-
-
-
 
 const useStyles = makeStyles(theme => ({
   name: {
