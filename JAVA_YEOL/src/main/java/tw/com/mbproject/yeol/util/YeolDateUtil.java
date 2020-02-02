@@ -2,6 +2,7 @@ package tw.com.mbproject.yeol.util;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.Date;
 
 public class YeolDateUtil {
     
@@ -18,5 +19,12 @@ public class YeolDateUtil {
     public static Long getLastYearMillis() {
         return LocalDateTime.now().minusYears(1).atZone(DEFAULT_ZONE_ID).toInstant().toEpochMilli();
     }
-
+    
+    public static Date getDate(Long millisecond) {
+        if (millisecond != null) {
+            return new Date(millisecond);
+        }
+        return null;
+    }
+    
 }
