@@ -1,12 +1,14 @@
 import React, { Component } from 'react'
 import Grid from '@material-ui/core/Grid';
-import { Dropdown } from '../../component/Dropdown';
 import { DropdownItem } from '../../component/modal/DropdownItem';
 import { SubList } from './component/SubList';
 import Pagination from "material-ui-flat-pagination";
 import { HttpService } from '../../tw/com/yeol/common/http/HttpService';
 import { ArticleList } from './component/ArticleList';
-
+import WhatshotIcon from '@material-ui/icons/Whatshot';
+import { StyleTabbeds, StyleTab } from '../../component/tabbed/StyleTabbed';
+import SubscriptionsIcon from '@material-ui/icons/Subscriptions';
+import { TabPanel } from '../../component/tabbed/TabPannel';
 
 /**
  * 首頁 component.
@@ -21,7 +23,7 @@ class Home extends Component {
     super(props);
     this.state = {
       data: null,
-      sortMethod: '',
+      tabbedValue: 0,
       isShowMenu: false,
       current: 0,
       total: 0
@@ -83,37 +85,47 @@ class Home extends Component {
 
   render() {
 
-    const sorted = this.genSortedItems()
+    function a11yProps(index) {
+      return {
+        id: `full-width-tab-${index}`,
+        'aria-controls': `full-width-tabpanel-${index}`,
+      };
+    }
 
+    // const sorted = this.genSortedItems()
+
+    const { tabbedValue } = this.state;
     return (
 
       <Grid container spacing={4}>
         <Grid item lg={8} md={12} xl={9} xs={12} spacing={2}>
 
-          <Grid container direction="row" justify="flex-end" alignItems="center">
-            <Dropdown eventFunction={this.handleChange} obj={sorted}></Dropdown>
-          </Grid>
-
-          {/* <TabPanel value={0} index={0}> */}
+          <StyleTabbeds aria-label="styled" value={tabbedValue} onChange={(event, newValue) => {
+            this.setState({
+              tabbedValue: newValue
+            })
+          }}>
+            <StyleTab label="熱門主題"  {...a11yProps(0)} icon={<WhatshotIcon />} />
+            <StyleTab label="關注討論"   {...a11yProps(1)} icon={<SubscriptionsIcon />} />
+          </StyleTabbeds>
+          <TabPanel value={tabbedValue} index={0}>
             <ArticleList data={this.state.data} />
-          {/* </TabPanel> */}
-         
-          <Grid container direction="row" justify="center" alignItems="center">
-            <Pagination limit={10}
-              offset={this.state.current}
-              total={this.state.total}
-              onClick={(e, offset) => this.changePage(e, offset)}
-            />
-          </Grid>
+            <Grid container direction="row" justify="center" alignItems="center">
+              <Pagination limit={10}
+                offset={this.state.current}
+                total={this.state.total}
+                onClick={(e, offset) => this.changePage(e, offset)}
+              />
+            </Grid>
+          </TabPanel>
+
         </Grid>
 
 
         <Grid item lg={4} md={6} xl={3} xs={12}>
-          {/* <Hidden smDown implementation="css"> */}
           <SubList />
-          {/* </Hidden> */}
         </Grid>
-      </Grid>
+      </Grid >
 
 
     )

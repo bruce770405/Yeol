@@ -20,6 +20,8 @@ import ListItemText from '@material-ui/core/ListItemText';
 import MailIcon from '@material-ui/icons/Mail';
 import MenuIcon from '@material-ui/icons/Menu';
 import { withRouter } from 'react-router-dom';
+import InputIcon from '@material-ui/icons/Input';
+
 export const HeaderComponent = withRouter(props => <Header {...props} />);
 /**
  * app Header.
@@ -105,8 +107,9 @@ const Header = (props) => {
           </div>
 
           <NavLink to="/login" style={{ textDecorationLine: "none", color: "white" }} activeStyle={{ textDecorationLine: "none", color: "white" }}>
-            <Button color="inherit">
-              登入
+            <Button color="inherit" >
+              <InputIcon></InputIcon>
+              &nbsp;登入
           </Button>
           </NavLink>
 
