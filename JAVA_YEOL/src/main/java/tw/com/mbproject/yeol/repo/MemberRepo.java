@@ -13,7 +13,7 @@ public interface MemberRepo extends MongoRepository<Member, String> {
 
     Page<Member> findByDeleteFlagFalse(Pageable pageable);
     Optional<Member> findByIdOrEmailAndDeleteFlagFalse(String id, String email);
-    
+
     List<Member> findByNameOrEmailAndDeleteFlagFalse(String name, String email);
     List<Member> findByEmailAndDeleteFlagFalse(String email);
 
