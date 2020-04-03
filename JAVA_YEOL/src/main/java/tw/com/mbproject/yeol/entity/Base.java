@@ -1,12 +1,10 @@
 package tw.com.mbproject.yeol.entity;
 
-import lombok.Builder;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.experimental.SuperBuilder;
 import tw.com.mbproject.yeol.entity.name.BaseName;
 
 @Data

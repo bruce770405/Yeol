@@ -1,6 +1,5 @@
 package tw.com.mbproject.yeol.config.security;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpHeaders;
@@ -19,7 +18,8 @@ import org.springframework.security.web.server.SecurityWebFilterChain;
 import org.springframework.security.web.server.authentication.AuthenticationWebFilter;
 import org.springframework.security.web.server.authentication.ServerAuthenticationConverter;
 import org.springframework.security.web.server.context.ServerSecurityContextRepository;
-import org.springframework.stereotype.Component;
+import org.springframework.security.web.server.util.matcher.NegatedServerWebExchangeMatcher;
+import org.springframework.security.web.server.util.matcher.ServerWebExchangeMatchers;
 import org.springframework.util.StringUtils;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
@@ -50,27 +50,27 @@ public class WebFluxSecurityConfig {
     private boolean securityEnabled;
 
     @Bean
-    public SecurityWebFilterChain securitygWebFilterChain(ServerHttpSecurity http) {
+    public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
 
         // Please refer to "https://awesomeopensource.com/project/raphaelDL/spring-webflux-security-jwt?categoryPage=6" for JWT example
 
         // 由於使用的是JWT，不需要csrf
         var spec = http.csrf().disable()
-                .formLogin().and()
-                .authorizeExchange();
-        if (securityEnabled) {
+                .formLogin().disable()
+                .httpBasic().disable()
+//        if (securityEnabled) {
 
-            spec.and().addFilterAt(authenticationWebFilter(), SecurityWebFiltersOrder.AUTHORIZATION)
-                    .authorizeExchange()
-                    // Passing a white list endpoint, do not need to
-                    // authenticate
-                    .pathMatchers("/register/**").permitAll()
-                    // 除上面設定外，其他請求皆認證
-                    .anyExchange().authenticated();
+                .addFilterAt(authenticationWebFilter(), SecurityWebFiltersOrder.AUTHORIZATION)
+                .authorizeExchange()
+                // Passing a white list endpoint, do not need to
+                // authenticate
+                .pathMatchers("/register/**").permitAll()
+                // 除上面設定外，其他請求皆認證
+                .anyExchange().authenticated();
 
-        } else {
-            spec.pathMatchers("/**").permitAll();
-        }
+//        } else {
+//            spec.pathMatchers("/**").permitAll();
+//        }
 
         return spec.and().build();
 
@@ -92,8 +92,8 @@ public class WebFluxSecurityConfig {
         var authenticationWebFilter = new AuthenticationWebFilter(reactiveAuthenticationManager());
 
         // 白名單
-//        NegatedServerWebExchangeMatcher negateWhiteList = new NegatedServerWebExchangeMatcher(ServerWebExchangeMatchers.pathMatchers(AUTH_WHITELIST));
-//        authenticationWebFilter.setRequiresAuthenticationMatcher(negateWhiteList);
+        NegatedServerWebExchangeMatcher negateWhiteList = new NegatedServerWebExchangeMatcher(ServerWebExchangeMatchers.pathMatchers("/register/**"));
+        authenticationWebFilter.setRequiresAuthenticationMatcher(negateWhiteList);
 
         authenticationWebFilter.setServerAuthenticationConverter(serverAuthenticationConverter());
         authenticationWebFilter.setSecurityContextRepository(serverSecurityContextRepository());
@@ -131,11 +131,18 @@ public class WebFluxSecurityConfig {
     }
 
     /**
+     * security認證結束後運用的repository.
      * @return
      */
     @Bean
     public ServerSecurityContextRepository serverSecurityContextRepository() {
         return new ServerSecurityContextRepository() {
+            /**
+             * 儲存方法.
+             * @param exchange
+             * @param context
+             * @return
+             */
             @Override
             public Mono<Void> save(ServerWebExchange exchange, SecurityContext context) {
                 if (context.getAuthentication() instanceof TokenCacheItem) {
@@ -146,6 +153,11 @@ public class WebFluxSecurityConfig {
                 return Mono.empty();
             }
 
+            /**
+             * 讀取方法.
+             * @param exchange
+             * @return
+             */
             @Override
             public Mono<SecurityContext> load(ServerWebExchange exchange) {
                 ServerHttpRequest request = exchange.getRequest();

@@ -1,7 +1,6 @@
 package tw.com.mbproject.yeol.config;
 
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
@@ -15,11 +14,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import tw.com.mbproject.yeol.interceptor.AuthenInterceptor;
-
 @EnableWebFlux
 @Configuration
-@ComponentScan(basePackageClasses = {AuthenInterceptor.class})
 public class WebConfig implements WebFluxConfigurer {
 
     /**
@@ -50,5 +46,5 @@ public class WebConfig implements WebFluxConfigurer {
 
         return converter;
     }
-    
+
 }

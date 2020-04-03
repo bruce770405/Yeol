@@ -37,7 +37,7 @@ public class YeolCacheConfig {
 
     public static final String CAFFEINE_CACHE_MANAGER = "caffeineCacheManager";
 
-
+    public static final String REDIS_CACHE_MANAGER = "redisCacheManager";
     /**
      * 配置缓存管理器
      *

@@ -6,9 +6,7 @@ import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
-import reactor.core.publisher.Mono;
 import tw.com.mbproject.yeol.cache.items.MemberCacheItem;
 import tw.com.mbproject.yeol.config.YeolCacheConfig;
 import tw.com.mbproject.yeol.repo.MemberRepo;
@@ -33,7 +31,7 @@ public class MemberCacheProvider extends CacheProvider<MemberCacheItem> {
     /**
      * 取得使用者.
      *
-     * @param id 使用者登入編入
+     * @param username 使用者登入編入
      */
     @Cacheable(sync = false, unless = "#result == null", condition = "#p0 != null && '' != #p0")
     public MemberCacheItem getMemberCache(String username) {
@@ -41,7 +39,7 @@ public class MemberCacheProvider extends CacheProvider<MemberCacheItem> {
     }
 
 
-    @CachePut(key = "#userInfo.id")
+    @CachePut(key = "#member.id")
     public void addOne(MemberCacheItem member) {
         log.info("create");
     }

@@ -20,7 +20,7 @@ public class TokenCacheProvider extends CacheProvider<TokenCacheItem> {
     }
 
     @Override
-    @CachePut(key = "#userInfo.id")
+    @CachePut(key = "#object.token")
     public void addOne(TokenCacheItem object) {
         log.info("create");
     }
