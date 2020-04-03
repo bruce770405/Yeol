@@ -2,6 +2,8 @@ package tw.com.mbproject.yeol.entity;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import lombok.*;
 import org.springframework.data.annotation.Id;
@@ -56,8 +58,7 @@ public class Member extends Base {
     
     public UserDetails toUserDetails() {
         if (CollectionUtils.isEmpty(roles)) {
-            roles = new HashSet<>();
-            roles.add("USER");
+            roles = Stream.of("USER").collect(Collectors.toSet());
         }
         return User.withUsername(name).password(password)
                 .roles(roles.toArray(new String[roles.size()])).build();

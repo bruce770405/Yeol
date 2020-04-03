@@ -10,12 +10,12 @@ import reactor.core.publisher.Mono;
 /**
  *
  */
-public class AuthenInterceptor implements WebFilter {
+public class AuthorizedInterceptor implements WebFilter {
 
     /**
      * log物件.
      */
-    private static final Logger LOGGER = LoggerFactory.getLogger(AuthenInterceptor.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AuthorizedInterceptor.class);
 
 
     /**

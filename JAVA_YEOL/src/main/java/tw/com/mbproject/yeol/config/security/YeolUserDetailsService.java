@@ -25,7 +25,7 @@ public class YeolUserDetailsService implements ReactiveUserDetailsService {
     public Mono<UserDetails> findByUsername(String username) {
 
         var example = Example.of(Member.builder().name(username).build());
-//        var item = cacheProvider.getCacheMember(username);
+        var item = cacheProvider.getMemberCache(username);
         return memberRepo.findOne(example)
                 .map(e -> Mono.just(e.toUserDetails()))
                 .orElse(Mono.error(new UsernameNotFoundException("User Not Found")));
