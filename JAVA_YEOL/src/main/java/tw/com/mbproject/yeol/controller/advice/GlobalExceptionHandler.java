@@ -9,15 +9,15 @@ import reactor.core.publisher.Mono;
 import tw.com.mbproject.yeol.controller.response.YeolResponse;
 import tw.com.mbproject.yeol.exception.YeolException;
 
+import java.util.EnumMap;
+
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-    
-    @ExceptionHandler({ YeolException.class })
+
+    @ExceptionHandler({YeolException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Mono<YeolResponse<String>> handleYeolException(YeolException e) {
-        
         var response = new YeolResponse<String>(e.getErrCode());
-        
         return Mono.just(response);
     }
 

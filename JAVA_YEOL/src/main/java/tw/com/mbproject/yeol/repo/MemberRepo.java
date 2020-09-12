@@ -1,20 +1,20 @@
 package tw.com.mbproject.yeol.repo;
 
-import java.util.List;
-import java.util.Optional;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.mongodb.repository.MongoRepository;
-
+import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
+import org.springframework.stereotype.Repository;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import tw.com.mbproject.yeol.entity.Member;
 
-public interface MemberRepo extends MongoRepository<Member, String> {
-
+@Repository
+public interface MemberRepo extends ReactiveMongoRepository<Member, String> {
     Page<Member> findByDeleteFlagFalse(Pageable pageable);
-    Optional<Member> findByIdOrEmailAndDeleteFlagFalse(String id, String email);
 
-    List<Member> findByNameOrEmailAndDeleteFlagFalse(String name, String email);
-    List<Member> findByEmailAndDeleteFlagFalse(String email);
+    Mono<Member> findByIdOrEmailAndDeleteFlagFalse(String id, String email);
 
+    Flux<Member> findByNameOrEmailAndDeleteFlagFalse(String name, String email);
+
+    Flux<Member> findByEmailAndDeleteFlagFalse(String email);
 }

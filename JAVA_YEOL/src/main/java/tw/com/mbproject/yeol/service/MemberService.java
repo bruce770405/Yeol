@@ -1,19 +1,27 @@
 package tw.com.mbproject.yeol.service;
 
-import java.util.List;
-import java.util.Optional;
-
-import tw.com.mbproject.yeol.controller.request.*;
+import reactor.core.publisher.Mono;
+import tw.com.mbproject.yeol.controller.request.CreateMemberRequest;
+import tw.com.mbproject.yeol.controller.request.DeleteRequest;
+import tw.com.mbproject.yeol.controller.request.QueryMemberRequest;
+import tw.com.mbproject.yeol.controller.request.UpdateMemberRequest;
 import tw.com.mbproject.yeol.dto.MemberDto;
 import tw.com.mbproject.yeol.dto.PageDto;
 
+import java.util.List;
+
 public interface MemberService {
-    
-    List<MemberDto> getAllMembers();
+
+    Mono<List<MemberDto>> getAllMembers();
+
     PageDto<List<MemberDto>> getPagedMembers(Integer page, Integer pageSize);
-    Optional<MemberDto> getMember(QueryMemberRequest reqeust);
-    Optional<MemberDto> addMember(CreateMemberRequest request);
-    Optional<MemberDto> updateMember(UpdateMemberRequest request);
-    Optional<MemberDto> deleteMember(DeleteRequest request);
+
+    Mono<MemberDto> getMember(QueryMemberRequest reqeust);
+
+    Mono<MemberDto> addMember(CreateMemberRequest request);
+
+    Mono<MemberDto> updateMember(UpdateMemberRequest request);
+
+    Mono<MemberDto> deleteMember(DeleteRequest request);
 
 }

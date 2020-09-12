@@ -1,20 +1,17 @@
 package tw.com.mbproject.yeol.service.impl;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
 import org.bson.types.ObjectId;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
-
+import reactor.core.publisher.Mono;
 import tw.com.mbproject.yeol.common.service.BizService;
 import tw.com.mbproject.yeol.constant.ConstantNumber;
-import tw.com.mbproject.yeol.controller.request.*;
+import tw.com.mbproject.yeol.controller.request.CreateMemberRequest;
+import tw.com.mbproject.yeol.controller.request.DeleteRequest;
+import tw.com.mbproject.yeol.controller.request.QueryMemberRequest;
+import tw.com.mbproject.yeol.controller.request.UpdateMemberRequest;
 import tw.com.mbproject.yeol.controller.response.code.ErrCode;
 import tw.com.mbproject.yeol.dto.MemberDto;
 import tw.com.mbproject.yeol.dto.PageDto;
@@ -24,25 +21,29 @@ import tw.com.mbproject.yeol.repo.MemberRepo;
 import tw.com.mbproject.yeol.service.MemberService;
 import tw.com.mbproject.yeol.util.YeolDateUtil;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class MemberServiceImpl extends BizService implements MemberService {
-    
-    @Autowired
-    private MemberRepo memberRepo;
-    
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-    
+
+    private final MemberRepo memberRepo;
+
+    private final PasswordEncoder passwordEncoder;
+
+    public MemberServiceImpl(MemberRepo memberRepo, PasswordEncoder passwordEncoder) {
+        this.memberRepo = memberRepo;
+        this.passwordEncoder = passwordEncoder;
+    }
+
     @Override
-    public List<MemberDto> getAllMembers() {
-        return memberRepo.findAll().stream()
-                .map(MemberDto::valueOf)
-                .collect(Collectors.toList());
+    public Mono<List<MemberDto>> getAllMembers() {
+        return memberRepo.findAll().map(MemberDto::valueOf).collectList();
     }
 
     @Override
     public PageDto<List<MemberDto>> getPagedMembers(Integer page, Integer size) {
-        if(page < 0 || size < 1) {
+        if (page < 0 || size < 1) {
             throw new YeolException(ErrCode.INCORRECT_PAGE_FORMAT);
         }
         var pageable = PageRequest.of(page, size, Sort.by("createMs").descending());
@@ -51,22 +52,22 @@ public class MemberServiceImpl extends BizService implements MemberService {
         List<MemberDto> memberDtoList = pageResult.getContent().stream()
                 .map(MemberDto::valueOf)
                 .collect(Collectors.toList());
-        
+
         PageDto<List<MemberDto>> pageDto = new PageDto<>(pageResult);
         pageDto.setData(memberDtoList);
         return pageDto;
     }
 
     @Override
-    public Optional<MemberDto> getMember(QueryMemberRequest request) {
-        return memberRepo.findByIdOrEmailAndDeleteFlagFalse(
-                request.getId(), request.getEmail())
+    public Mono<MemberDto> getMember(QueryMemberRequest request) {
+        return memberRepo.findByIdOrEmailAndDeleteFlagFalse(request.getId(), request.getEmail())
+                .switchIfEmpty(Mono.error(new YeolException(ErrCode.MEMBER_NOT_FOUND)))
                 .map(MemberDto::valueOf);
     }
 
     @Override
-    public Optional<MemberDto> addMember(CreateMemberRequest request) throws YeolException {
-        
+    public Mono<MemberDto> addMember(CreateMemberRequest request) throws YeolException {
+
         if (isMemberExisted(request.getName(), request.getEmail())) {
             throw new YeolException(ErrCode.MEMBER_EXISTED);
         }
@@ -82,43 +83,44 @@ public class MemberServiceImpl extends BizService implements MemberService {
                 .deleteFlag(false)
                 .build();
 
-        member = memberRepo.save(member);
-        return Optional.ofNullable(MemberDto.valueOf(member));
+        return memberRepo.save(member).map(MemberDto::valueOf);
     }
-    
+
     private boolean isMemberExisted(String name, String email) {
-        var memberList = memberRepo.findByNameOrEmailAndDeleteFlagFalse(name, email);
-        return !CollectionUtils.isEmpty(memberList);
+        return !memberRepo.findByNameOrEmailAndDeleteFlagFalse(name, email).collectList().block().isEmpty();
     }
-    
+
     private boolean isEmailExisted(String email) {
-        var memberList = memberRepo.findByEmailAndDeleteFlagFalse(email);
-        return !CollectionUtils.isEmpty(memberList);
-    }
-    
-    public Optional<MemberDto> updateMember(UpdateMemberRequest request){
-        
-        if (isEmailExisted(request.getEmail())) {
-            throw new YeolException(ErrCode.EMAIL_EXISTED);
-        }
-        
-        return memberRepo.findById(request.getId()).map(e -> {
-            e.setEmail(request.getEmail());
-//            e.setPassword(passwordEncoder.encode(request.getPassword()));
-            e.setUpdateMs(YeolDateUtil.getCurrentMillis());
-            e.setPostNumber(request.getPostNumber());
-            return MemberDto.valueOf(memberRepo.save(e));
-        });
+        return !memberRepo.findByEmailAndDeleteFlagFalse(email).collectList().block().isEmpty();
     }
 
     @Override
-    public Optional<MemberDto> deleteMember(DeleteRequest request) {
+    public Mono<MemberDto> updateMember(UpdateMemberRequest request) {
+
+        if (isEmailExisted(request.getEmail())) {
+            throw new YeolException(ErrCode.EMAIL_EXISTED);
+        }
+
         return memberRepo.findById(request.getId())
-        .map(e -> {
-            e.setUpdateMs(YeolDateUtil.getCurrentMillis());
-            e.setDeleteFlag(true);
-            return MemberDto.valueOf(memberRepo.save(e));
-        });
+                .switchIfEmpty(Mono.error(new YeolException(ErrCode.MEMBER_NOT_FOUND)))
+                .doOnNext(member -> {
+                    member.setEmail(request.getEmail());
+//            member.setPassword(passwordEncoder.encode(request.getPassword()));
+                    member.setUpdateMs(YeolDateUtil.getCurrentMillis());
+                    member.setPostNumber(request.getPostNumber());
+                }).map(MemberDto::valueOf);
+    }
+
+    @Override
+    public Mono<MemberDto> deleteMember(DeleteRequest request) {
+        return memberRepo.findById(request.getId())
+                .switchIfEmpty(Mono.error(new YeolException(ErrCode.MEMBER_NOT_FOUND)))
+                .doOnNext(member -> {
+                    member.setUpdateMs(YeolDateUtil.getCurrentMillis());
+                    member.setDeleteFlag(true);
+                    memberRepo.save(member);
+                })
+                .map(MemberDto::valueOf);
     }
 
 }

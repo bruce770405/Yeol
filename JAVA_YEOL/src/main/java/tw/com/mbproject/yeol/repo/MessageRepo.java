@@ -3,12 +3,13 @@ package tw.com.mbproject.yeol.repo;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
 import org.springframework.stereotype.Repository;
 
 import tw.com.mbproject.yeol.entity.Message;
 
 @Repository
-public interface MessageRepo extends MongoRepository<Message, String> {
+public interface MessageRepo extends ReactiveMongoRepository<Message, String> {
     
     Page<Message> findByDeleteFlag(Boolean deleteFlag, Pageable pageable);
     
