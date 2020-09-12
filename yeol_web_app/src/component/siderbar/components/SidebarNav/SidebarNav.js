@@ -1,11 +1,15 @@
-/* eslint-disable react/no-multi-comp */
-/* eslint-disable react/display-name */
 import React, { forwardRef } from 'react';
 import { NavLink as RouterLink } from 'react-router-dom';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
 import { List, ListItem, Button, colors } from '@material-ui/core';
+import ExpandLess from '@material-ui/icons/ExpandLess';
+import ExpandMore from '@material-ui/icons/ExpandMore';
+import Collapse from '@material-ui/core/Collapse';
+import StarBorder from '@material-ui/icons/StarBorder';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -50,9 +54,18 @@ const CustomRouterLink = forwardRef((props, ref) => (
 ));
 
 const SidebarNav = props => {
+
+
   const { pages, className, ...rest } = props;
 
+  const [open] = React.useState(true);
+
   const classes = useStyles();
+
+  const handleClick = (page) => {
+    console.log(page);
+    page.open = !page.open;
+  };
 
   return (
     <List
@@ -60,21 +73,59 @@ const SidebarNav = props => {
       className={clsx(classes.root, className)}
     >
       {pages.map(page => (
-        <ListItem
-          className={classes.item}
-          disableGutters
-          key={page.title}
-        >
-          <Button
-            activeClassName={classes.active}
-            className={classes.button}
-            component={CustomRouterLink}
-            to={page.href}
+        page.expansion ?
+          // 多選單
+          <div>
+            <ListItem
+              className={classes.item}
+              disableGutters
+              key={page.title}
+            >
+              <Button
+                activeClassName={classes.active}
+                className={classes.button}
+                // component={CustomRouterLink}
+                // to={page.href}
+                onClick={(page) => {
+                  console.log(page.open);
+                  page.open = !page.open;
+                }}
+              >
+                <div className={classes.icon}>{page.icon}</div>
+                {page.title}
+              </Button>
+              {page.open ? <ExpandLess /> : <ExpandMore />}
+            </ListItem>
+
+            <Collapse in={open} timeout="auto" unmountOnExit>
+              <List component="div" disablePadding>
+                <ListItem button className={classes.nested}>
+                  <ListItemIcon>
+                    <StarBorder />
+                  </ListItemIcon>
+                  <ListItemText primary="Starred" />
+                </ListItem>
+              </List>
+            </Collapse>
+          </div>
+
+          :
+          // 單選單
+          <ListItem
+            className={classes.item}
+            disableGutters
+            key={page.title}
           >
-            <div className={classes.icon}>{page.icon}</div>
-            {page.title}
-          </Button>
-        </ListItem>
+            <Button
+              activeClassName={classes.active}
+              className={classes.button}
+              component={CustomRouterLink}
+              to={page.href}
+            >
+              <div className={classes.icon}>{page.icon}</div>
+              {page.title}
+            </Button>
+          </ListItem>
       ))}
     </List>
   );

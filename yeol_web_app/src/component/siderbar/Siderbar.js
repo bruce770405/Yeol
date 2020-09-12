@@ -2,7 +2,7 @@ import React from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
-import { Divider, Drawer } from '@material-ui/core';
+import { Drawer } from '@material-ui/core';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import PeopleIcon from '@material-ui/icons/People';
 import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket';
@@ -11,7 +11,6 @@ import ImageIcon from '@material-ui/icons/Image';
 import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import SettingsIcon from '@material-ui/icons/Settings';
 import LockOpenIcon from '@material-ui/icons/LockOpen';
-
 import { Profile, SidebarNav } from './components';
 
 const useStyles = makeStyles(theme => ({
@@ -37,50 +36,60 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+
 const Sidebar = props => {
   const { open, variant, onClose, className, ...rest } = props;
 
   const classes = useStyles();
-
+  
   const pages = [
     {
-      title: 'Dashboard',
+      title: '熱門討論區',
       href: '/dashboard',
+      expansion: true,
+      open:false,
       icon: <DashboardIcon />
     },
     {
-      title: 'Users',
+      title: '校園',
       href: '/users',
+      expansion: true,
       icon: <PeopleIcon />
     },
     {
-      title: 'Products',
+      title: '生活',
       href: '/products',
+      expansion: true,
       icon: <ShoppingBasketIcon />
     },
     {
-      title: 'Authentication',
+      title: '遊戲',
       href: '/sign-in',
+      expansion: true,
       icon: <LockOpenIcon />
     },
     {
       title: 'Typography',
       href: '/typography',
+      expansion: true,
       icon: <TextFieldsIcon />
     },
     {
       title: 'Icons',
       href: '/icons',
+      expansion: true,
       icon: <ImageIcon />
     },
     {
       title: 'Account',
       href: '/account',
+      expansion: false,
       icon: <AccountBoxIcon />
     },
     {
       title: 'Settings',
       href: '/settings',
+      expansion: false,
       icon: <SettingsIcon />
     }
   ];
@@ -104,6 +113,7 @@ const Sidebar = props => {
           pages={pages}
         />
       </div>
+     
     </Drawer>
   );
 };
