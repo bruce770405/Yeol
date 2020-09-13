@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.domain.PageRequest;
 
 @SuppressWarnings({"rawtypes"})
 @Getter
@@ -27,14 +28,6 @@ public class PageDto<T extends List> {
     
     private PageDto() {
         
-    }
-    
-    public PageDto(Page page) {
-        this.totalPages = page.getTotalPages();
-        this.totalRecords = page.getTotalElements();
-        this.pageSize = page.getSize();
-        this.pageNumber = page.getNumber();
-        this.pageRecords = page.getNumberOfElements();
     }
     
     public static PageDto empty() {

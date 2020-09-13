@@ -21,7 +21,6 @@ import tw.com.mbproject.yeol.service.MessageService;
 import tw.com.mbproject.yeol.util.YeolDateUtil;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class MessageServiceImpl extends BizService implements MessageService {
@@ -42,14 +41,12 @@ public class MessageServiceImpl extends BizService implements MessageService {
      * Get yesterday's top view messages
      */
     @Override
-    public List<MessageDto> getTopViewsMessages(Integer recordNumber) {
+    public Mono<List<MessageDto>> getTopViewsMessages(Integer recordNumber) {
         Long yesterdayMillis = YeolDateUtil.getYesterdayMillis();
 
         var pageable = PageRequest.of(0, recordNumber, Sort.by("view").descending());
-        var pageResult = messageRepo.findByDeleteFlagFalseAndCreateMsGreaterThanEqual(yesterdayMillis, pageable);
-
-        return pageResult.getContent().stream().map(MessageDto::valueOf)
-                .collect(Collectors.toList());
+        return messageRepo.findByDeleteFlagFalseAndCreateMsGreaterThanEqual(yesterdayMillis, pageable)
+                .map(MessageDto::valueOf).collectList();
     }
 
     /**
@@ -74,22 +71,19 @@ public class MessageServiceImpl extends BizService implements MessageService {
 
 
     @Override
-    public PageDto<List<MessageDto>> getPagedMessages(int page, int size) {
+    public Mono<PageDto<List<MessageDto>>> getPagedMessages(int page, int size) {
         if (page < 0 || size < 1) {
             throw new YeolException(ErrCode.INCORRECT_PAGE_FORMAT);
         }
 
         var pageable = PageRequest.of(page, size, Sort.by("createMs").descending());
-        var pageResult = messageRepo.findByDeleteFlag(false, pageable);
-
-        List<MessageDto> messageDtoList = pageResult.getContent().stream()
-                .map(MessageDto::valueOf)
-                .collect(Collectors.toList());
-
-        PageDto<List<MessageDto>> pageDto = new PageDto<>(pageResult);
-        pageDto.setData(messageDtoList);
-        return pageDto;
-
+        return messageRepo.findByDeleteFlag(false, pageable)
+                .map(MessageDto::valueOf).collectList()
+                .map(messageDtoList -> {
+                    PageDto<List<MessageDto>> pageDto = PageDto.empty();
+                    pageDto.setData(messageDtoList);
+                    return pageDto;
+                });
     }
 
     /**

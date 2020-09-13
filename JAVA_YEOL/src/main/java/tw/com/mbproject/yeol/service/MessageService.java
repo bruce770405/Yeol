@@ -13,9 +13,9 @@ public interface MessageService {
 
     Mono<List<MessageDto>> getAllMessages();
 
-    List<MessageDto> getTopViewsMessages(Integer recordNumber);
+    Mono<List<MessageDto>> getTopViewsMessages(Integer recordNumber);
 
-    PageDto<List<MessageDto>> getPagedMessages(int page, int size);
+    Mono<PageDto<List<MessageDto>>> getPagedMessages(int page, int size);
 
     Mono<MessageDto> addMessage(CreateMessageRequest request);
 

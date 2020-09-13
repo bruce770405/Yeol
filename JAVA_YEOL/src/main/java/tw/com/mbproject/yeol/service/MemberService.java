@@ -14,7 +14,7 @@ public interface MemberService {
 
     Mono<List<MemberDto>> getAllMembers();
 
-    PageDto<List<MemberDto>> getPagedMembers(Integer page, Integer pageSize);
+    Mono<PageDto<List<MemberDto>>> getPagedMembers(Integer page, Integer pageSize);
 
     Mono<MemberDto> getMember(QueryMemberRequest reqeust);
 

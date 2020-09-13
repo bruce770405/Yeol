@@ -22,7 +22,6 @@ import tw.com.mbproject.yeol.service.MemberService;
 import tw.com.mbproject.yeol.util.YeolDateUtil;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class MemberServiceImpl extends BizService implements MemberService {
@@ -42,20 +41,18 @@ public class MemberServiceImpl extends BizService implements MemberService {
     }
 
     @Override
-    public PageDto<List<MemberDto>> getPagedMembers(Integer page, Integer size) {
+    public Mono<PageDto<List<MemberDto>>> getPagedMembers(Integer page, Integer size) {
         if (page < 0 || size < 1) {
             throw new YeolException(ErrCode.INCORRECT_PAGE_FORMAT);
         }
         var pageable = PageRequest.of(page, size, Sort.by("createMs").descending());
-        var pageResult = memberRepo.findByDeleteFlagFalse(pageable);
 
-        List<MemberDto> memberDtoList = pageResult.getContent().stream()
-                .map(MemberDto::valueOf)
-                .collect(Collectors.toList());
-
-        PageDto<List<MemberDto>> pageDto = new PageDto<>(pageResult);
-        pageDto.setData(memberDtoList);
-        return pageDto;
+        return memberRepo.findByDeleteFlagFalse(pageable).map(MemberDto::valueOf).collectList()
+                .map(memberDtoList -> {
+                    PageDto dto = PageDto.empty();
+                    dto.setData(memberDtoList);
+                    return dto;
+                });
     }
 
     @Override

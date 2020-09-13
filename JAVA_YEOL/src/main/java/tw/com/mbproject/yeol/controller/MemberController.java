@@ -42,8 +42,7 @@ public class MemberController {
      */
     @GetMapping(value = "/page/{page}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<YeolResponse<List<MemberDto>>> getPagedMembers(@PathVariable("page") Integer page) {
-        var memberDtoList = memberService.getPagedMembers(page, GenericProperties.PAGE_SIZE);
-        return Mono.just(new YeolResponse<>(memberDtoList, ErrCode.SUCCESS));
+        return memberService.getPagedMembers(page, GenericProperties.PAGE_SIZE).map(pageData -> new YeolResponse<>(pageData, ErrCode.SUCCESS));
     }
 
     /**

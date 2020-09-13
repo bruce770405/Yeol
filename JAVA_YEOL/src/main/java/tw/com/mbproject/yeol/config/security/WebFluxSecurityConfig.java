@@ -1,13 +1,15 @@
 package tw.com.mbproject.yeol.config.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.security.authentication.*;
 import org.springframework.security.config.annotation.method.configuration.EnableReactiveMethodSecurity;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
-import org.springframework.security.config.web.server.SecurityWebFiltersOrder;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContext;
@@ -23,7 +25,7 @@ import org.springframework.security.web.server.util.matcher.ServerWebExchangeMat
 import org.springframework.util.StringUtils;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
-import tw.com.mbproject.yeol.controller.request.AuthTokenBean;
+import tw.com.mbproject.yeol.config.security.filter.YeolAuthenticationManager;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -36,9 +38,9 @@ public class WebFluxSecurityConfig {
 
     private final Map<String, SecurityContext> tokenCache = new ConcurrentHashMap<>();
 
-//    @Autowired
-//    private TokenCacheProvider cacheProvider;
-
+    @Autowired
+    @Qualifier("YeolAuthenticationManager")
+    private YeolAuthenticationManager authenticationManager;
     /**
      * token header.
      */
@@ -50,26 +52,24 @@ public class WebFluxSecurityConfig {
 
     @Bean
     public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
-
-        // Please refer to "https://awesomeopensource.com/project/raphaelDL/spring-webflux-security-jwt?categoryPage=6" for JWT example
-
         // 由於使用的是JWT，不需要csrf
-        var spec = http.csrf().disable()
+        var spec = http
+                .exceptionHandling()
+                .authenticationEntryPoint((swe, e) -> Mono.fromRunnable(() -> swe.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED)))
+                .accessDeniedHandler((swe, e) -> Mono.fromRunnable(() -> swe.getResponse().setStatusCode(HttpStatus.FORBIDDEN))).and()
+
+                .csrf().disable()
                 .formLogin().disable()
                 .httpBasic().disable()
-//        if (securityEnabled) {
 
-                .addFilterAt(authenticationWebFilter(), SecurityWebFiltersOrder.AUTHORIZATION)
+                .authenticationManager(authenticationManager)
+                .securityContextRepository(serverSecurityContextRepository())
                 .authorizeExchange()
                 // Passing a white list endpoint, do not need to
                 // authenticate
                 .pathMatchers("/register/**").permitAll()
                 // 除上面設定外，其他請求皆認證
                 .anyExchange().authenticated();
-
-//        } else {
-//            spec.pathMatchers("/**").permitAll();
-//        }
 
         return spec.and().build();
 
@@ -84,12 +84,12 @@ public class WebFluxSecurityConfig {
     /**
      * 驗證 spring webflux security filter.
      * <p>
-     * TODO implement jwt.
      *
      * @return
      */
-    @Bean
-    AuthenticationWebFilter authenticationWebFilter() {
+//    @Bean
+    @Deprecated
+    public AuthenticationWebFilter authenticationWebFilter() {
         var authenticationWebFilter = new AuthenticationWebFilter(reactiveAuthenticationManager());
 
         // 白名單
@@ -104,7 +104,8 @@ public class WebFluxSecurityConfig {
     }
 
 
-    @Bean
+    //    @Bean
+    @Deprecated
     public ReactiveAuthenticationManager reactiveAuthenticationManager() {
         final ReactiveUserDetailsService detailsService = new YeolUserDetailsService();
         List<ReactiveAuthenticationManager> managers = new LinkedList<>();
@@ -116,7 +117,8 @@ public class WebFluxSecurityConfig {
         return new DelegatingReactiveAuthenticationManager(managers);
     }
 
-    @Bean
+    //    @Bean
+    @Deprecated
     public ServerAuthenticationConverter serverAuthenticationConverter() {
         final AnonymousAuthenticationToken anonymous = new AnonymousAuthenticationToken("key", "anonymous", AuthorityUtils.createAuthorityList("ROLE_ANONYMOUS"));
         return exchange -> {
@@ -141,23 +143,19 @@ public class WebFluxSecurityConfig {
         return new ServerSecurityContextRepository() {
             /**
              * 儲存方法.
-             * @param exchange
-             * @param context
-             * @return
+             * TODO 暫時不存入cache
              */
             @Override
             public Mono<Void> save(ServerWebExchange exchange, SecurityContext context) {
-                if (context.getAuthentication() instanceof AuthTokenBean) {
-                    var authentication = (AuthTokenBean) context.getAuthentication();
-                    tokenCache.put(authentication.getToken(), context);
-                }
+//                if (context.getAuthentication() instanceof AuthTokenResponse) {
+//                    var authentication = (AuthTokenResponse) context.getAuthentication();
+//                    tokenCache.put(authentication.getToken(), context);
+//                }
                 return Mono.empty();
             }
 
             /**
              * 讀取方法.
-             * @param exchange
-             * @return
              */
             @Override
             public Mono<SecurityContext> load(ServerWebExchange exchange) {
@@ -171,6 +169,5 @@ public class WebFluxSecurityConfig {
             }
         };
     }
-
 
 }

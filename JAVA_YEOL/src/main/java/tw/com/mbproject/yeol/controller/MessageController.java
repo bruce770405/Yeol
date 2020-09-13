@@ -48,9 +48,7 @@ public class MessageController {
         if (recordNumber > 10) {
             recordNumber = 10;
         }
-
-        var messageDtoList = messageService.getTopViewsMessages(recordNumber);
-        return Mono.just(new YeolResponse<>(messageDtoList, ErrCode.SUCCESS));
+        return messageService.getTopViewsMessages(recordNumber).map(messageDtoList -> new YeolResponse<>(messageDtoList, ErrCode.SUCCESS));
     }
 
     /**
@@ -59,8 +57,7 @@ public class MessageController {
     @GetMapping(value = "/page/{page}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<YeolResponse<List<MessageDto>>> getPagedMessages(@PathVariable("page") Integer page) {
         log.debug("getPagedMessages ...");
-        var pageDto = messageService.getPagedMessages(page, GenericProperties.PAGE_SIZE);
-        return Mono.just(new YeolResponse<>(pageDto, ErrCode.SUCCESS));
+        return messageService.getPagedMessages(page, GenericProperties.PAGE_SIZE).map(pageDto -> new YeolResponse<>(pageDto, ErrCode.SUCCESS));
     }
 
     /**
