@@ -23,8 +23,7 @@ import org.springframework.security.web.server.util.matcher.ServerWebExchangeMat
 import org.springframework.util.StringUtils;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
-import tw.com.mbproject.yeol.cache.TokenCacheProvider;
-import tw.com.mbproject.yeol.cache.items.TokenCacheItem;
+import tw.com.mbproject.yeol.controller.request.AuthTokenBean;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -84,6 +83,8 @@ public class WebFluxSecurityConfig {
 
     /**
      * 驗證 spring webflux security filter.
+     * <p>
+     * TODO implement jwt.
      *
      * @return
      */
@@ -98,7 +99,7 @@ public class WebFluxSecurityConfig {
         authenticationWebFilter.setServerAuthenticationConverter(serverAuthenticationConverter());
         authenticationWebFilter.setSecurityContextRepository(serverSecurityContextRepository());
 
-        authenticationWebFilter.setAuthenticationFailureHandler((webFilterExchange, exception) -> Mono.error(new BadCredentialsException("权限不足")));
+        authenticationWebFilter.setAuthenticationFailureHandler((webFilterExchange, exception) -> Mono.error(new BadCredentialsException("auth fail")));
         return authenticationWebFilter;
     }
 
@@ -132,6 +133,7 @@ public class WebFluxSecurityConfig {
 
     /**
      * security認證結束後運用的repository.
+     *
      * @return
      */
     @Bean
@@ -145,9 +147,8 @@ public class WebFluxSecurityConfig {
              */
             @Override
             public Mono<Void> save(ServerWebExchange exchange, SecurityContext context) {
-                if (context.getAuthentication() instanceof TokenCacheItem) {
-                    var authentication = (TokenCacheItem) context.getAuthentication();
-//                    cacheProvider.addOne(authentication.getToken(),context);
+                if (context.getAuthentication() instanceof AuthTokenBean) {
+                    var authentication = (AuthTokenBean) context.getAuthentication();
                     tokenCache.put(authentication.getToken(), context);
                 }
                 return Mono.empty();

@@ -1,5 +1,6 @@
 package tw.com.mbproject.yeol.service;
 
+import reactor.core.publisher.Mono;
 import tw.com.mbproject.yeol.controller.request.CreateMessageRequest;
 import tw.com.mbproject.yeol.controller.request.DeleteRequest;
 import tw.com.mbproject.yeol.controller.request.UpdateMessageRequest;
@@ -7,20 +8,19 @@ import tw.com.mbproject.yeol.dto.MessageDto;
 import tw.com.mbproject.yeol.dto.PageDto;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface MessageService {
 
-    List<MessageDto> getAllMessages();
-    
+    Mono<List<MessageDto>> getAllMessages();
+
     List<MessageDto> getTopViewsMessages(Integer recordNumber);
 
     PageDto<List<MessageDto>> getPagedMessages(int page, int size);
 
-    Optional<MessageDto> addMessage(CreateMessageRequest request);
-    
-    Optional<MessageDto> updateMessageContent(UpdateMessageRequest request);
-    
-    Optional<MessageDto> deleteMessage(DeleteRequest request);
+    Mono<MessageDto> addMessage(CreateMessageRequest request);
+
+    Mono<MessageDto> updateMessageContent(UpdateMessageRequest request);
+
+    Mono<MessageDto> deleteMessage(DeleteRequest request);
 
 }

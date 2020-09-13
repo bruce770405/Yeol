@@ -72,7 +72,7 @@ public class MemberServiceImpl extends BizService implements MemberService {
             throw new YeolException(ErrCode.MEMBER_EXISTED);
         }
 
-        var member = Member.builder()
+        return Mono.just(Member.builder()
                 .id(ObjectId.get().toHexString())
                 .name(request.getName())
                 .email(request.getEmail())
@@ -81,9 +81,9 @@ public class MemberServiceImpl extends BizService implements MemberService {
                 .createMs(YeolDateUtil.getCurrentMillis())
                 .updateMs(YeolDateUtil.getCurrentMillis())
                 .deleteFlag(false)
-                .build();
-
-        return memberRepo.save(member).map(MemberDto::valueOf);
+                .build())
+                .doOnNext(memberRepo::save)
+                .map(MemberDto::valueOf);
     }
 
     private boolean isMemberExisted(String name, String email) {
@@ -108,6 +108,7 @@ public class MemberServiceImpl extends BizService implements MemberService {
 //            member.setPassword(passwordEncoder.encode(request.getPassword()));
                     member.setUpdateMs(YeolDateUtil.getCurrentMillis());
                     member.setPostNumber(request.getPostNumber());
+                    memberRepo.save(member);
                 }).map(MemberDto::valueOf);
     }
 
