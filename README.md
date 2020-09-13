@@ -3,6 +3,9 @@ Home page wireframe:https://drive.google.com/file/d/1CgyYantL23vW8Qnx5eg_Q-X-kb1
 
 [後端API文件](https://github.com/bruce770405/Yeol/tree/master/JAVA_YEOL)
 
+## Testing
+tools docker-compose
+
 ## Features
 - Dark theme
 - Scroll down dyniamic loading content and pagnition content switch
