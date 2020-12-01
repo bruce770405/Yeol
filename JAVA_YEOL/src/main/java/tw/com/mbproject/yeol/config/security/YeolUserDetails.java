@@ -1,9 +1,7 @@
 package tw.com.mbproject.yeol.config.security;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 import org.springframework.context.support.BeanDefinitionDsl;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -13,30 +11,21 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Data
 public class YeolUserDetails implements UserDetails {
 
     private String username;
+
+    @JsonIgnore
     private String password;
 
-    @Getter
-    @Setter
     private Boolean enabled;
 
-    @Getter
-    @Setter
     private List<BeanDefinitionDsl.Role> roles;
-
-    public YeolUserDetails(String username) {
-        this.username = username;
-    }
 
     @Override
     public String getUsername() {
         return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     @Override
@@ -64,14 +53,9 @@ public class YeolUserDetails implements UserDetails {
         return this.roles.stream().map(authority -> new SimpleGrantedAuthority(authority.name())).collect(Collectors.toList());
     }
 
-    @JsonIgnore
     @Override
     public String getPassword() {
         return password;
     }
 
-    @JsonProperty
-    public void setPassword(String password) {
-        this.password = password;
-    }
 }

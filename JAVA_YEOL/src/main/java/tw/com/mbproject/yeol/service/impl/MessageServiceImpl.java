@@ -6,7 +6,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
-import tw.com.mbproject.yeol.common.service.BizService;
 import tw.com.mbproject.yeol.constant.ConstantNumber;
 import tw.com.mbproject.yeol.controller.request.CreateMessageRequest;
 import tw.com.mbproject.yeol.controller.request.DeleteRequest;
@@ -23,7 +22,7 @@ import tw.com.mbproject.yeol.util.YeolDateUtil;
 import java.util.List;
 
 @Service
-public class MessageServiceImpl extends BizService implements MessageService {
+public class MessageServiceImpl implements MessageService {
 
     private final MessageRepo messageRepo;
 

@@ -1,6 +1,6 @@
 package tw.com.mbproject.yeol.config.security;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Example;
 import org.springframework.security.core.userdetails.ReactiveUserDetailsService;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,10 +11,10 @@ import tw.com.mbproject.yeol.entity.Member;
 import tw.com.mbproject.yeol.repo.MemberRepo;
 
 @Service
+@RequiredArgsConstructor
 public class YeolUserDetailsService implements ReactiveUserDetailsService {
 
-    @Autowired
-    private MemberRepo memberRepo;
+    private final MemberRepo memberRepo;
 
     @Override
     public Mono<UserDetails> findByUsername(String username) {

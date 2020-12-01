@@ -1,12 +1,12 @@
 package tw.com.mbproject.yeol.service.impl;
 
+import lombok.RequiredArgsConstructor;
 import org.bson.types.ObjectId;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
-import tw.com.mbproject.yeol.common.service.BizService;
 import tw.com.mbproject.yeol.constant.ConstantNumber;
 import tw.com.mbproject.yeol.controller.request.CreateMemberRequest;
 import tw.com.mbproject.yeol.controller.request.DeleteRequest;
@@ -24,16 +24,12 @@ import tw.com.mbproject.yeol.util.YeolDateUtil;
 import java.util.List;
 
 @Service
-public class MemberServiceImpl extends BizService implements MemberService {
+@RequiredArgsConstructor
+public class MemberServiceImpl implements MemberService {
 
     private final MemberRepo memberRepo;
 
     private final PasswordEncoder passwordEncoder;
-
-    public MemberServiceImpl(MemberRepo memberRepo, PasswordEncoder passwordEncoder) {
-        this.memberRepo = memberRepo;
-        this.passwordEncoder = passwordEncoder;
-    }
 
     @Override
     public Mono<List<MemberDto>> getAllMembers() {

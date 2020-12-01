@@ -19,8 +19,8 @@ public enum ErrCode {
 
     RESPONSE_NO_ERROR_CODE("R0000", "Response code and messages is required");
 
-    private String code;
-    private String msg;
+    private final String code;
+    private final String msg;
 
     ErrCode(String code, String msg) {
         this.code = code;

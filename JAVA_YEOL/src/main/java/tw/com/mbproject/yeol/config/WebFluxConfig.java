@@ -16,7 +16,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 @EnableWebFlux
 @Configuration
-public class WebConfig implements WebFluxConfigurer {
+public class WebFluxConfig implements WebFluxConfigurer {
 
     /**
      * 跨域請求設定.

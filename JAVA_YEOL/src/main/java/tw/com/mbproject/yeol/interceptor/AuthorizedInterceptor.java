@@ -30,14 +30,11 @@ public class AuthorizedInterceptor implements WebFilter {
         long startTime = System.currentTimeMillis();
         String path = serverWebExchange.getRequest().getURI().getPath();
         LOGGER.info("Serving '{}'", path);
-
         return webFilterChain.filter(serverWebExchange).doAfterTerminate(() -> {
                     serverWebExchange.getResponse().getHeaders().entrySet().forEach(e ->
                             LOGGER.info("Response header '{}': {}", e.getKey(), e.getValue()));
 
-                    LOGGER.info("Served '{}' as {} in {} msec",
-                            path,
-                            serverWebExchange.getResponse().getStatusCode(),
+                    LOGGER.info("Served '{}' as {} in {} sec", path, serverWebExchange.getResponse().getStatusCode(),
                             System.currentTimeMillis() - startTime);
                 }
         );

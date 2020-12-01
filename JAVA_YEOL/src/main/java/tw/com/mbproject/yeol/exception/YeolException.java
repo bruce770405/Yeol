@@ -4,11 +4,10 @@ import lombok.Getter;
 import tw.com.mbproject.yeol.controller.response.code.ErrCode;
 
 public class YeolException extends RuntimeException {
-    private static final long serialVersionUID = 1L;
 
     @Getter
-    private ErrCode errCode;
-    
+    private final ErrCode errCode;
+
     public YeolException(ErrCode errCode) {
         this.errCode = errCode;
     }

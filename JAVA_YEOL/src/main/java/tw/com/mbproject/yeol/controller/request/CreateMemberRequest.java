@@ -9,16 +9,16 @@ import tw.com.mbproject.yeol.controller.validation.annotation.Password;
 
 @Data
 public class CreateMemberRequest {
-    
-    @JsonProperty(value="name")
+
+    @JsonProperty(value = "name")
     @MemberName
     private String name;
-    
-    @JsonProperty(value="password")
+
+    @JsonProperty(value = "password")
     @Password
     private String password;
-    
-    @JsonProperty(value="email")
+
+    @JsonProperty(value = "email")
     @Email
     private String email;
 

@@ -3,11 +3,9 @@ package tw.com.mbproject.yeol.util;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
-import tw.com.mbproject.yeol.config.security.YeolUserDetails;
 
 import javax.annotation.PostConstruct;
 import java.security.Key;
@@ -16,7 +14,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Component
-@Qualifier("JWTUtils")
 public class JWTUtils {
 
     @Value("${yeol.jjwt.secret}")
