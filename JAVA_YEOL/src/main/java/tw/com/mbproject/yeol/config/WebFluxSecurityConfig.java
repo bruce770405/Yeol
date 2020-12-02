@@ -1,4 +1,4 @@
-package tw.com.mbproject.yeol.config.security;
+package tw.com.mbproject.yeol.config;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,6 +11,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 import reactor.core.publisher.Mono;
+import tw.com.mbproject.yeol.config.security.SecurityContextRepository;
 import tw.com.mbproject.yeol.config.security.filter.YeolAuthenticationManager;
 
 @EnableWebFluxSecurity
@@ -19,12 +20,6 @@ public class WebFluxSecurityConfig {
 
     private final YeolAuthenticationManager authenticationManager;
     private final SecurityContextRepository securityContextRepository;
-
-    /**
-     * token header.
-     */
-    @Value("${yeol.security.bearer:Bearer}")
-    private String bearer;
 
     @Value("${yeol.security.enable:true}")
     private boolean securityEnabled;
@@ -36,8 +31,15 @@ public class WebFluxSecurityConfig {
 
     @Bean
     public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
+
+        if (!this.securityEnabled) {
+            return http.csrf().disable()
+                    .formLogin().disable()
+                    .httpBasic().disable().authorizeExchange().anyExchange().permitAll().and().build();
+        }
+
         // 由於使用的是JWT，不需要csrf
-        var spec = http
+        return http
                 .exceptionHandling()
                 .authenticationEntryPoint((swe, e) -> Mono.fromRunnable(() -> swe.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED)))
                 .accessDeniedHandler((swe, e) -> Mono.fromRunnable(() -> swe.getResponse().setStatusCode(HttpStatus.FORBIDDEN))).and()
@@ -53,9 +55,7 @@ public class WebFluxSecurityConfig {
                 // authenticate
                 .pathMatchers("/api/account/**").permitAll()
                 // 除上面設定外，其他請求皆認證
-                .anyExchange().authenticated();
-
-        return spec.and().build();
+                .anyExchange().authenticated().and().build();
 
     }
 

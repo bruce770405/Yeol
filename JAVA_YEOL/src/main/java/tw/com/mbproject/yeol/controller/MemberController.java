@@ -1,6 +1,6 @@
 package tw.com.mbproject.yeol.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -19,15 +19,12 @@ import tw.com.mbproject.yeol.service.MemberService;
 import javax.validation.Valid;
 import java.util.List;
 
-@RestController(value = "/api/members")
+@RestController
+@RequestMapping("/api/account")
+@RequiredArgsConstructor
 public class MemberController {
 
     private final MemberService memberService;
-
-    @Autowired
-    public MemberController(MemberService memberService) {
-        this.memberService = memberService;
-    }
 
     /**
      * 取得全部會員(含已刪除)

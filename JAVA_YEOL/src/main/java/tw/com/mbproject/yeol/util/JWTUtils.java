@@ -13,7 +13,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-@Component
+@Component("JWTUtils")
 public class JWTUtils {
 
     @Value("${yeol.jjwt.secret}")

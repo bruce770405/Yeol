@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.bson.types.ObjectId;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+//import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
@@ -28,7 +29,6 @@ import java.util.List;
 public class MemberServiceImpl implements MemberService {
 
     private final MemberRepo memberRepo;
-
     private final PasswordEncoder passwordEncoder;
 
     @Override
@@ -61,15 +61,27 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public Mono<MemberDto> addMember(CreateMemberRequest request) throws YeolException {
 
-        if (isMemberExisted(request.getName(), request.getEmail())) {
-            throw new YeolException(ErrCode.MEMBER_EXISTED);
-        }
+//        return memberRepo.findByNameOrEmailAndDeleteFlagFalse(request.getName(), request.getEmail())
+//                .doOnNext((e) -> Mono.error(new YeolException(ErrCode.MEMBER_EXISTED)))
+//                .switchIfEmpty(
+//                        Mono.just(Member.builder()
+//                                .id(ObjectId.get().toHexString())
+//                                .name(request.getName())
+//                                .email(request.getEmail())
+//                                .password(passwordEncoder.encode(request.getPassword()))
+//                                .postNumber(ConstantNumber.INIT_COUNT)
+//                                .createMs(YeolDateUtil.getCurrentMillis())
+//                                .updateMs(YeolDateUtil.getCurrentMillis())
+//                                .deleteFlag(false)
+//                                .build())
+//                                .doOnNext(memberRepo::save)
+//                );
 
         return Mono.just(Member.builder()
                 .id(ObjectId.get().toHexString())
                 .name(request.getName())
                 .email(request.getEmail())
-                .password(passwordEncoder.encode(request.getPassword()))
+//                .password(passwordEncoder.encode(request.getPassword()))
                 .postNumber(ConstantNumber.INIT_COUNT)
                 .createMs(YeolDateUtil.getCurrentMillis())
                 .updateMs(YeolDateUtil.getCurrentMillis())
@@ -79,9 +91,6 @@ public class MemberServiceImpl implements MemberService {
                 .map(MemberDto::valueOf);
     }
 
-    private boolean isMemberExisted(String name, String email) {
-        return !memberRepo.findByNameOrEmailAndDeleteFlagFalse(name, email).collectList().block().isEmpty();
-    }
 
     private boolean isEmailExisted(String email) {
         return !memberRepo.findByEmailAndDeleteFlagFalse(email).collectList().block().isEmpty();

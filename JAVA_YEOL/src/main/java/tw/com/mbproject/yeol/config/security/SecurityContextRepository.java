@@ -1,6 +1,7 @@
 package tw.com.mbproject.yeol.config.security;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.security.authentication.ReactiveAuthenticationManager;
@@ -17,6 +18,12 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public class SecurityContextRepository implements ServerSecurityContextRepository {
 
+    /**
+     * token header.
+     */
+    @Value("${yeol.security.bearer:Bearer}")
+    private String bearer;
+
     private final ReactiveAuthenticationManager authenticationManager;
 
     @Override
@@ -29,7 +36,7 @@ public class SecurityContextRepository implements ServerSecurityContextRepositor
         ServerHttpRequest request = swe.getRequest();
         String authHeader = request.getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
 
-        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+        if (authHeader != null && authHeader.startsWith(bearer)) {
             String authToken = authHeader.substring(7);
             Authentication auth = new UsernamePasswordAuthenticationToken(authToken, authToken);
             return this.authenticationManager.authenticate(auth).map(SecurityContextImpl::new);

@@ -1,10 +1,5 @@
 package tw.com.mbproject.yeol.entity;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -12,9 +7,11 @@ import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.CollectionUtils;
-
-import lombok.experimental.SuperBuilder;
 import tw.com.mbproject.yeol.entity.name.MembersName;
+
+import java.util.Collection;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Data
 @EqualsAndHashCode(callSuper=true)

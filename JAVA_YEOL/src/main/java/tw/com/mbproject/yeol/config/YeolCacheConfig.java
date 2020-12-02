@@ -1,13 +1,7 @@
 package tw.com.mbproject.yeol.config;
 
-import com.github.benmanes.caffeine.cache.Caffeine;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.cache.CacheManager;
-import org.springframework.cache.caffeine.CaffeineCacheManager;
-import org.springframework.context.annotation.Bean;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.context.annotation.Configuration;
-
-import java.util.concurrent.TimeUnit;
 
 /**
  * cache 機制.
@@ -31,8 +25,8 @@ import java.util.concurrent.TimeUnit;
  * 如果需要在某些環境（ex:test）中完全禁用cache，使用此属性。
  * </p>
  */
-@Configuration
-@Slf4j
+//@Configuration
+//@Log4j2
 public class YeolCacheConfig {
 
     public static final String CAFFEINE_CACHE_MANAGER = "caffeineCacheManager";
@@ -43,13 +37,13 @@ public class YeolCacheConfig {
      *
      * @return 缓存管理器
      */
-    @Bean(CAFFEINE_CACHE_MANAGER)
-    public CacheManager cacheManager() {
-        CaffeineCacheManager cacheManager = new CaffeineCacheManager();
-        cacheManager.setCaffeine(Caffeine.newBuilder()
-                .expireAfterAccess(60, TimeUnit.SECONDS)
-                .initialCapacity(100)
-                .maximumSize(1000));
-        return cacheManager;
-    }
+//    @Bean(CAFFEINE_CACHE_MANAGER)
+//    public CacheManager cacheManager() {
+//        CaffeineCacheManager cacheManager = new CaffeineCacheManager();
+//        cacheManager.setCaffeine(Caffeine.newBuilder()
+//                .expireAfterAccess(60, TimeUnit.SECONDS)
+//                .initialCapacity(100)
+//                .maximumSize(1000));
+//        return cacheManager;
+//    }
 }

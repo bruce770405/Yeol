@@ -1,2 +1,4 @@
-package tw.com.mbproject.yeol.cache;public class CacheProvider {
+package tw.com.mbproject.yeol.cache;
+
+public class CacheProvider {
 }
