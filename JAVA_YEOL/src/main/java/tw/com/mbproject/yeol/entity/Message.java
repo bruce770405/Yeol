@@ -6,12 +6,12 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import lombok.experimental.SuperBuilder;
+import tw.com.mbproject.yeol.entity.name.BaseName;
 import tw.com.mbproject.yeol.entity.name.MessagesName;
 
 @Data
-@EqualsAndHashCode(callSuper=true)
-@NoArgsConstructor
-@AllArgsConstructor
+@EqualsAndHashCode(callSuper = true)
+@Builder
 @Document(collection = MessagesName.COLLECTION)
 public class Message extends Base {
 
@@ -31,30 +31,6 @@ public class Message extends Base {
     private Integer up;
     @Field(MessagesName.FIELD_DOWN)
     private Integer down;
-
-    @Builder
-    public Message(
-            String id,
-            String memberId,
-            String memberName,
-            String title,
-            String content,
-            Integer view,
-            Integer up,
-            Integer down,
-            Long createMs,
-            Long updateMs,
-            Boolean deleteFlag)
-    {
-        super(createMs, updateMs, deleteFlag);
-        this.id = id;
-        this.memberId = memberId;
-        this.memberName = memberName;
-        this.title = title;
-        this.content = content;
-        this.view = view;
-        this.up = up;
-        this.down = down;
-    }
-    
+    @Field(BaseName.FIELD_DELETE_FLAG)
+    protected Boolean deleteFlag;
 }

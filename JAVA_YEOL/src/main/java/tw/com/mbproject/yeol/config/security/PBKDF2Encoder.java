@@ -1,5 +1,6 @@
 package tw.com.mbproject.yeol.config.security;
 
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -12,15 +13,16 @@ import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.Base64;
 
+@Log4j2
 @Component
 public class PBKDF2Encoder implements PasswordEncoder {
-    @Value("${jwt.password.encoder.secret:default}")
+    @Value("${yeol.password.encoder.secret:default}")
     private String secret;
 
-    @Value("${jwt.password.encoder.iteration:1024}")
+    @Value("${yeol.password.encoder.iteration:1024}")
     private Integer iteration;
 
-    @Value("${jwt.password.encoder.key.length:256}")
+    @Value("${yeol.password.encoder.key.length:256}")
     private Integer keylength;
 
     @Override
@@ -31,6 +33,7 @@ public class PBKDF2Encoder implements PasswordEncoder {
 
             return Base64.getEncoder().encodeToString(result);
         } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
+            log.info(e.getMessage());
             throw new YeolException(ErrCode.FAIL);
         }
     }

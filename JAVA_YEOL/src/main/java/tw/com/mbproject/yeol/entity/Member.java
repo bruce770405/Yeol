@@ -7,6 +7,8 @@ import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.CollectionUtils;
+import tw.com.mbproject.yeol.constant.Role;
+import tw.com.mbproject.yeol.entity.name.BaseName;
 import tw.com.mbproject.yeol.entity.name.MembersName;
 
 import java.util.Collection;
@@ -14,12 +16,11 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Data
-@EqualsAndHashCode(callSuper=true)
-@NoArgsConstructor
-@AllArgsConstructor
+@EqualsAndHashCode(callSuper = true)
+@Builder()
 @Document(collection = MembersName.COLLECTION)
 public class Member extends Base {
-    
+
     @Id
     private String id;
     @Field(MembersName.FIELD_NAME)
@@ -32,30 +33,12 @@ public class Member extends Base {
     private Integer postNumber;
     @Field(MembersName.FIELD_ROLES)
     private Collection<String> roles;
+    @Field(BaseName.FIELD_DELETE_FLAG)
+    protected Boolean deleteFlag;
 
-    @Builder
-    public Member(
-            String id,
-            String name,
-            String password,
-            String email,
-            Integer postNumber,
-            Long createMs,
-            Long updateMs,
-            Boolean deleteFlag
-    ) {
-        super(createMs, updateMs, deleteFlag);
-        this.id = id;
-        this.name = name;
-        this.password = password;
-        this.email = email;
-        this.postNumber = postNumber;
-    }
-    
-    
     public UserDetails toUserDetails() {
         if (CollectionUtils.isEmpty(roles)) {
-            roles = Stream.of("USER").collect(Collectors.toSet());
+            roles = Stream.of(Role.USER.name()).collect(Collectors.toSet());
         }
         return User.withUsername(name).password(password)
                 .roles(roles.toArray(new String[roles.size()])).build();

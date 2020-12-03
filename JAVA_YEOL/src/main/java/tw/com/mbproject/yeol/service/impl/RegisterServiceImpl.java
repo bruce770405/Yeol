@@ -9,6 +9,7 @@ import reactor.core.publisher.Mono;
 import tw.com.mbproject.yeol.config.security.YeolUserDetails;
 import tw.com.mbproject.yeol.config.security.YeolUserDetailsService;
 import tw.com.mbproject.yeol.constant.ConstantNumber;
+import tw.com.mbproject.yeol.constant.Role;
 import tw.com.mbproject.yeol.controller.request.CreateMemberRequest;
 import tw.com.mbproject.yeol.controller.request.LoginMemberRequest;
 import tw.com.mbproject.yeol.controller.response.code.ErrCode;
@@ -19,6 +20,9 @@ import tw.com.mbproject.yeol.repo.MemberRepo;
 import tw.com.mbproject.yeol.service.RegisterService;
 import tw.com.mbproject.yeol.util.JWTUtils;
 import tw.com.mbproject.yeol.util.YeolDateUtil;
+
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -58,9 +62,8 @@ public class RegisterServiceImpl implements RegisterService {
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .postNumber(ConstantNumber.INIT_COUNT)
-                .createMs(YeolDateUtil.getCurrentMillis())
-                .updateMs(YeolDateUtil.getCurrentMillis())
                 .deleteFlag(false)
+                .roles(Stream.of(Role.USER.name()).collect(Collectors.toList()))
                 .build();
     }
 

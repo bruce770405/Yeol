@@ -60,11 +60,9 @@ public class MessageServiceImpl implements MessageService {
                 .view(ConstantNumber.INIT_COUNT)
                 .up(ConstantNumber.INIT_COUNT)
                 .down(ConstantNumber.INIT_COUNT)
-                .createMs(YeolDateUtil.getCurrentMillis())
-                .updateMs(YeolDateUtil.getCurrentMillis())
                 .deleteFlag(false)
                 .build())
-                .doOnNext(messageRepo::save)
+                .flatMap(messageRepo::save)
                 .map(MessageDto::valueOf);
     }
 
@@ -91,11 +89,11 @@ public class MessageServiceImpl implements MessageService {
     public Mono<MessageDto> updateMessageContent(UpdateMessageRequest request) {
         return messageRepo.findById(request.getId())
                 .switchIfEmpty(Mono.error(new YeolException(ErrCode.MEMBER_NOT_FOUND)))
-                .doOnNext(message -> {
+                .flatMap(message -> {
                     message.setTitle(request.getTitle());
                     message.setContent(request.getContent());
                     message.setUpdateMs(YeolDateUtil.getCurrentMillis());
-                    messageRepo.save(message);
+                    return messageRepo.save(message);
                 }).map(MessageDto::valueOf);
     }
 

@@ -4,6 +4,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -12,6 +13,7 @@ import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Component("JWTUtils")
 public class JWTUtils {
@@ -48,7 +50,7 @@ public class JWTUtils {
 
     public String generateToken(UserDetails user) {
         Map<String, Object> claims = new HashMap<>();
-        claims.put("role", user.getAuthorities());
+        claims.put("role", user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()));
         return doGenerateToken(claims, user.getUsername());
     }
 

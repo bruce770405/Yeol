@@ -1,6 +1,7 @@
 package tw.com.mbproject.yeol.config.security;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.server.reactive.ServerHttpRequest;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
+@Log4j2
 @Component
 @RequiredArgsConstructor
 public class SecurityContextRepository implements ServerSecurityContextRepository {
@@ -37,10 +39,11 @@ public class SecurityContextRepository implements ServerSecurityContextRepositor
         String authHeader = request.getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
 
         if (authHeader != null && authHeader.startsWith(bearer)) {
-            String authToken = authHeader.substring(7);
+            String authToken = authHeader.substring(bearer.length());
             Authentication auth = new UsernamePasswordAuthenticationToken(authToken, authToken);
             return this.authenticationManager.authenticate(auth).map(SecurityContextImpl::new);
         } else {
+            log.info("unauthorized");
             return Mono.empty();
         }
     }
