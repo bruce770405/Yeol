@@ -13,6 +13,7 @@ import tw.com.mbproject.yeol.util.SpringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component("YeolAuthenticationManager")
 public class YeolAuthenticationManager implements ReactiveAuthenticationManager {
@@ -27,11 +28,9 @@ public class YeolAuthenticationManager implements ReactiveAuthenticationManager 
                 return Mono.empty();
             }
             Claims claims = jwtUtils.getAllClaimsFromToken(authToken);
-            List<String> rolesMap = claims.get("role", List.class);
-            List<GrantedAuthority> authorities = new ArrayList<>();
-            for (String rolemap : rolesMap) {
-                authorities.add(new SimpleGrantedAuthority(rolemap));
-            }
+            List<String> roles = claims.get("role", List.class);
+            List<GrantedAuthority> authorities = roles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+
             return Mono.just(new UsernamePasswordAuthenticationToken(claims.getSubject(), null, authorities));
         } catch (Exception e) {
             return Mono.empty();

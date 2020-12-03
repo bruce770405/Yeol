@@ -1,22 +1,18 @@
 package tw.com.mbproject.yeol.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.bson.types.ObjectId;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import reactor.core.publisher.Mono;
-import tw.com.mbproject.yeol.constant.ConstantNumber;
-import tw.com.mbproject.yeol.controller.request.CreateMemberRequest;
 import tw.com.mbproject.yeol.controller.request.DeleteRequest;
 import tw.com.mbproject.yeol.controller.request.QueryMemberRequest;
 import tw.com.mbproject.yeol.controller.request.UpdateMemberRequest;
 import tw.com.mbproject.yeol.controller.response.code.ErrCode;
 import tw.com.mbproject.yeol.dto.MemberDto;
 import tw.com.mbproject.yeol.dto.PageDto;
-import tw.com.mbproject.yeol.entity.Member;
 import tw.com.mbproject.yeol.exception.YeolException;
 import tw.com.mbproject.yeol.repo.MemberRepo;
 import tw.com.mbproject.yeol.service.MemberService;
@@ -58,30 +54,6 @@ public class MemberServiceImpl implements MemberService {
         return memberRepo.findByIdOrEmailAndDeleteFlagFalse(request.getId(), request.getEmail())
                 .switchIfEmpty(Mono.error(new YeolException(ErrCode.MEMBER_NOT_FOUND)))
                 .map(MemberDto::valueOf);
-    }
-
-    @Override
-    public Mono<MemberDto> addMember(CreateMemberRequest request) throws YeolException {
-        return memberRepo.findByNameOrEmailAndDeleteFlagFalse(request.getName(), request.getEmail())
-                .collectList()
-                .flatMap(members ->
-                        CollectionUtils.isEmpty(members) ?
-                                Mono.just(buildMemberEntity(request)).flatMap(memberRepo::save).map(MemberDto::valueOf) :
-                                Mono.error(new YeolException(ErrCode.MEMBER_EXISTED))
-                );
-    }
-
-    private Member buildMemberEntity(CreateMemberRequest request) {
-        return Member.builder()
-                .id(ObjectId.get().toHexString())
-                .name(request.getName())
-                .email(request.getEmail())
-                .password(passwordEncoder.encode(request.getPassword()))
-                .postNumber(ConstantNumber.INIT_COUNT)
-                .createMs(YeolDateUtil.getCurrentMillis())
-                .updateMs(YeolDateUtil.getCurrentMillis())
-                .deleteFlag(false)
-                .build();
     }
 
     @Override

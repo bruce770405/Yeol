@@ -1,14 +1,14 @@
 package tw.com.mbproject.yeol.util;
 
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+import org.springframework.stereotype.Component;
 import org.springframework.util.ClassUtils;
-import org.springframework.web.context.ContextLoader;
-import org.springframework.web.context.WebApplicationContext;
 
-public class SpringUtils {
+@Component
+public class SpringUtils implements ApplicationContextAware {
 
-    private SpringUtils() {
-
-    }
+    private static ApplicationContext applicationContext;
 
     /**
      * Return an instance, which may be shared or independent, of the specified bean.
@@ -18,9 +18,8 @@ public class SpringUtils {
      * @return
      */
     public static <T> T getBean(final String name, final Class<T> requiredType) {
-        WebApplicationContext context = ContextLoader.getCurrentWebApplicationContext();
-        if (context != null) {
-            return context.getBean(name, requiredType);
+        if (applicationContext != null) {
+            return applicationContext.getBean(name, requiredType);
         } else {
             throw new UnsupportedOperationException("can not found spring application context.");
         }
@@ -45,7 +44,7 @@ public class SpringUtils {
      * @param <T>
      * @param fullClassName the name of the Class
      * @param classLoader   the class loader to use
-     * @return
+     * @return Class<T>
      * @throws ClassNotFoundException
      * @throws LinkageError
      */
@@ -53,5 +52,10 @@ public class SpringUtils {
         @SuppressWarnings("unchecked")
         Class<T> ret = (Class<T>) ClassUtils.forName(fullClassName, classLoader);
         return ret;
+    }
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) {
+        SpringUtils.applicationContext = applicationContext;
     }
 }

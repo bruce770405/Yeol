@@ -20,7 +20,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/account")
+@RequestMapping("/api/member")
 @RequiredArgsConstructor
 public class MemberController {
 
@@ -71,5 +71,4 @@ public class MemberController {
     public Mono<YeolResponse<MemberDto>> deleteMember(@Valid @RequestBody DeleteRequest request) {
         return memberService.deleteMember(request).map(e -> new YeolResponse<>(e, ErrCode.SUCCESS));
     }
-
 }

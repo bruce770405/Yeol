@@ -19,8 +19,7 @@ public class YeolUserDetailsService implements ReactiveUserDetailsService {
     @Override
     public Mono<UserDetails> findByUsername(String username) {
 
-        var example = Example.of(Member.builder().name(username).build());
-        return memberRepo.findOne(example)
+        return memberRepo.findByNameAndDeleteFlagFalse(username)
                 .map(Member::toUserDetails)
                 .switchIfEmpty(Mono.error(new UsernameNotFoundException("User Not Found")));
     }

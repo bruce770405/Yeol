@@ -6,6 +6,7 @@ import org.springframework.context.support.BeanDefinitionDsl;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import tw.com.mbproject.yeol.constant.Role;
 
 import java.util.Collection;
 import java.util.List;
@@ -21,7 +22,7 @@ public class YeolUserDetails implements UserDetails {
 
     private Boolean enabled;
 
-    private List<BeanDefinitionDsl.Role> roles;
+    private List<Role> roles;
 
     @Override
     public String getUsername() {

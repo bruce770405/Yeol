@@ -1,7 +1,6 @@
 package tw.com.mbproject.yeol.service;
 
 import reactor.core.publisher.Mono;
-import tw.com.mbproject.yeol.controller.request.CreateMemberRequest;
 import tw.com.mbproject.yeol.controller.request.DeleteRequest;
 import tw.com.mbproject.yeol.controller.request.QueryMemberRequest;
 import tw.com.mbproject.yeol.controller.request.UpdateMemberRequest;
@@ -17,8 +16,6 @@ public interface MemberService {
     Mono<PageDto<List<MemberDto>>> getPagedMembers(Integer page, Integer pageSize);
 
     Mono<MemberDto> getMember(QueryMemberRequest reqeust);
-
-    Mono<MemberDto> addMember(CreateMemberRequest request);
 
     Mono<MemberDto> updateMember(UpdateMemberRequest request);
 
