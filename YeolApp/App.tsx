@@ -14,10 +14,6 @@ import { ApplicationProvider, IconRegistry } from '@ui-kitten/components';
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
 import { AppNavigator } from './pagecode/nav/HomeNavigator';
 
-
-declare const global: { HermesInternal: null | {} };
-
-
 const App = () => {
   return (
     <>
