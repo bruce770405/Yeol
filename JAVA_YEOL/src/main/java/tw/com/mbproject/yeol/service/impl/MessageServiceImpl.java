@@ -14,6 +14,7 @@ import tw.com.mbproject.yeol.controller.response.code.ErrCode;
 import tw.com.mbproject.yeol.dto.MessageDto;
 import tw.com.mbproject.yeol.dto.PageDto;
 import tw.com.mbproject.yeol.entity.Message;
+import tw.com.mbproject.yeol.entity.name.MessagesName;
 import tw.com.mbproject.yeol.exception.YeolException;
 import tw.com.mbproject.yeol.repo.MessageRepo;
 import tw.com.mbproject.yeol.service.MessageService;
@@ -41,10 +42,7 @@ public class MessageServiceImpl implements MessageService {
      */
     @Override
     public Mono<List<MessageDto>> getTopViewsMessages(Integer recordNumber) {
-        Long yesterdayMillis = YeolDateUtil.getYesterdayMillis();
-
-        var pageable = PageRequest.of(0, recordNumber, Sort.by("view").descending());
-        return messageRepo.findByDeleteFlagFalseAndCreateMsGreaterThanEqual(yesterdayMillis, pageable)
+        return messageRepo.findByDeleteFlagFalseAndCreateMsGreaterThanEqual(YeolDateUtil.getYesterdayMillis(), PageRequest.of(0, recordNumber, Sort.by(MessagesName.FIELD_VIEW).descending()))
                 .map(MessageDto::valueOf).collectList();
     }
 
@@ -103,10 +101,10 @@ public class MessageServiceImpl implements MessageService {
     public Mono<MessageDto> deleteMessage(DeleteRequest request) {
         return messageRepo.findById(request.getId())
                 .switchIfEmpty(Mono.error(new YeolException(ErrCode.MEMBER_NOT_FOUND)))
-                .doOnNext(message -> {
+                .flatMap(message -> {
                     message.setUpdateMs(YeolDateUtil.getCurrentMillis());
                     message.setDeleteFlag(true);
-                    messageRepo.save(message);
+                    return messageRepo.save(message);
                 })
                 .map(MessageDto::valueOf);
     }
