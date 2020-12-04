@@ -31,8 +31,8 @@ public enum FormatRegex {
     
     ;
     
-    private String regex;
-    private ErrCode errCode;
+    private final String regex;
+    private final ErrCode errCode;
 
     FormatRegex(String regex, ErrCode errCode) {
         this.regex = regex;
