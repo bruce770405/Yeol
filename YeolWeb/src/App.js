@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Box from '@material-ui/core/Box';
+import Container from '@material-ui/core/Container';
 import { makeStyles } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
 import { useMediaQuery } from '@material-ui/core';
@@ -46,9 +47,7 @@ function App() {
           open={shouldOpenSidebar}
           variant={isDesktop ? 'persistent' : 'temporary'}
         />
-        <main className={classes.content}>
-          <div className={classes.toolbar} />
-          <Box my={1}>
+        <Container main className={classes.main}>
             {routes.map((route, i) => {
               const { path, exact, routes } = route;
               return (
@@ -62,29 +61,28 @@ function App() {
                 />
               );
             })}
-          </Box>
-          <FooterComponent />
-        </main>
-
+        </Container>
+        <FooterComponent />
       </div>
 
-    </ThemeProvider>
+    </ThemeProvider >
   );
 }
 
 export default App;
 
-
 const useStyles = makeStyles(theme => ({
   root: {
-    height: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    minHeight: '100vh',
+  },
+  main: {
+    flexGrow: 1,
+    marginTop: theme.spacing(12),
+    marginBottom: theme.spacing(2),
   },
   shiftContent: {
     paddingLeft: 240
-  },
-  toolbar: theme.mixins.toolbar,
-  content: {
-    flexGrow: 1,
-    padding: theme.spacing(3),
-  },
+  }
 }));

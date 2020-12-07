@@ -1,5 +1,5 @@
 import React from 'react';
-import { fade, makeStyles, useTheme } from '@material-ui/core/styles';
+import { fade, makeStyles } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
@@ -25,7 +25,7 @@ const Header = (props) => {
   const classes = useStyles();
   const { className, onSidebarOpen, ...rest } = props;
 
- 
+
   return (
 
     <div>

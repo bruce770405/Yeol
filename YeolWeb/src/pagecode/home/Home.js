@@ -9,6 +9,9 @@ import WhatshotIcon from '@material-ui/icons/Whatshot';
 import { StyleTabbeds, StyleTab } from '../../component/tabbed/StyleTabbed';
 import SubscriptionsIcon from '@material-ui/icons/Subscriptions';
 import { TabPanel } from '../../component/tabbed/TabPannel';
+import { makeStyles } from '@material-ui/core/styles';
+import Container from '@material-ui/core/Container';
+
 
 /**
  * 首頁 component.
@@ -85,6 +88,17 @@ class Home extends Component {
 
   render() {
 
+    const classes = makeStyles((theme) => ({
+      main: {
+        flexGrow: 1,
+        marginTop: theme.spacing(12),
+        marginBottom: theme.spacing(2),
+      },
+      mainGrid: {
+        marginTop: theme.spacing(3),
+      },
+    }));
+
     function a11yProps(index) {
       return {
         id: `full-width-tab-${index}`,
@@ -96,38 +110,37 @@ class Home extends Component {
 
     const { tabbedValue } = this.state;
     return (
+      <Container main className={classes.main}>
+        <Grid container spacing={5} className={classes.mainGrid}>
+          <Grid item xs={12} md={8}>
 
-      <Grid container spacing={4}>
-        <Grid item lg={8} md={12} xl={9} xs={12} spacing={2}>
+            <StyleTabbeds aria-label="styled" value={tabbedValue} onChange={(event, newValue) => {
+              this.setState({
+                tabbedValue: newValue
+              })
+            }}>
+              <StyleTab label="熱門主題"  {...a11yProps(0)} icon={<WhatshotIcon />} />
+              <StyleTab label="關注討論"   {...a11yProps(1)} icon={<SubscriptionsIcon />} />
+            </StyleTabbeds>
+            <TabPanel value={tabbedValue} index={0}>
+              <ArticleList data={this.state.data} />
+              <Grid container direction="row" justify="center" alignItems="center">
+                <Pagination limit={10}
+                  offset={this.state.current}
+                  total={this.state.total}
+                  onClick={(e, offset) => this.changePage(e, offset)}
+                />
+              </Grid>
+            </TabPanel>
 
-          <StyleTabbeds aria-label="styled" value={tabbedValue} onChange={(event, newValue) => {
-            this.setState({
-              tabbedValue: newValue
-            })
-          }}>
-            <StyleTab label="熱門主題"  {...a11yProps(0)} icon={<WhatshotIcon />} />
-            <StyleTab label="關注討論"   {...a11yProps(1)} icon={<SubscriptionsIcon />} />
-          </StyleTabbeds>
-          <TabPanel value={tabbedValue} index={0}>
-            <ArticleList data={this.state.data} />
-            <Grid container direction="row" justify="center" alignItems="center">
-              <Pagination limit={10}
-                offset={this.state.current}
-                total={this.state.total}
-                onClick={(e, offset) => this.changePage(e, offset)}
-              />
-            </Grid>
-          </TabPanel>
+          </Grid>
 
-        </Grid>
+          <Grid item xs={12} md={4}>
+            <SubList />
+          </Grid>
+        </Grid >
 
-
-        <Grid item lg={4} md={6} xl={3} xs={12}>
-          <SubList />
-        </Grid>
-      </Grid >
-
-
+      </Container>
     )
   };
 }

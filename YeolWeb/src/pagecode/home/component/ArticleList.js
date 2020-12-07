@@ -12,6 +12,7 @@ import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Grid from '@material-ui/core/Grid';
 import ThumbDownOutlinedIcon from '@material-ui/icons/ThumbDownOutlined';
 import InsertEmoticonOutlinedIcon from '@material-ui/icons/InsertEmoticonOutlined';
+import ArticleCard from './ArticleCard';
 
 /**
  * 畫面卡片式元件
@@ -29,51 +30,15 @@ export const ArticleList = (props) => {
   const classes = useStyles();
 
   return (
-
-    <CardComponent>
       <List className={classes.root}>
         {
           props.data ?
             Object.values(props.data).map(item =>
               <React.Fragment>
-                <ListItem alignItems="flex-start">
-                  <ListItemAvatar>
-                    <Avatar className={classes.orange}>B</Avatar>
-                  </ListItemAvatar>
-                  <ListItemText primary={item.title}
-                    secondary={
-                      <React.Fragment>
-                        <Typography
-                          component="span"
-                          variant="body2"
-                          className={classes.inline}
-                          color="textPrimary"
-                        >
-                          Ali Connors :
-                        </Typography>
-                        {item.content}
-                      </React.Fragment>
-                    }
-                  />
-                  <Grid container direction="column"
-                    justify="flex-end"
-                    alignItems="flex-end" xs={2}>
-                    <Grid item>
-                      <InsertEmoticonOutlinedIcon fontSize="small" color="primary" />{item.up}
-                      &nbsp;&nbsp;
-                      <ThumbDownOutlinedIcon fontSize="small" />{item.down}
-                    </Grid>
-
-                    <Typography variant="overline" display="block" gutterBottom>2020/01/02</Typography>
-                  </Grid>
-
-                </ListItem>
-                <Divider variant="inset" component="li" />
-              </React.Fragment>) : null
+                  <ArticleCard>{item.content} {item.up} {item.down}</ArticleCard>
+               </React.Fragment>) : null
         }
       </List>
-    </CardComponent >
-
   );
 }
 
