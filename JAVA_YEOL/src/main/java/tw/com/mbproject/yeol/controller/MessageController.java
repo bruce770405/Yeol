@@ -43,8 +43,7 @@ public class MessageController {
      * @param recordNumber fetch records number, max is 10;
      */
     @GetMapping(value = "/top-view/{recordNumber}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Mono<YeolResponse<List<MessageDto>>> getTopViewMessages(
-            @PathVariable(name = "recordNumber") Integer recordNumber) {
+    public Mono<YeolResponse<List<MessageDto>>> getTopViewMessages(@PathVariable(name = "recordNumber") Integer recordNumber) {
         if (recordNumber > 10) {
             recordNumber = 10;
         }

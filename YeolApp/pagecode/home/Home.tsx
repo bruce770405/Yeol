@@ -1,30 +1,31 @@
 import React from 'react';
-import { SafeAreaView, StyleSheet } from 'react-native';
-import { Avatar, Card, List, ListItem, Text, TopNavigation } from '@ui-kitten/components';
+import { SafeAreaView, StyleSheet, View } from 'react-native';
+import { Avatar, Card, Button, ButtonGroup, Icon, List, ListItem, Text, TopNavigation } from '@ui-kitten/components';
 
 const data = new Array(8).fill({
     title: 'Item',
 });
 
+const StarIcon = (props) => (
+    <Icon {...props} name='star' />
+);
+
 const renderItemHeader = (headerProps, info) => (
     <ListItem
-        title={ info.item.title + info.index}
+        title={info.item.title + info.index}
         description='BruceHsu'
-        accessoryLeft={() => <Avatar source={require('../assets/avatar.png')} />}
-    //     accessoryRight={() =>
-    //         <View {...headerProps}>
-    //             <Text category='h6'>
-    //                 {info.item.title} {info.index + 1}
-    //             </Text>
-    //         </View>}
-    // />
+        accessoryLeft={() => <Avatar source={require('../../assets/avatar.png')} />}
     ></ListItem>
 );
 
 const renderItemFooter = (footerProps) => (
-    <Text {...footerProps}>
-        
-    </Text>
+    <View {...footerProps} style={[footerProps.style, footerProps.footerContainer]}>
+        <ButtonGroup status='danger' size='tiny'>
+            <Button accessoryLeft={StarIcon} />
+            <Button accessoryLeft={StarIcon} />
+            <Button accessoryLeft={StarIcon} />
+        </ButtonGroup>
+    </View>
 );
 
 export const HomeScreen = ({ navigation }) => {
@@ -36,6 +37,8 @@ export const HomeScreen = ({ navigation }) => {
             header={headerProps => renderItemHeader(headerProps, info)}
             footer={renderItemFooter}>
             <Text>
+                Hello world
+                Hello world
                 Hello world
           </Text>
         </Card>
@@ -66,4 +69,8 @@ const styles = StyleSheet.create({
     item: {
         marginVertical: 4,
     },
+    footerContainer: {
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
+    }
 });

@@ -41,7 +41,7 @@ public class Member extends Base {
             roles = Stream.of(Role.USER.name()).collect(Collectors.toSet());
         }
         return User.withUsername(name).password(password)
-                .roles(roles.toArray(new String[roles.size()])).build();
+                .roles(roles.toArray(new String[0])).build();
     }
 
 }
