@@ -1,11 +1,11 @@
 package tw.com.mbproject.yeol.entity;
 
-import lombok.*;
+import lombok.Builder;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
-
-import lombok.experimental.SuperBuilder;
 import tw.com.mbproject.yeol.entity.name.BaseName;
 import tw.com.mbproject.yeol.entity.name.MessagesName;
 
