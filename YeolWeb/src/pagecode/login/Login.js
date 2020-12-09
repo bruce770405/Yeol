@@ -14,6 +14,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import { NavLink } from 'react-router-dom';
+import { loginReducer, memberInitialState } from './Reducer';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -48,6 +49,12 @@ const useStyles = makeStyles((theme) => ({
 
 const Login = props => {
   const classes = useStyles();
+  const [state, dispatch] = React.useReducer(loginReducer, memberInitialState);
+
+  function handleClick() {
+    dispatch({ type: 'ADD_TODO' })
+  }
+
   return (
     <Grid container component="main" className={classes.root}>
       <CssBaseline />
