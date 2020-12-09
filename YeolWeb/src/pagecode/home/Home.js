@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import Grid from '@material-ui/core/Grid';
 import { DropdownItem } from '../../component/modal/DropdownItem';
 import { SubList } from './component/SubList';
-import Pagination from "material-ui-flat-pagination";
+import Pagination from '@material-ui/lab/Pagination';
 import { HttpService } from '../../tw/com/yeol/common/http/HttpService';
 import { ArticleList } from './component/ArticleList';
 import WhatshotIcon from '@material-ui/icons/Whatshot';
@@ -18,7 +18,7 @@ import { TabPanel } from '../../component/tabbed/TabPannel';
  * @since 
  * @see
  */
-class Home extends Component {
+export default class Home extends Component {
 
   constructor(props) {
     super(props);
@@ -27,7 +27,8 @@ class Home extends Component {
       tabbedValue: 0,
       isShowMenu: false,
       current: 0,
-      total: 0
+      total: 0,
+      tab1page: 0
     }
   }
 
@@ -37,7 +38,7 @@ class Home extends Component {
   componentDidMount() {
     // succ
     let succFunction = response => {
-      console.log('succ ' + response)
+      console.log('succ ' + JSON.stringify(response))
       // do something data
       this.setState({
         data: response.data,
@@ -55,13 +56,15 @@ class Home extends Component {
   }
 
   /**
-   * 異動排序方法.
+   * 
+   * @param {*} event 
+   * @param {*} value 
    */
-  handleChange = value => {
-    this.setState(oldValues => ({
-      ...oldValues,
-      [value]: value,
-    }));
+  handleChange = (event, value) => {
+    console.log(value)
+    this.setState({
+      tab1page: value
+    })
   };
 
   /**
@@ -77,13 +80,6 @@ class Home extends Component {
     return { item1, item2 }
   }
 
-  /**
-   * page click.
-   */
-  changePage = (e, offset) => {
-    console.log(e, offset);
-  }
-
   render() {
 
     function a11yProps(index) {
@@ -92,8 +88,6 @@ class Home extends Component {
         'aria-controls': `full-width-tabpanel-${index}`,
       };
     }
-
-    // const sorted = this.genSortedItems()
 
     const { tabbedValue } = this.state;
     return (
@@ -113,10 +107,10 @@ class Home extends Component {
             <TabPanel value={tabbedValue} index={0}>
               <ArticleList data={this.state.data} />
               <Grid container direction="row" justify="center" alignItems="center">
-                <Pagination limit={10}
+                <Pagination limit={10} shape="rounded"
                   offset={this.state.current}
                   total={this.state.total}
-                  onClick={(e, offset) => this.changePage(e, offset)}
+                  onChange={this.handleChange}
                 />
               </Grid>
             </TabPanel>
@@ -130,5 +124,3 @@ class Home extends Component {
     )
   };
 }
-
-export default Home;

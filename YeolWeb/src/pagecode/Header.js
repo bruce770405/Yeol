@@ -23,7 +23,7 @@ import AppBar from '@material-ui/core/AppBar';
 const Header = (props) => {
   /** 設定css. */
   const classes = useStyles();
-  const { className, onSidebarOpen, ...rest } = props;
+  const { className, onSidebarOpen } = props;
 
   return (
     <>

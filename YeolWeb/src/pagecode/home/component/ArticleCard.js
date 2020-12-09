@@ -14,6 +14,7 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from '@material-ui/icons/Share';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
+import img from '../../../assets/img/testconent.jpg';
 
 export default function ArticleCard(props) {
   const classes = useStyles();
@@ -23,12 +24,19 @@ export default function ArticleCard(props) {
     setExpanded(!expanded);
   };
 
+  const cutMemberName = (memberName) => {
+    if (memberName) {
+      return memberName.substring(0, 1);
+    }
+    return memberName;
+  };
+
   return (
     <Card className={classes.root}>
       <CardHeader
         avatar={
           <Avatar aria-label="recipe" className={classes.avatar}>
-            R
+            {cutMemberName(props.item.memberName)}
           </Avatar>
         }
         action={
@@ -37,13 +45,17 @@ export default function ArticleCard(props) {
           </IconButton>
         }
         title={props.item.title}
-        subheader="September 14, 2016"
+        subheader={props.item.updateDateTime}
       />
-      <CardMedia
-        className={classes.media}
-        image="/static/images/cards/paella.jpg"
-        title="Paella dish"
-      />
+      {/* {props.item.image ? // 是否有圖片 */}
+        <CardMedia
+          className={classes.media}
+          image={img}
+          title="Paella dish"
+        /> 
+        {/* :
+        null
+      } */}
       <CardContent>
         <Typography variant="body2" color="textSecondary" component="p">
           {props.item.content}
@@ -79,7 +91,7 @@ const useStyles = makeStyles((theme) => ({
   },
   media: {
     height: 0,
-    paddingTop: '56.25%', // 16:9
+    paddingTop: '32.25%', // 16:9 56.25%
   },
   expand: {
     transform: 'rotate(0deg)',

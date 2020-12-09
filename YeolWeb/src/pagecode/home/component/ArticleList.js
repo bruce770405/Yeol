@@ -6,7 +6,6 @@ import ArticleCard from './ArticleCard';
 
 /**
  * 畫面卡片式元件
- * TODO
  * @author BruceHsu
  * @version
  * @since
@@ -26,6 +25,7 @@ export const ArticleList = (props) => {
           Object.values(props.data).map(item =>
             <React.Fragment>
               <ArticleCard item={item}></ArticleCard>
+              <div style={{ marginTop: 10, marginBottom: 10 }} />
             </React.Fragment>) : null
       }
     </List>
