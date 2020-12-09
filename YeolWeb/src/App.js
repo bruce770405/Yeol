@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import Box from '@material-ui/core/Box';
 import Container from '@material-ui/core/Container';
 import { makeStyles } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
@@ -48,19 +47,19 @@ function App() {
           variant={isDesktop ? 'persistent' : 'temporary'}
         />
         <Container main className={classes.main}>
-            {routes.map((route, i) => {
-              const { path, exact, routes } = route;
-              return (
-                <Route
-                  key={i}
-                  path={path}
-                  exact={exact}
-                  render={(routeProps) => (
-                    <route.component routes={routes} {...routeProps} />
-                  )}
-                />
-              );
-            })}
+          {routes.map((route, i) => {
+            const { path, exact } = route;
+            return (
+              <Route
+                key={i}
+                path={path}
+                exact={exact}
+                render={(routeProps) => (
+                  <route.component {...routeProps} />
+                )}
+              />
+            );
+          })}
         </Container>
         <FooterComponent />
       </div>
@@ -79,7 +78,7 @@ const useStyles = makeStyles(theme => ({
   },
   main: {
     flexGrow: 1,
-    marginTop: theme.spacing(12),
+    marginTop: theme.spacing(8),
     marginBottom: theme.spacing(2),
   },
   shiftContent: {

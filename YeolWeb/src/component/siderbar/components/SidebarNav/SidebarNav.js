@@ -58,13 +58,15 @@ const SidebarNav = props => {
 
   const { pages, className, ...rest } = props;
 
-  const [open] = React.useState(true);
+  const [expandeds, setExpandeds] = React.useState([]);
 
   const classes = useStyles();
 
-  const handleClick = (page) => {
-    console.log(page);
-    page.open = !page.open;
+  const handleExpandClick = (e, index) => {
+    e.preventDefault();
+    let newExpandeds = [...expandeds]; // copying the old datas array
+    newExpandeds[index] = !expandeds[index];
+    setExpandeds(newExpandeds);
   };
 
   return (
@@ -72,10 +74,9 @@ const SidebarNav = props => {
       {...rest}
       className={clsx(classes.root, className)}
     >
-      {pages.map(page => (
-        page.expansion ?
-          // 多選單
-          <div>
+      {pages.map((page, index) => (
+        page.expansion ?  // 多選單
+          <div key={index}>
             <ListItem
               className={classes.item}
               disableGutters
@@ -86,18 +87,15 @@ const SidebarNav = props => {
                 className={classes.button}
                 // component={CustomRouterLink}
                 // to={page.href}
-                onClick={(page) => {
-                  console.log(page.open);
-                  page.open = !page.open;
-                }}
+                onClick={(e) => handleExpandClick(e, index)}
               >
                 <div className={classes.icon}>{page.icon}</div>
                 {page.title}
               </Button>
-              {page.open ? <ExpandLess /> : <ExpandMore />}
+              {expandeds[index] ? <ExpandMore /> : <ExpandLess />}
             </ListItem>
 
-            <Collapse in={open} timeout="auto" unmountOnExit>
+            <Collapse in={expandeds[index]} timeout="auto" unmountOnExit>
               <List component="div" disablePadding>
                 <ListItem button className={classes.nested}>
                   <ListItemIcon>
@@ -111,21 +109,23 @@ const SidebarNav = props => {
 
           :
           // 單選單
-          <ListItem
-            className={classes.item}
-            disableGutters
-            key={page.title}
-          >
-            <Button
-              activeClassName={classes.active}
-              className={classes.button}
-              component={CustomRouterLink}
-              to={page.href}
+          <div key={index}>
+            <ListItem
+              className={classes.item}
+              disableGutters
+              key={page.title}
             >
-              <div className={classes.icon}>{page.icon}</div>
-              {page.title}
-            </Button>
-          </ListItem>
+              <Button
+                activeClassName={classes.active}
+                className={classes.button}
+                component={CustomRouterLink}
+                to={page.href}
+              >
+                <div className={classes.icon}>{page.icon}</div>
+                {page.title}
+              </Button>
+            </ListItem>
+          </div>
       ))}
     </List>
   );

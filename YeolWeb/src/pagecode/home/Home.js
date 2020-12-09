@@ -9,12 +9,10 @@ import WhatshotIcon from '@material-ui/icons/Whatshot';
 import { StyleTabbeds, StyleTab } from '../../component/tabbed/StyleTabbed';
 import SubscriptionsIcon from '@material-ui/icons/Subscriptions';
 import { TabPanel } from '../../component/tabbed/TabPannel';
-import { makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
 
 
 /**
- * 首頁 component.
+ * Home component.
  * @author BruceHsu
  * @version
  * @since 
@@ -88,17 +86,6 @@ class Home extends Component {
 
   render() {
 
-    const classes = makeStyles((theme) => ({
-      main: {
-        flexGrow: 1,
-        marginTop: theme.spacing(12),
-        marginBottom: theme.spacing(2),
-      },
-      mainGrid: {
-        marginTop: theme.spacing(3),
-      },
-    }));
-
     function a11yProps(index) {
       return {
         id: `full-width-tab-${index}`,
@@ -110,8 +97,9 @@ class Home extends Component {
 
     const { tabbedValue } = this.state;
     return (
-      <Container main className={classes.main}>
-        <Grid container spacing={5} className={classes.mainGrid}>
+      <div style={{ 'marginTop': 32 }}>
+        <Grid container spacing={6}>
+
           <Grid item xs={12} md={8}>
 
             <StyleTabbeds aria-label="styled" value={tabbedValue} onChange={(event, newValue) => {
@@ -132,15 +120,13 @@ class Home extends Component {
                 />
               </Grid>
             </TabPanel>
-
           </Grid>
 
           <Grid item xs={12} md={4}>
             <SubList />
           </Grid>
         </Grid >
-
-      </Container>
+      </div>
     )
   };
 }

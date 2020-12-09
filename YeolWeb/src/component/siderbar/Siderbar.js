@@ -5,13 +5,9 @@ import { makeStyles } from '@material-ui/styles';
 import { Drawer } from '@material-ui/core';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import PeopleIcon from '@material-ui/icons/People';
-import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket';
-import TextFieldsIcon from '@material-ui/icons/TextFields';
-import ImageIcon from '@material-ui/icons/Image';
-import AccountBoxIcon from '@material-ui/icons/AccountBox';
-import SettingsIcon from '@material-ui/icons/Settings';
-import LockOpenIcon from '@material-ui/icons/LockOpen';
-import { Profile, SidebarNav } from './components';
+import VideogameAssetIcon from '@material-ui/icons/VideogameAsset';
+import SchoolIcon from '@material-ui/icons/School';
+import { SidebarNav } from './components';
 
 const useStyles = makeStyles(theme => ({
   drawer: {
@@ -41,56 +37,31 @@ const Sidebar = props => {
   const { open, variant, onClose, className, ...rest } = props;
 
   const classes = useStyles();
-  
-  const pages = [
+
+  let pages = [
     {
-      title: '熱門討論區',
-      href: '/dashboard',
+      title: '熱門討論',
+      href: '/hot',
       expansion: true,
-      open:false,
       icon: <DashboardIcon />
     },
     {
       title: '校園',
-      href: '/users',
+      href: '/schools',
       expansion: true,
       icon: <PeopleIcon />
     },
     {
       title: '生活',
-      href: '/products',
+      href: '/life',
       expansion: true,
-      icon: <ShoppingBasketIcon />
+      icon: <SchoolIcon />
     },
     {
       title: '遊戲',
-      href: '/sign-in',
-      expansion: true,
-      icon: <LockOpenIcon />
-    },
-    {
-      title: 'Typography',
-      href: '/typography',
-      expansion: true,
-      icon: <TextFieldsIcon />
-    },
-    {
-      title: 'Icons',
-      href: '/icons',
-      expansion: true,
-      icon: <ImageIcon />
-    },
-    {
-      title: 'Account',
-      href: '/account',
+      href: '/games',
       expansion: false,
-      icon: <AccountBoxIcon />
-    },
-    {
-      title: 'Settings',
-      href: '/settings',
-      expansion: false,
-      icon: <SettingsIcon />
+      icon: <VideogameAssetIcon />
     }
   ];
 
@@ -102,18 +73,13 @@ const Sidebar = props => {
       open={open}
       variant={variant}
     >
-      <div
-        {...rest}
-        className={clsx(classes.root, className)}
-      >
-        {/* <Profile />
-        <Divider className={classes.divider} /> */}
+      <div  {...rest} className={clsx(classes.root, className)}  >
         <SidebarNav
           className={classes.nav}
           pages={pages}
         />
       </div>
-     
+
     </Drawer>
   );
 };

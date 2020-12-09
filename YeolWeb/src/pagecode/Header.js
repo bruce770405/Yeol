@@ -12,7 +12,7 @@ import { withRouter } from 'react-router-dom';
 import HeaderLogo from '../component/headerLogo/index';
 import AppBar from '@material-ui/core/AppBar';
 
-export const HeaderComponent = withRouter(props => <Header {...props} />);
+
 /**
  * app Header.
  * @author BruceHsu
@@ -25,13 +25,10 @@ const Header = (props) => {
   const classes = useStyles();
   const { className, onSidebarOpen, ...rest } = props;
 
-
   return (
-
-    <div>
+    <>
       <AppBar position="fixed" className={classes.appBar}>
         <Toolbar>
-
           <IconButton
             color="inherit"
             aria-label="open drawer"
@@ -69,6 +66,11 @@ const Header = (props) => {
             />
           </div>
 
+          <NavLink to="/signup" style={{ textDecorationLine: "none", color: "white" }} activeStyle={{ textDecorationLine: "none", color: "white" }}>
+            <Button color="inherit" >
+              註冊
+          </Button>
+          </NavLink>
           <NavLink to="/login" style={{ textDecorationLine: "none", color: "white" }} activeStyle={{ textDecorationLine: "none", color: "white" }}>
             <Button color="inherit" >
               登入
@@ -76,17 +78,15 @@ const Header = (props) => {
           </NavLink>
         </Toolbar>
       </AppBar>
-
-    </div >
+    </>
   );
 }
+
+export const HeaderComponent = withRouter(props => <Header {...props} />);
 
 const drawerWidth = 240;
 
 const useStyles = makeStyles(theme => ({
-  root: {
-    display: 'flex',
-  },
   drawer: {
     [theme.breakpoints.up('sm')]: {
       width: drawerWidth,
@@ -94,11 +94,7 @@ const useStyles = makeStyles(theme => ({
     },
   },
   appBar: {
-    zIndex: theme.zIndex.drawer + 1,
-    // marginLeft: drawerWidth,
-    // [theme.breakpoints.up('sm')]: {
-    //   width: `calc(100% - ${drawerWidth}px)`,
-    // },
+    zIndex: theme.zIndex.drawer + 1
   },
   menuButton: {
     marginRight: theme.spacing(2),
@@ -110,7 +106,6 @@ const useStyles = makeStyles(theme => ({
   drawerPaper: {
     width: drawerWidth
   },
-
   title: {
     fontSize: '2rem',
     marginLeft: '1rem',
