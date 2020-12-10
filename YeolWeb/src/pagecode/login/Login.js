@@ -14,7 +14,114 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import { NavLink } from 'react-router-dom';
-import { loginReducer, memberInitialState } from './Reducer';
+import { ContextStore } from '../../tw/com/yeol/common/context';
+import { HttpService } from '../../tw/com/yeol/common/http/HttpService';
+
+const Login = (props) => {
+  const classes = useStyles();
+  const [values, setValues] = React.useState({ name: '', password: '' });
+  const state = React.useContext(ContextStore);
+
+  const change = (e) => {
+    const { name, value } = e.target
+    setValues({ ...values, [name]: value });
+  }
+
+  const doLogin = () => {
+    console.log(state);
+    const body = {
+      'name': values['name'],
+      'password': values['password']
+    }
+
+    const succ = (response) => {
+      // 登入成功將token 與 username 塞入 state context
+      state.memberDispatch({ type: 'LOGIN', payload: response });
+      console.log(state);
+      props.history.push('/') 
+    }
+
+    const fail = (ex) => {
+      console.log(state);
+    }
+
+    HttpService.httpPost(body, succ, fail, '/api/account/username/login');
+  }
+
+  return (
+    <Grid container component="main" className={classes.root}>
+      <CssBaseline />
+      <Grid item xs={false} sm={4} md={7} className={classes.image} />
+      <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+        <div className={classes.paper}>
+          <Avatar className={classes.avatar}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            帳號登入
+          </Typography>
+          <form className={classes.form} noValidate>
+            <TextField
+              onChange={change}
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              id="email"
+              label="Email Address"
+              name="name"
+              autoComplete="email"
+              autoFocus
+            />
+            <TextField
+              onChange={change}
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              name="password"
+              label="Password"
+              type="password"
+              id="password"
+              autoComplete="current-password"
+            />
+            <FormControlLabel
+              control={<Checkbox value="remember" color="primary" />}
+              label="Remember me"
+            />
+
+            <Button
+              fullWidth
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+              onClick={doLogin}
+            >
+              登入
+            </Button>
+            <Grid container>
+              <Grid item xs>
+                <Link href="#" variant="body2">
+                  Forgot password?
+                </Link>
+              </Grid>
+              <Grid item>
+                <NavLink to="/signup" variant="body2">
+                  {"Don't have an account? Sign Up"}
+                </NavLink>
+              </Grid>
+            </Grid>
+            <Box mt={5}>
+              {/* <Copyright /> */}
+            </Box>
+          </form>
+        </div>
+      </Grid>
+    </Grid >
+  )
+};
+
+export default withRouter(Login);
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -46,84 +153,3 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(3, 0, 2),
   },
 }));
-
-const Login = props => {
-  const classes = useStyles();
-  const [state, dispatch] = React.useReducer(loginReducer, memberInitialState);
-
-  function handleClick() {
-    dispatch({ type: 'ADD_TODO' })
-  }
-
-  return (
-    <Grid container component="main" className={classes.root}>
-      <CssBaseline />
-      <Grid item xs={false} sm={4} md={7} className={classes.image} />
-      <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
-        <div className={classes.paper}>
-          <Avatar className={classes.avatar}>
-            <LockOutlinedIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            Sign in
-          </Typography>
-          <form className={classes.form} noValidate>
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
-              autoFocus
-            />
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-            />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            />
-
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              color="primary"
-              className={classes.submit}
-            >
-              Sign In
-            </Button>
-            <Grid container>
-              <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgot password?
-                </Link>
-              </Grid>
-              <Grid item>
-                <NavLink to="/signup" variant="body2">
-                  {"Don't have an account? Sign Up"}
-                </NavLink>
-              </Grid>
-            </Grid>
-            <Box mt={5}>
-              {/* <Copyright /> */}
-            </Box>
-          </form>
-        </div>
-      </Grid>
-    </Grid >
-  )
-};
-
-export default withRouter(Login);

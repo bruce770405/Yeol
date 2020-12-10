@@ -10,6 +10,8 @@ import { HeaderComponent } from './pagecode/Header';
 import FooterComponent from './pagecode/Footer';
 import Sidebar from './component/siderbar/Siderbar';
 import clsx from 'clsx';
+import { memberReducer, memberInitialState } from './pagecode/login/Reducer';
+import { ContextStore } from './tw/com/yeol/common/context';
 
 function App() {
 
@@ -32,39 +34,49 @@ function App() {
     setOpenSidebar(false);
   };
 
+  const [state, dispatch] = React.useReducer(memberReducer, memberInitialState);
+
   return (
-    <ThemeProvider theme={theme}>
+    <ContextStore.Provider
+      value={{
+        member: state.member,
+        datas: state.datas,
+        memberDispatch: dispatch
+      }}
+    >
+      <ThemeProvider theme={theme}>
 
-      <div className={clsx({
-        [classes.root]: true,
-        [classes.shiftContent]: isDesktop
-      })}>
+        <div className={clsx({
+          [classes.root]: true,
+          [classes.shiftContent]: isDesktop
+        })}>
 
-        <HeaderComponent onSidebarOpen={handleSidebarOpen} />
-        <Sidebar
-          onClose={handleSidebarClose}
-          open={shouldOpenSidebar}
-          variant={isDesktop ? 'persistent' : 'temporary'}
-        />
-        <Container main className={classes.main}>
-          {routes.map((route, i) => {
-            const { path, exact } = route;
-            return (
-              <Route
-                key={i}
-                path={path}
-                exact={exact}
-                render={(routeProps) => (
-                  <route.component {...routeProps} />
-                )}
-              />
-            );
-          })}
-        </Container>
-        <FooterComponent />
-      </div>
+          <HeaderComponent onSidebarOpen={handleSidebarOpen} />
+          <Sidebar
+            onClose={handleSidebarClose}
+            open={shouldOpenSidebar}
+            variant={isDesktop ? 'persistent' : 'temporary'}
+          />
+          <Container main className={classes.main}>
+            {routes.map((route, i) => {
+              const { path, exact } = route;
+              return (
+                <Route
+                  key={i}
+                  path={path}
+                  exact={exact}
+                  render={(routeProps) => (
+                    <route.component {...routeProps} />
+                  )}
+                />
+              );
+            })}
+          </Container>
+          <FooterComponent />
+        </div>
 
-    </ThemeProvider >
+      </ThemeProvider >
+    </ContextStore.Provider>
   );
 }
 
