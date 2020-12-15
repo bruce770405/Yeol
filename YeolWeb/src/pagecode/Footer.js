@@ -18,16 +18,20 @@ function Copyright() {
 }
 
 const useStyles = makeStyles((theme) => ({
+  // appBar: {
+  //   zIndex: theme.zIndex.drawer + 1
+  // },
   root: {
     display: 'flex',
     flexDirection: 'column',
-    minHeight: '100vh',
+    minHeight: '100vh'
   },
   main: {
     marginTop: theme.spacing(8),
     marginBottom: theme.spacing(2),
   },
   footer: {
+    zIndex: theme.zIndex.drawer + 1,
     padding: theme.spacing(3, 2),
     marginTop: 'auto',
     backgroundColor:

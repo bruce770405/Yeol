@@ -10,14 +10,12 @@ import { HeaderComponent } from './pagecode/Header';
 import FooterComponent from './pagecode/Footer';
 import Sidebar from './component/siderbar/Siderbar';
 import clsx from 'clsx';
-import { memberReducer, memberInitialState } from './pagecode/login/Reducer';
-import { ContextStore } from './tw/com/yeol/common/context';
+import { AuthorizedProvider } from './tw/com/yeol/context/Context';
 
 function App() {
 
   /** 設定css. */
   const classes = useStyles();
-
   const [openSidebar, setOpenSidebar] = useState(false);
 
   const isDesktop = useMediaQuery(theme.breakpoints.up('lg'), {
@@ -34,16 +32,8 @@ function App() {
     setOpenSidebar(false);
   };
 
-  const [state, dispatch] = React.useReducer(memberReducer, memberInitialState);
-
   return (
-    <ContextStore.Provider
-      value={{
-        member: state.member,
-        datas: state.datas,
-        memberDispatch: dispatch
-      }}
-    >
+    <AuthorizedProvider>
       <ThemeProvider theme={theme}>
 
         <div className={clsx({
@@ -74,9 +64,8 @@ function App() {
           </Container>
           <FooterComponent />
         </div>
-
       </ThemeProvider >
-    </ContextStore.Provider>
+    </AuthorizedProvider>
   );
 }
 

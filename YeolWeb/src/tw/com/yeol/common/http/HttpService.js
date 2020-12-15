@@ -1,10 +1,8 @@
-import {
-  endpoint,
-  isDebug
-} from '../../../../../config';
-
+import React from 'react';
+import { endpoint, isDebug } from '../../../../../config';
 
 export class HttpService {
+
 
   /**
    * http post.
@@ -13,7 +11,10 @@ export class HttpService {
    * @param {*} methodUri 資源uri
    */
   static httpPost(params, succ, fail, methodUri) {
-    let body = convertBody(params);
+
+    const token = localStorage.getItem('currentUser') ? JSON.parse(localStorage.getItem('currentUser')).token : '';
+
+    const body = convertBody(params);
 
     fetch(endpoint + methodUri, {
       method: 'POST',
@@ -21,7 +22,7 @@ export class HttpService {
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Methods': 'POST',
-        'Access-Control-Allow-Credentials': 'true'
+        'Authorization': 'Bearer ' + token
       }),
       body: body
     })
@@ -46,13 +47,15 @@ export class HttpService {
    * @param {*} uri 
    */
   static httpGet(succ, fail, uri) {
+    const token = localStorage.getItem('currentUser') ? JSON.parse(localStorage.getItem('currentUser')).token : '';
 
     fetch(endpoint + uri, {
       method: 'GET',
-      headers: new Headers({
-        'Content-Type': 'application/json; charset=utf-8',
+      headers: {
+        'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*',
-      }),
+        'Authorization': `Bearer ${token}`
+      }
     })
       .then((response) => {
         //ok 代表狀態碼在範圍 200-299

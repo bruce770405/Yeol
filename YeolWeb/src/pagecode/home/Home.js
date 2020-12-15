@@ -36,6 +36,7 @@ export default class Home extends Component {
    * life cycle.
    */
   componentDidMount() {
+    console.log('componentDidMount post');
     // succ
     let succFunction = response => {
       console.log('succ ' + JSON.stringify(response))
@@ -50,7 +51,6 @@ export default class Home extends Component {
       console.log('fail ' + error)
       // do something error handle
     }
-    console.log('componentDidMount post');
     //獲取第1頁內容
     HttpService.httpGet(succFunction, failFunction, '/api/messages/page/0')
   }
@@ -105,7 +105,7 @@ export default class Home extends Component {
               <StyleTab label="關注討論"   {...a11yProps(1)} icon={<SubscriptionsIcon />} />
             </StyleTabbeds>
             <TabPanel value={tabbedValue} index={0}>
-              <ArticleList data={this.state.data} />
+              <ArticleList key='article_list' data={this.state.data} />
               <Grid container direction="row" justify="center" alignItems="center">
                 <Pagination limit={10} shape="rounded"
                   offset={this.state.current}

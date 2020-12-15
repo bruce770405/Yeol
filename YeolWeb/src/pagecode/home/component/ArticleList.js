@@ -23,7 +23,7 @@ export const ArticleList = (props) => {
       {
         props.data ?
           Object.values(props.data).map(item =>
-            <React.Fragment>
+            <React.Fragment key={item.id}>
               <ArticleCard item={item}></ArticleCard>
               <div style={{ marginTop: 10, marginBottom: 10 }} />
             </React.Fragment>) : null

@@ -45,7 +45,7 @@ export const SubList = (props) => {
         {[0, 1, 2, 3].map((value) => {
           const labelId = `checkbox-list-secondary-label-${value}`;
           return (
-            <React.Fragment>
+            <React.Fragment key={value}>
               <ListItem key={value} button>
                 <ListItemAvatar>
                   <Avatar
@@ -63,7 +63,7 @@ export const SubList = (props) => {
                 />
               </ListItemSecondaryAction> */}
               </ListItem>
-              <Divider variant="middle"/>
+              <Divider variant="middle" />
             </React.Fragment>
           );
         })}

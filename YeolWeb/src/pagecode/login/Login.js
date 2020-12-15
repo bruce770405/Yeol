@@ -14,13 +14,15 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import { NavLink } from 'react-router-dom';
-import { ContextStore } from '../../tw/com/yeol/common/context';
 import { HttpService } from '../../tw/com/yeol/common/http/HttpService';
-
+import { useAuthorizedDispatch, useAuthorizedState } from '../../tw/com/yeol/context/Context';
+import Chip from '@material-ui/core/Chip';
+import FaceIcon from '@material-ui/icons/Face';
 const Login = (props) => {
   const classes = useStyles();
   const [values, setValues] = React.useState({ name: '', password: '' });
-  const state = React.useContext(ContextStore);
+  const { loading, errorMessage } = useAuthorizedState();
+  const dispatch = useAuthorizedDispatch();
 
   const change = (e) => {
     const { name, value } = e.target
@@ -28,21 +30,21 @@ const Login = (props) => {
   }
 
   const doLogin = () => {
-    console.log(state);
+    dispatch({ type: 'PRE_LOGIN' });
+
     const body = {
       'name': values['name'],
       'password': values['password']
     }
 
     const succ = (response) => {
-      // 登入成功將token 與 username 塞入 state context
-      state.memberDispatch({ type: 'LOGIN', payload: response });
-      console.log(state);
-      props.history.push('/') 
+      dispatch({ type: 'LOGIN', payload: response.data });
+      localStorage.setItem('currentUser', JSON.stringify(response.data));
+      props.history.push('/')
     }
 
     const fail = (ex) => {
-      console.log(state);
+      dispatch({ type: 'PRE_LOGIN' });
     }
 
     HttpService.httpPost(body, succ, fail, '/api/account/username/login');
@@ -96,6 +98,7 @@ const Login = (props) => {
               color="primary"
               className={classes.submit}
               onClick={doLogin}
+              disabled={loading}
             >
               登入
             </Button>
@@ -112,6 +115,12 @@ const Login = (props) => {
               </Grid>
             </Grid>
             <Box mt={5}>
+              <Chip
+                icon={<FaceIcon />}
+                label="Deletable secondary"
+                color="secondary"
+                variant="outlined"
+              />
               {/* <Copyright /> */}
             </Box>
           </form>

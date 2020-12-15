@@ -11,7 +11,8 @@ import MenuIcon from '@material-ui/icons/Menu';
 import { withRouter } from 'react-router-dom';
 import HeaderLogo from '../component/headerLogo/index';
 import AppBar from '@material-ui/core/AppBar';
-
+import Avatar from '@material-ui/core/Avatar';
+import { useAuthorizedState } from '../tw/com/yeol/context/Context';
 
 /**
  * app Header.
@@ -23,8 +24,9 @@ import AppBar from '@material-ui/core/AppBar';
 const Header = (props) => {
   /** 設定css. */
   const classes = useStyles();
-  const { className, onSidebarOpen } = props;
-
+  const { user, token } = useAuthorizedState();
+  const { onSidebarOpen } = props;
+  console.log(user)
   return (
     <>
       <AppBar position="fixed" className={classes.appBar}>
@@ -66,16 +68,35 @@ const Header = (props) => {
             />
           </div>
 
-          <NavLink to="/signup" style={{ textDecorationLine: "none", color: "white" }} activeStyle={{ textDecorationLine: "none", color: "white" }}>
-            <Button color="inherit" >
-              註冊
-          </Button>
-          </NavLink>
-          <NavLink to="/login" style={{ textDecorationLine: "none", color: "white" }} activeStyle={{ textDecorationLine: "none", color: "white" }}>
-            <Button color="inherit" >
-              登入
-          </Button>
-          </NavLink>
+
+          {
+            (user && token) ?
+              <>
+                <NavLink to="/member" style={{ textDecorationLine: "none", color: "white" }} activeStyle={{ textDecorationLine: "none", color: "white" }}>
+                  <IconButton color="inherit">
+                    <Avatar src="/static/images/avatar/1.jpg" alt={user} />
+                  </IconButton>
+                </NavLink>
+                <Button color="inherit" >
+                  登出
+                </Button>
+              </>
+              :
+
+              <>
+                <NavLink to="/signup" style={{ textDecorationLine: "none", color: "white" }} activeStyle={{ textDecorationLine: "none", color: "white" }}>
+                  <Button color="inherit" >
+                    註冊
+                  </Button>
+                </NavLink>
+                <NavLink to="/login" style={{ textDecorationLine: "none", color: "white" }} activeStyle={{ textDecorationLine: "none", color: "white" }}>
+                  <Button color="inherit" >
+                    登入
+                   </Button>
+                </NavLink>
+              </>
+          }
+
         </Toolbar>
       </AppBar>
     </>
