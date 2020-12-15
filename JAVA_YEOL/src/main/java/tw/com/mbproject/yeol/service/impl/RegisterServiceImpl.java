@@ -6,20 +6,19 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import reactor.core.publisher.Mono;
-import tw.com.mbproject.yeol.config.security.YeolUserDetails;
 import tw.com.mbproject.yeol.config.security.YeolUserDetailsService;
 import tw.com.mbproject.yeol.constant.ConstantNumber;
 import tw.com.mbproject.yeol.constant.Role;
 import tw.com.mbproject.yeol.controller.request.CreateMemberRequest;
 import tw.com.mbproject.yeol.controller.request.LoginMemberRequest;
 import tw.com.mbproject.yeol.controller.response.code.ErrCode;
+import tw.com.mbproject.yeol.dto.LoginDto;
 import tw.com.mbproject.yeol.dto.MemberDto;
 import tw.com.mbproject.yeol.entity.Member;
 import tw.com.mbproject.yeol.exception.YeolException;
 import tw.com.mbproject.yeol.repo.MemberRepo;
 import tw.com.mbproject.yeol.service.RegisterService;
 import tw.com.mbproject.yeol.util.JWTUtils;
-import tw.com.mbproject.yeol.util.YeolDateUtil;
 
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -45,14 +44,15 @@ public class RegisterServiceImpl implements RegisterService {
     }
 
     @Override
-    public Mono<String> login(LoginMemberRequest request) {
+    public Mono<LoginDto> login(LoginMemberRequest request) {
         return userService.findByUsername(request.getName()).flatMap((userDetails) -> {
             if (passwordEncoder.encode(request.getPassword()).equals(userDetails.getPassword())) {
-                return Mono.just(jwtUtil.generateToken(userDetails));
+                LoginDto dto = LoginDto.builder().token(jwtUtil.generateToken(userDetails)).name(userDetails.getUsername()).build();
+                return Mono.just(dto);
             } else {
                 return Mono.empty();
             }
-        }).defaultIfEmpty("");
+        }).defaultIfEmpty(LoginDto.builder().build());
     }
 
     private Member buildMemberEntity(CreateMemberRequest request) {

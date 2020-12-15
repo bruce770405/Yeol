@@ -3,6 +3,7 @@ package tw.com.mbproject.yeol.config;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.method.configuration.EnableReactiveMethodSecurity;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
@@ -15,9 +16,13 @@ import tw.com.mbproject.yeol.config.security.SecurityContextRepository;
 import tw.com.mbproject.yeol.config.security.filter.YeolAuthenticationManager;
 
 @EnableWebFluxSecurity
-@EnableReactiveMethodSecurity
+@EnableReactiveMethodSecurity(proxyTargetClass = true)
 public class WebFluxSecurityConfig {
 
+    private static final String ALLOWED_HEADERS = "x-requested-with, authorization, Content-Type, Authorization, credential, X-XSRF-TOKEN";
+    private static final String ALLOWED_METHODS = "GET, PUT, POST, DELETE, OPTIONS";
+    private static final String ALLOWED_ORIGIN = "*";
+    private static final String MAX_AGE = "3600";
     private final YeolAuthenticationManager authenticationManager;
     private final SecurityContextRepository securityContextRepository;
 
@@ -52,6 +57,7 @@ public class WebFluxSecurityConfig {
                 .securityContextRepository(securityContextRepository)
                 .authorizeExchange()
                 // Passing a white list endpoint, do not need to
+                .pathMatchers(HttpMethod.OPTIONS).permitAll()
                 // authenticate
                 .pathMatchers("/api/account/**").permitAll()
                 // 除上面設定外，其他請求皆認證

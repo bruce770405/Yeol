@@ -13,7 +13,9 @@ import tw.com.mbproject.yeol.controller.request.LoginMemberRequest;
 import tw.com.mbproject.yeol.controller.response.YeolResponse;
 import tw.com.mbproject.yeol.controller.response.code.ErrCode;
 import tw.com.mbproject.yeol.service.RegisterService;
-import tw.com.mbproject.yeol.util.YeolStrUtil;
+
+import javax.validation.Valid;
+import java.util.Objects;
 
 /**
  * login api controller.
@@ -43,11 +45,11 @@ public class RegisterController {
      * 登入.
      */
     @PostMapping("/username/login")
-    public Mono<ResponseEntity<?>> loginByUsername(@RequestBody LoginMemberRequest request) {
+    public Mono<ResponseEntity<?>> loginByUsername(@Valid @RequestBody LoginMemberRequest request) {
         return registerService.login(request)
-                .map(s -> YeolStrUtil.isBlank(s) ?
+                .map(member -> Objects.isNull(member) ?
                         ResponseEntity.status(HttpStatus.UNAUTHORIZED).build() :
-                        ResponseEntity.ok(new YeolResponse<>(s, ErrCode.SUCCESS))
+                        ResponseEntity.ok(new YeolResponse<>(member, ErrCode.SUCCESS))
                 );
     }
 
@@ -55,7 +57,7 @@ public class RegisterController {
      * 註冊.
      */
     @PostMapping("/register")
-    public Mono<ResponseEntity<?>> register(@RequestBody CreateMemberRequest request) {
+    public Mono<ResponseEntity<?>> register(@Valid @RequestBody CreateMemberRequest request) {
         return registerService.addMember(request).map(ResponseEntity::ok);
     }
 }
