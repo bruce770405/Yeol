@@ -1,16 +1,22 @@
 import React, { useReducer } from "react";
 
-let user = localStorage.getItem("currentUser")
-    ? JSON.parse(localStorage.getItem("currentUser")).name
-    : "";
+let user = localStorage.getItem('currentUser') ? JSON.parse(localStorage.getItem('currentUser')).name : '';
 
-let token = localStorage.getItem("currentUser")
-    ? JSON.parse(localStorage.getItem("currentUser")).token
-    : "";
+let token = localStorage.getItem("currentUser") ? JSON.parse(localStorage.getItem('currentUser')).token : '';
 
 // 建立 reducer
 function memberReducer(state, action) {
     switch (action.type) {
+        case 'LOAD_PAGE':
+            return {
+                ...memberInitialState,
+                loading: true
+            };
+        case 'LOAD_SUCCESS':
+            return {
+                ...memberInitialState,
+                loading: false
+            };
         case 'PRE_LOGIN':
             return {
                 ...memberInitialState,

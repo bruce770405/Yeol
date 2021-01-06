@@ -15,16 +15,12 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 
 function Copyright() {
-
   return (
-    <Typography variant="body2" color="textSecondary" align="center">
+    <Typography variant="body2" color="textSecondary">
       {'Copyright © '}
-      <Link color="inherit" href="https://material-ui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
+      <Link color="inherit" href="https://material-ui.com/">Yeol</Link>{' '}
+      {new Date().getFullYear()} {'.'}
+  </Typography>
   );
 }
 

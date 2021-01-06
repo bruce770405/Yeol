@@ -1,5 +1,5 @@
 import React from 'react';
-import { endpoint, isDebug } from '../../../../../config';
+import { endpoint } from '../../../../../config';
 
 export class HttpService {
 

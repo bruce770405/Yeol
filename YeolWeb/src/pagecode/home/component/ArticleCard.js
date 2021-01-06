@@ -15,6 +15,7 @@ import ShareIcon from '@material-ui/icons/Share';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import img from '../../../assets/img/testconent.jpg';
+import { NavLink } from 'react-router-dom';
 
 export default function ArticleCard(props) {
   const classes = useStyles();
@@ -47,20 +48,22 @@ export default function ArticleCard(props) {
         title={props.item.title}
         subheader={props.item.updateDateTime}
       />
-      {/* {props.item.image ? // 是否有圖片 */}
+      <NavLink to="/article/detail">
+        {/* {props.item.image ? // 是否有圖片 */}
         <CardMedia
           className={classes.media}
           image={img}
           title="Paella dish"
-        /> 
+        />
         {/* :
         null
       } */}
-      <CardContent>
-        <Typography variant="body2" color="textSecondary" component="p">
-          {props.item.content}
-        </Typography>
-      </CardContent>
+        <CardContent>
+          <Typography variant="body2" color="textSecondary" component="p">
+            {props.item.content}
+          </Typography>
+        </CardContent>
+      </NavLink>
       <CardActions disableSpacing>
         <IconButton aria-label="add to favorites">
           <FavoriteIcon />

@@ -22,7 +22,6 @@ import { useAuthorizedState } from '../tw/com/yeol/context/Context';
  * @see
  */
 const Header = (props) => {
-  /** 設定css. */
   const classes = useStyles();
   const { user, token } = useAuthorizedState();
   const { onSidebarOpen } = props;
@@ -71,7 +70,7 @@ const Header = (props) => {
 
           {
             (user && token) ?
-              <>
+              <React.Fragment>
                 <NavLink to="/member" style={{ textDecorationLine: "none", color: "white" }} activeStyle={{ textDecorationLine: "none", color: "white" }}>
                   <IconButton color="inherit">
                     <Avatar src="/static/images/avatar/1.jpg" alt={user} />
@@ -80,10 +79,9 @@ const Header = (props) => {
                 <Button color="inherit" >
                   登出
                 </Button>
-              </>
+              </React.Fragment>
               :
-
-              <>
+              <React.Fragment>
                 <NavLink to="/signup" style={{ textDecorationLine: "none", color: "white" }} activeStyle={{ textDecorationLine: "none", color: "white" }}>
                   <Button color="inherit" >
                     註冊
@@ -94,7 +92,7 @@ const Header = (props) => {
                     登入
                    </Button>
                 </NavLink>
-              </>
+              </React.Fragment>
           }
 
         </Toolbar>
@@ -102,8 +100,6 @@ const Header = (props) => {
     </>
   );
 }
-
-export const HeaderComponent = withRouter(props => <Header {...props} />);
 
 const drawerWidth = 240;
 
@@ -178,3 +174,6 @@ const useStyles = makeStyles(theme => ({
     },
   },
 }));
+
+
+export const HeaderComponent = withRouter(props => <Header {...props} />);

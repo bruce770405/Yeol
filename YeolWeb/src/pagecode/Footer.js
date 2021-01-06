@@ -4,7 +4,27 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Link from '@material-ui/core/Link';
 
-function Copyright() {
+/**
+ * app Footer.
+ * @author BruceHsu
+ * @version
+ * @since
+ * @see
+ */
+const FooterComponent = props => {
+  const { className, ...rest } = props;
+  const classes = useStyles();
+  return (
+    <footer className={classes.footer}>
+      <Container maxWidth="sm">
+        <Typography variant="body1">Yeol.</Typography>
+        <Copyright />
+      </Container>
+    </footer>
+  );
+};
+
+const Copyright = () => {
   return (
     <Typography variant="body2" color="textSecondary">
       {'Copyright © '}
@@ -18,9 +38,6 @@ function Copyright() {
 }
 
 const useStyles = makeStyles((theme) => ({
-  // appBar: {
-  //   zIndex: theme.zIndex.drawer + 1
-  // },
   root: {
     display: 'flex',
     flexDirection: 'column',
@@ -38,20 +55,5 @@ const useStyles = makeStyles((theme) => ({
       theme.palette.type === 'light' ? theme.palette.grey[200] : theme.palette.grey[800],
   },
 }));
-
-const FooterComponent = props => {
-  const { className, ...rest } = props;
-
-  const classes = useStyles();
-
-  return (
-    <footer className={classes.footer}>
-      <Container maxWidth="sm">
-        <Typography variant="body1">Yeol.</Typography>
-        <Copyright />
-      </Container>
-    </footer>
-  );
-};
 
 export default FooterComponent;

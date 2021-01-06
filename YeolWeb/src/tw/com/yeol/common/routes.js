@@ -1,6 +1,7 @@
 import Home from '../../../../pagecode/home/Home';
 import Login from '../../../../pagecode/login/Login';
 import SignUp from '../../../../pagecode/signup/SignUp';
+import ArticleDetail from '../../../../pagecode/article/ArticleDetail';
 
 /**
  * 路由.
@@ -10,6 +11,12 @@ const routes = [{
     component: Home,
     exact: true,
     breadcrumbName: 'Home'
+  },
+  {
+    path: '/article/detail',
+    component: ArticleDetail,
+    exact: true,
+    breadcrumbName: 'ArticleDetail'
   },
   {
     path: '/login',

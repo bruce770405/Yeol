@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import JSEncrypt from 'jsencrypt';
 import { withRouter } from 'react-router'
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
@@ -18,11 +19,29 @@ import { HttpService } from '../../tw/com/yeol/common/http/HttpService';
 import { useAuthorizedDispatch, useAuthorizedState } from '../../tw/com/yeol/context/Context';
 import Chip from '@material-ui/core/Chip';
 import FaceIcon from '@material-ui/icons/Face';
+
 const Login = (props) => {
   const classes = useStyles();
-  const [values, setValues] = React.useState({ name: '', password: '' });
+  const [values, setValues] = React.useState({ name: '', password: '', publicKxy: '' });
   const { loading, errorMessage } = useAuthorizedState();
   const dispatch = useAuthorizedDispatch();
+
+  useEffect(() => {
+    // if (localStorage.getItem('publicKxy')) {
+    //   return;
+    // }
+    dispatch({ type: 'LOAD_PAGE' });
+    const succ = (response) => {
+      console.debug('success', response);
+      localStorage.setItem('publicKxy', response.data.publicKxy);
+      dispatch({ type: 'LOAD_SUCCESS' });
+    }
+    const fail = (ex) => {
+      console.debug('fail', ex);
+      dispatch({ type: 'LOAD_SUCCESS' });
+    }
+    HttpService.httpPost({}, succ, fail, '/api/account/publicKxy/get');
+  }, []);
 
   const change = (e) => {
     const { name, value } = e.target
@@ -32,18 +51,23 @@ const Login = (props) => {
   const doLogin = () => {
     dispatch({ type: 'PRE_LOGIN' });
 
+    const encrypt = new JSEncrypt();
+    encrypt.setPublicKey(localStorage.getItem('publicKxy'));
+
     const body = {
       'name': values['name'],
-      'password': values['password']
+      'password': encrypt.encrypt(values['password'])
     }
 
     const succ = (response) => {
+      console.debug('success', response);
       dispatch({ type: 'LOGIN', payload: response.data });
       localStorage.setItem('currentUser', JSON.stringify(response.data));
       props.history.push('/')
     }
 
     const fail = (ex) => {
+      console.debug('fail', ex);
       dispatch({ type: 'PRE_LOGIN' });
     }
 
