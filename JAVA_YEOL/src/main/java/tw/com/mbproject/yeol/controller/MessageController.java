@@ -55,7 +55,6 @@ public class MessageController {
      */
     @GetMapping(value = "/page/{page}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<YeolResponse<List<MessageDto>>> getPagedMessages(@PathVariable("page") Integer page) {
-        log.debug("getPagedMessages ...");
         return messageService.getPagedMessages(page, GenericProperties.PAGE_SIZE).map(pageDto -> new YeolResponse<>(pageDto, ErrCode.SUCCESS));
     }
 

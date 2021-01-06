@@ -28,6 +28,15 @@ public class RegisterController {
     private final RegisterService registerService;
 
     /**
+     * 獲取前端登入用publicKxy
+     */
+    @PostMapping("/publicKxy/get")
+    public Mono<ResponseEntity<?>> rsaPublicKxy() {
+        return registerService.getMemberPublicKxy()
+                .map(publicKxy -> ResponseEntity.ok(new YeolResponse<>(publicKxy, ErrCode.SUCCESS)));
+    }
+
+    /**
      * 登入.
      */
 //    @PostMapping("/google/login")
@@ -45,7 +54,7 @@ public class RegisterController {
      * 登入.
      */
     @PostMapping("/username/login")
-    public Mono<ResponseEntity<?>> loginByUsername(@Valid @RequestBody LoginMemberRequest request) {
+    public Mono<ResponseEntity<?>> loginByUsername(@Valid @RequestBody LoginMemberRequest request) throws Exception {
         return registerService.login(request)
                 .map(member -> Objects.isNull(member) ?
                         ResponseEntity.status(HttpStatus.UNAUTHORIZED).build() :

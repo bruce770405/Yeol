@@ -5,6 +5,8 @@ import lombok.Data;
 import tw.com.mbproject.yeol.controller.validation.annotation.MemberName;
 import tw.com.mbproject.yeol.controller.validation.annotation.Password;
 
+import javax.validation.constraints.NotBlank;
+
 @Data
 public class LoginMemberRequest {
 
@@ -13,7 +15,7 @@ public class LoginMemberRequest {
     private String name;
 
     @JsonProperty(value = "password")
-    @Password
+    @NotBlank
     private String password;
 
 }

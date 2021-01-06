@@ -1,7 +1,7 @@
 package tw.com.mbproject.yeol.interceptor;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.log4j.Log4j2;
+import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.WebFilter;
 import org.springframework.web.server.WebFilterChain;
@@ -10,31 +10,18 @@ import reactor.core.publisher.Mono;
 /**
  *
  */
+@Log4j2
+@Component
 public class AuthorizedInterceptor implements WebFilter {
 
-    /**
-     * log物件.
-     */
-    private static final Logger LOGGER = LoggerFactory.getLogger(AuthorizedInterceptor.class);
-
-
-    /**
-     * TODO 目前只紀錄service前後完成的時間.
-     *
-     * @param serverWebExchange
-     * @param webFilterChain
-     * @return the Mono Object
-     */
     @Override
     public Mono<Void> filter(ServerWebExchange serverWebExchange, WebFilterChain webFilterChain) {
-        long startTime = System.currentTimeMillis();
-        String path = serverWebExchange.getRequest().getURI().getPath();
-        LOGGER.info("Serving '{}'", path);
+        final long startTime = System.currentTimeMillis();
+        final String path = serverWebExchange.getRequest().getURI().getPath();
         return webFilterChain.filter(serverWebExchange).doAfterTerminate(() -> {
                     serverWebExchange.getResponse().getHeaders().entrySet().forEach(e ->
-                            LOGGER.info("Response header '{}': {}", e.getKey(), e.getValue()));
-
-                    LOGGER.info("Served '{}' as {} in {} sec", path, serverWebExchange.getResponse().getStatusCode(),
+                            log.info("Response header '{}': {}", e.getKey(), e.getValue()));
+                    log.info("Served '{}' as {} in {} sec", path, serverWebExchange.getResponse().getStatusCode(),
                             System.currentTimeMillis() - startTime);
                 }
         );

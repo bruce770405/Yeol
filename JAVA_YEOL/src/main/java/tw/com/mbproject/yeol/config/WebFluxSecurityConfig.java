@@ -19,10 +19,6 @@ import tw.com.mbproject.yeol.config.security.filter.YeolAuthenticationManager;
 @EnableReactiveMethodSecurity(proxyTargetClass = true)
 public class WebFluxSecurityConfig {
 
-    private static final String ALLOWED_HEADERS = "x-requested-with, authorization, Content-Type, Authorization, credential, X-XSRF-TOKEN";
-    private static final String ALLOWED_METHODS = "GET, PUT, POST, DELETE, OPTIONS";
-    private static final String ALLOWED_ORIGIN = "*";
-    private static final String MAX_AGE = "3600";
     private final YeolAuthenticationManager authenticationManager;
     private final SecurityContextRepository securityContextRepository;
 
@@ -40,7 +36,8 @@ public class WebFluxSecurityConfig {
         if (!this.securityEnabled) {
             return http.csrf().disable()
                     .formLogin().disable()
-                    .httpBasic().disable().authorizeExchange().anyExchange().permitAll().and().build();
+                    .httpBasic().disable()
+                    .authorizeExchange().anyExchange().permitAll().and().build();
         }
 
         // 由於使用的是JWT，不需要csrf

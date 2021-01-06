@@ -2,6 +2,7 @@ package tw.com.mbproject.yeol.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.bson.types.ObjectId;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -13,12 +14,14 @@ import tw.com.mbproject.yeol.controller.request.CreateMemberRequest;
 import tw.com.mbproject.yeol.controller.request.LoginMemberRequest;
 import tw.com.mbproject.yeol.controller.response.code.ErrCode;
 import tw.com.mbproject.yeol.dto.LoginDto;
+import tw.com.mbproject.yeol.dto.LoginKxyDto;
 import tw.com.mbproject.yeol.dto.MemberDto;
 import tw.com.mbproject.yeol.entity.Member;
 import tw.com.mbproject.yeol.exception.YeolException;
 import tw.com.mbproject.yeol.repo.MemberRepo;
 import tw.com.mbproject.yeol.service.RegisterService;
 import tw.com.mbproject.yeol.util.JWTUtils;
+import tw.com.mbproject.yeol.util.RsaUtils;
 
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -33,6 +36,12 @@ public class RegisterServiceImpl implements RegisterService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
+    public Mono<LoginKxyDto> getMemberPublicKxy() {
+        return Mono.defer(() -> Mono.just(RsaUtils.kxyMap().get(RsaUtils.PUBLIC_KXY)))
+                .map(publicKey -> LoginKxyDto.builder().publicKxy(publicKey).build());
+    }
+
+    @Override
     public Mono<MemberDto> addMember(CreateMemberRequest request) throws YeolException {
         return memberRepo.findByNameOrEmailAndDeleteFlagFalse(request.getName(), request.getEmail())
                 .collectList()
@@ -44,15 +53,18 @@ public class RegisterServiceImpl implements RegisterService {
     }
 
     @Override
-    public Mono<LoginDto> login(LoginMemberRequest request) {
-        return userService.findByUsername(request.getName()).flatMap((userDetails) -> {
-            if (passwordEncoder.encode(request.getPassword()).equals(userDetails.getPassword())) {
-                LoginDto dto = LoginDto.builder().token(jwtUtil.generateToken(userDetails)).name(userDetails.getUsername()).build();
-                return Mono.just(dto);
-            } else {
-                return Mono.empty();
-            }
-        }).defaultIfEmpty(LoginDto.builder().build());
+    public Mono<LoginDto> login(LoginMemberRequest request) throws Exception {
+        return Mono.just(RsaUtils.decryptionByPrivateKxy(request.getPassword(),RsaUtils.kxyMap().get(RsaUtils.PRIVATE_KXY)))
+                .zipWith(userService.findByUsername(request.getName()))
+                .flatMap(tuple2 -> {
+                    final String decodePaxxword = tuple2.getT1();
+                    final UserDetails userDetails = tuple2.getT2();
+                    if (passwordEncoder.encode(decodePaxxword).equals(userDetails.getPassword())) {
+                        return Mono.just(LoginDto.builder().token(jwtUtil.generateToken(userDetails)).name(userDetails.getUsername()).build());
+                    } else {
+                        return Mono.empty();
+                    }
+                }).defaultIfEmpty(LoginDto.builder().build());
     }
 
     private Member buildMemberEntity(CreateMemberRequest request) {

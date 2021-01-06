@@ -1,7 +1,7 @@
 package tw.com.mbproject.yeol.service.impl;
 
+import lombok.RequiredArgsConstructor;
 import org.bson.types.ObjectId;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -23,14 +23,10 @@ import tw.com.mbproject.yeol.util.YeolDateUtil;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class MessageServiceImpl implements MessageService {
 
     private final MessageRepo messageRepo;
-
-    @Autowired
-    public MessageServiceImpl(MessageRepo messageRepo) {
-        this.messageRepo = messageRepo;
-    }
 
     @Override
     public Mono<List<MessageDto>> getAllMessages() {
