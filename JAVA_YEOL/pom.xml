@@ -106,6 +106,29 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
+            <plugin>
+                <groupId>com.google.cloud.tools</groupId>
+                <artifactId>jib-maven-plugin</artifactId>
+                <version>2.7.0</version>
+                <configuration>
+                    <from>
+                        <image>adoptopenjdk/openjdk11:jre-11.0.9.1_1</image>
+                    </from>
+                    <to>
+                        <image>tw.com.mbproject/java_yeol:${project.version}</image>
+                    </to>
+                    <container>
+                        <jvmFlags>
+                            <jvmFlag>-Xms512m</jvmFlag>
+                            <jvmFlag>-Xmx2g</jvmFlag>
+                        </jvmFlags>
+                        <ports>
+                            <port>8080</port>
+                        </ports>
+                        <creationTime>USE_CURRENT_TIMESTAMP</creationTime>
+                    </container>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
